@@ -24,29 +24,20 @@ An example of what the FIDE **Standard** Rating data looks like in December 2019
 
 From the [FIDE Download Rating List page](http://ratings.fide.com/download.phtml), we can understand each column a bit more:
 
-- `ID_NUMBER` is each individual FIDE player's ID value
-
-- `Name` is each individual's name
-
-- `Fed` is the federation of a player
-
-- `Sex` is the sex of a player (Male/Female)
-
-- `Tit` is title of a player (Grandmaster, International Master, FIDE Master, Women's titles, etc.)
- 
-- `OTit` is the other titles of a given FIDE player (Arbiters, Organizers, Trainers, etc.)
-
-- `FOA` stands for Fide Online Arena and the column contains values about FIDE player titles in the FOA platform.
-
-- `Rating` is a FIDE player's rating
-
-- `Gms` is the number of games played by a FIDE player in a given month
-
-- `K`- A player's K-factor
-
-- `Birthday` - A player's birth year
-
-- `Flag` - A player's level of activity (Active/Inactive)
+| Column name | Detail |
+| --- | --- |
+| `ID_NUMBER` | | is each individual FIDE player's ID value |
+| `Name` | is each individual's name |
+| `Fed` | is the federation of a player 
+| `Sex` | is the sex of a player (Male/Female) |
+| `Tit` | is title of a player (Grandmaster, International Master, FIDE Master, Women's titles, etc.) |
+| `OTit` | is the other titles of a given FIDE player (Arbiters, Organizers, Trainers, etc.) |
+| `FOA` | stands for Fide Online Arena and the column contains values about FIDE player titles in the FOA platform. |
+| `Rating` | is a FIDE player's rating |
+| `Gms` | is the number of games played by a FIDE player in a given month |
+| `K` | A player's K-factor |
+| `Birthday` | A player's birth year |
+| `Flag` | A player's level of activity (Active/Inactive) |
 
 ---
 
