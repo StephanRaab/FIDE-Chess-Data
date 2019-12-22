@@ -130,7 +130,7 @@ In the example above:
 
 # Lifecycle of data
 
-![](https://employeecycle.com/wp-content/uploads/2019/05/lifecycle.png)
+![](https://tygabox.com/wp-content/uploads/2019/04/lifecycle-tbs-colors.jpg)
 
 The process of acquiring the data through visualizing it is divided into 5 steps. Please each step below for how I made the data usuable.
 
