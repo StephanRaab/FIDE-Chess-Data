@@ -44,9 +44,15 @@ From the [FIDE Download Rating List page](http://ratings.fide.com/download.phtml
 
 ---
 
-# Why?
+# Why did I do this?
 
 ![](https://imgflip.com/s/meme/Futurama-Fry.jpg)
+
+I chose to work on this project because of several reasons:
+
+- Chess players like to see visuals of themselves, their competitors & friends, top players and populations .
+- I wanted to improve my skills in at least 1 or 2 programming languages.
+- I take an interest in any data about chess that has not been extensively analyzed.
 
 For the longest time, I wasn't able to import text files downloaded from [FIDE's data download page](http://ratings.fide.com/download_lists.phtml), into R. A typical `read.csv()` statement will not work because the data has no defined delimeter to parse columns on.  
 
@@ -134,7 +140,7 @@ In the example above:
 
 ![](https://tygabox.com/wp-content/uploads/2019/04/lifecycle-tbs-colors.jpg)
 
-The process of acquiring the data through visualizing it is divided into 5 steps. Please each step below for how I made the data usuable.
+The process of acquiring the data through visualizing it is divided into 5 steps. Please click each step below for how I made the data usuable.
 
 1. [Download the FIDE files](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%201%20-%20Download)
 
