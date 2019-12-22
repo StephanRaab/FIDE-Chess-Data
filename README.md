@@ -46,6 +46,8 @@ From the [FIDE Download Rating List page](http://ratings.fide.com/download.phtml
 
 # Why?
 
+![](https://imgflip.com/s/meme/Futurama-Fry.jpg)
+
 For the longest time, I wasn't able to import text files downloaded from [FIDE's data download page](http://ratings.fide.com/download_lists.phtml), into R. A typical `read.csv()` statement will not work because the data has no defined delimeter to parse columns on.  
 
 For example, the earliest dataset on FIDE's website is from January 2001. Let's take a moment to look at the first few rows of the raw text file.
