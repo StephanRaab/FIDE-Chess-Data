@@ -2,10 +2,9 @@
 
 ![FIDE](https://images.hamodia.com/hamod-uploads/2017/11/27160118/download.jpg) ![calendar](https://print-a-calendar.com/printable-calendars/one-page-year-thumbnail.png)
 
-This repository is to help all chess players utilize and work with public chess profile data provided by the `FIDE` organization (through December 2019). Most of the work done with programming languages such as R and Python.
+This repository is to help all chess players utilize and work with public chess profile data provided by the `FIDE` organization (through December 2019). Most of the work done in R and a bit of Python.
 
 ---
-
 # Example data
 
 An example of what the FIDE **Standard** Rating data looks like in December 2019:  
@@ -38,6 +37,50 @@ From the [FIDE Download Rating List page](http://ratings.fide.com/download.phtml
 | K | a FIDE player's K-factor |
 | Birthday | a FIDE player's birth year |
 | Flag | a FIDE player's level of activity (Active/Inactive) |
+
+---
+
+# Why?
+
+For the longest time, I wasn't able to import text files downloaded from [FIDE's data download page](http://ratings.fide.com/download_lists.phtml), into R. A typical `read.csv()` statement will not work because the data has no defined delimeter to parse columns on.  
+
+For example, the earliest dataset on FIDE's website is from January 2001. Let's take a moment to look at the first few rows of the raw text file.
+
+```
+ID_NUMBER NAME                             TITLE COUNTRY JAN01 GAMES FLAG
+  
+ 1701991  Aaberg, Anton                          SWE     2300    0   i   
+ 1401815  Aagaard, Jacob                   m     DEN     2374   18       
+ 1406248  Aage, Bjarke                           DEN     2063    0       
+```
+
+There are several issues with working with the data, but the most pressing one is that there is no clear delimeter to import the files on. A regular comma delimeter will not work because the text does not contain commas to separate the columns.
+
+One [github user](https://github.com/xdurana/fider/blob/master/R/zzz.R) has imported FIDE data via fixed widths. This works quite well for **most** of the data and I'll look into reading in the text files faster using this [stackoverflow post's](https://stackoverflow.com/questions/24715894/faster-way-to-read-fixed-width-files) benchmarking results.
+
+When I first started working on this project, I didn't quite understand it required fixed width functions such as `read_fwf()`. I was new to R and my main motivation was I wanted to learn R and Python in a creative setting.
+
+There are several other issues with the rest of the datasets on FIDE's website. Just to name a few (shown with :
+
+- Some have misspelled columns and ever changing column names over time 
+
+```
+ID NUMBER NAME                             TITLE COUNTRY JAN01 GAMES FLAG
+  
+ 1701991  Aaberg, Anton                          SWE     2300    0   i        
+```
+
+- Some have their columns out line
+- Some have blank & missing rows
+- Some don’t even have column headers to begin with
+
+```
+ID_NUMBER NAME                             TITLE COUNTRY JAN01 GAMES FLAG
+  
+ 1701991  Aaberg, Anton                          SWE     2300    0   i   
+ 1401815  Aagaard, Jacob                   m     DEN     2374   18       
+ 1406248  Aage, Bjarke                           DEN     2063    0       
+```
 
 ---
 
