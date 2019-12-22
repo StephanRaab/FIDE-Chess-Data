@@ -60,27 +60,67 @@ One [github user](https://github.com/xdurana/fider/blob/master/R/zzz.R) has impo
 
 When I first started working on this project, I didn't quite understand it required fixed width functions such as `read_fwf()`. I was new to R and my main motivation was I wanted to learn R and Python in a creative setting.
 
-There are several other issues with the rest of the datasets on FIDE's website. Just to name a few (shown with :
+# Issues
 
-- Some have misspelled columns and ever changing column names over time 
+There are several other issues with the rest of the text files (Text files run from January 2001 through December 2019). Just to name a few (shown with table visuals):
+
+## Some have misspelled columns and ever changing column names over time 
 
 ```
-ID NUMBER NAME                             TITLE COUNTRY JAN01 GAMES FLAG
+ID NUMBER NAME                             TIT  Fed     JAN   GMs FLAG
   
- 1701991  Aaberg, Anton                          SWE     2300    0   i        
-```
+ 1701991  Aaberg, Anton                         SWE     2300    0   i       
+ 1401815  Aagaard, Jacob                   m    DEN     2374   18       
+ 1406248  Aage, Bjarke                          DEN     2063    0       
+```  
+In the example above:
 
-- Some have their columns out line
-- Some have blank & missing rows
-- Some don’t even have column headers to begin with
+- `ID NUMBER` is not `ID_NUMBER`, which is problematic for various programmatic reasons.
+- `TIT` is different from `TITLE`
+- `FED` is different from `Country`.
+- `GMs` is different from `Games`
+- `JAN` should be `JAN01`
+
+## Some have their columns out line or missing columns labels outright
+
 
 ```
-ID_NUMBER NAME                             TITLE COUNTRY JAN01 GAMES FLAG
+ID_NUMBER   NAME                        TITLE   COUNTRYJAN01        FLAG
   
  1701991  Aaberg, Anton                          SWE     2300    0   i   
  1401815  Aagaard, Jacob                   m     DEN     2374   18       
  1406248  Aage, Bjarke                           DEN     2063    0       
 ```
+
+In the example above:
+
+- `NAME` is out of position
+- `COUNTRY` and `JAN01` are one word instead of being separated into two
+- `GAMES` is missing
+
+## Some have blank & missing rows
+
+```
+ID_NUMBER NAME                             TITLE COUNTRY JAN01 GAMES FLAG
+  
+ 1701991  Aaberg, Anton                          SWE     2300    0   i   
+
+ 1406248  Aage, Bjarke                           DEN     2063    0       
+```
+In the example above:
+
+- The entire 2nd row is missing (Jacob Aagaard's information is missing).
+
+## Some don’t even have column headers to begin with
+
+```  
+ 1701991  Aaberg, Anton                          SWE     2300    0   i   
+ 1401815  Aagaard, Jacob                   m     DEN     2374   18       
+ 1406248  Aage, Bjarke                           DEN     2063    0       
+```
+In the example above:
+
+- The column headers aren't even included in the data.
 
 ---
 
