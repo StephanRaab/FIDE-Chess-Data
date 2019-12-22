@@ -68,7 +68,7 @@ When I first started working on this project, I didn't quite understand it requi
 
 There are several other issues with the rest of the text files (Text files run from January 2001 through December 2019). Just to name a few (shown with table visuals):
 
-## Some have misspelled columns and ever changing column names over time 
+### Some have misspelled columns and ever changing column names over time 
 
 ```
 ID NUMBER NAME                             TIT  Fed     JAN   GMs FLAG
@@ -85,7 +85,7 @@ In the example above:
 - `GMs` is different from `Games`
 - `JAN` should be `JAN01`
 
-## Some have their columns out line or missing columns labels outright
+### Some have their columns out line or missing columns labels outright
 
 
 ```
@@ -102,7 +102,7 @@ In the example above:
 - `COUNTRY` and `JAN01` are one word instead of being separated into two
 - `GAMES` is missing
 
-## Some have blank & missing rows
+### Some have blank & missing rows
 
 ```
 ID_NUMBER NAME                             TITLE COUNTRY JAN01 GAMES FLAG
@@ -115,7 +115,7 @@ In the example above:
 
 - The entire 2nd row is missing (Jacob Aagaard's information is missing).
 
-## Some don’t even have column headers to begin with
+### Some don’t even have column headers to begin with
 
 ```  
  1701991  Aaberg, Anton                          SWE     2300    0   i   
