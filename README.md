@@ -26,18 +26,18 @@ From the [FIDE Download Rating List page](http://ratings.fide.com/download.phtml
 
 | Column name | Detail |
 | --- | --- |
-| `ID_NUMBER` | a FIDE player's ID |
-| `Name` | a FIDE player's name |
-| `Fed` | a FIDE player's federation (country) |
-| `Sex` | a FIDE player's sex (Male/Female) |
-| `Tit` | a FIDE player's title (GM, IM, FM, Women titles, etc.) |
-| `OTit` | is the other title(s) of FIDE players (Arbiters, Organizers, Trainers, etc.) |
-| `FOA` (Fide Online Arena) | is the titles of FIDE players obtained in the FOA platform. |
-| `Rating` | a FIDE player's rating |
-| `Gms` | a FIDE player's # of games played in a month |
-| `K` | a player's K-factor |
-| `Birthday` | a player's birth year |
-| `Flag` | a player's level of activity (Active/Inactive) |
+| ID_NUMBER | a FIDE player's ID |
+| Name | a FIDE player's name |
+| Fed | a FIDE player's federation (country) |
+| Sex | a FIDE player's sex (Male/Female) |
+| Tit | a FIDE player's title (GM, IM, FM, Women titles, etc.) |
+| OTit | a FIDE player's other title(s) (Arbiters, Organizers, Trainers, etc.) |
+| FOA (Fide Online Arena) | a FIDE player's FOA titles |
+| Rating | a FIDE player's rating |
+| Gms | a FIDE player's # of games played in a month |
+| K | a player's K-factor |
+| Birthday | a player's birth year |
+| Flag | a player's level of activity (Active/Inactive) |
 
 ---
 
