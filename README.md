@@ -4,6 +4,10 @@
 
 This repository is to help all chess players utilize and work with public chess profile data provided by the `FIDE` organization (through December 2019). Most of the work done in R and a bit of Python.
 
+# Where is the data?
+
+The data is located in this [folder](https://github.com/AnujDahiya24/FIDE/tree/master/Data%20files).
+
 ---
 # Example data
 
@@ -126,7 +130,9 @@ In the example above:
 
 # Lifecycle of data
 
-The file processing is organized into 5 steps:
+![](https://employeecycle.com/wp-content/uploads/2019/05/lifecycle.png)
+
+The process of acquiring the data through visualizing it is divided into 5 steps. Please each step below for how I made the data usuable.
 
 1. [Download the FIDE files](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%201%20-%20Download)
 
