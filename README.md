@@ -35,9 +35,9 @@ From the [FIDE Download Rating List page](http://ratings.fide.com/download.phtml
 | FOA (Fide Online Arena) | a FIDE player's FOA titles |
 | Rating | a FIDE player's rating |
 | Gms | a FIDE player's # of games played in a month |
-| K | a player's K-factor |
-| Birthday | a player's birth year |
-| Flag | a player's level of activity (Active/Inactive) |
+| K | a FIDE player's K-factor |
+| Birthday | a FIDE player's birth year |
+| Flag | a FIDE player's level of activity (Active/Inactive) |
 
 ---
 
