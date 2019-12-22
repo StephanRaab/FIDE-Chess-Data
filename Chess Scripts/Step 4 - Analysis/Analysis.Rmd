@@ -1,0 +1,562 @@
+---
+title: "Analysis"
+output:
+  pdf_document: default
+  word_document: default
+date: "11/18/2019"
+---
+
+
+
+The purpose of this document is to make use of the data stored within the `FIDE` data folder. 
+
+Before beginning, we need to import several packages that help run the code below.
+
+```{r, message= FALSE, warning=FALSE}
+library(tidyverse)
+library(data.table)
+library(xts)
+library(dygraphs)
+library(foreach)
+library(doParallel)
+library(zoo) 
+library(stringi)
+library(cowplot)
+library(gganimate)
+library(lubridate)
+```
+
+`tidyverse` imports dplyr, tidyr and several other useful packages for data wrangling and manipulation.
+
+`data.table` is used purely for speeding up imports.
+
+
+# Access the data
+
+The data is stored in a path we have to manipulate to get to.
+
+
+```{r, echo=FALSE}
+path = "~/GitHub/FIDE/Chess Scripts/Step 2 - Reformat/Data csvs/"
+
+knitr::opts_knit$set(root.dir = path)
+
+temp = list.files(path = path, 
+                  pattern = "\\.csv?")
+
+head(temp)
+```
+
+# Create functions to rename datasets
+
+Below, I define a few functions that help us rename the datasets eventually
+
+```{r, echo=FALSE}
+num <- function(x) match(tolower(x), tolower(month.abb))
+month <- function(x){return(substr(x, 1, 3))}
+add_zero <- function(x){if (x <= 9){x = paste("0", x, sep = "")}; return(x)}
+```
+
+# Get the month number of all of the files in the dataset
+
+Below, I rename create the variables names when they are imported in memory.
+
+```{r, echo=FALSE}
+temp%>%
+sapply(month)%>%
+sapply(num)%>%
+sapply(add_zero)%>%
+paste("20", substr(temp, 4, 5), "-", ., "-", "01", sep = "")-> month_num
+
+head(month_num)
+```
+
+We can see that the datasets correspond to dates on which the is recorded.
+
+# Import a sample of datasets 
+
+Due to the data being quite large, your RAM may be used heavily. 
+
+
+```{r, echo=FALSE}
+proper_temp <- paste(path, temp, sep = "")
+
+
+for(i in 1:length(proper_temp)) {
+assign(month_num[i], fread(proper_temp[i], sep = "*", data.table = FALSE, 
+                           strip.white = TRUE, blank.lines.skip = TRUE))
+}
+
+```
+
+
+```{r, include=FALSE, echo=FALSE}
+
+# cl<-makeCluster(detectCores()) 
+# registerDoParallel(cl)
+# temp_short = proper_temp[1:5]
+# FIDE<-foreach(i=proper_temp, .export = "fread") %dopar% {
+# t <- fread(i, sep = "*", data.table = FALSE, strip.white = TRUE, 
+# blank.lines.skip = TRUE)
+#                                                                  }
+# stopCluster(cl)
+```
+
+
+```{r, warning=FALSE, message=FALSE, results="hide", echo=FALSE}
+
+
+#Put datasets in list
+FIDE <- mget(ls(pattern = "[0-9][0-9]-[0-9][0-9]"))
+rm(list=setdiff(ls(), c("FIDE", "ptm")))
+
+#Help rename columns in the data
+vector_months <- c(month.abb, tolower(month.abb),toupper(month.abb))
+string = ""
+for (i in 1:length(vector_months)){
+if (i == 1){string = vector_months[i]}
+else if (i > 1) {string = paste(string, vector_months[i], sep = "|")}
+}
+string = paste(string, "RATING", sep = "|")
+
+# names(FIDE) <- month_num
+  
+#Insert month column
+for(i in 1:length(FIDE)){
+  colnames(FIDE[[i]])[grepl("Name|NAME|name", colnames(FIDE[[i]]))] <- "Name"
+  colnames(FIDE[[i]])[grepl("NUMBER", colnames(FIDE[[i]]))] <- "ID_Number"
+  colnames(FIDE[[i]])[grepl("Fed|FED|COUNTRY", colnames(FIDE[[i]]))] <- "Country"
+  colnames(FIDE[[i]])[grepl("Gms|GAMES|GM|Game|GAME", colnames(FIDE[[i]]))] <- "Games"
+  colnames(FIDE[[i]])[grepl("K", colnames(FIDE[[i]]))] <- "K_factor"
+  colnames(FIDE[[i]])[grepl("FLAG|Flag|flag", colnames(FIDE[[i]]))] <- "Activity"
+  colnames(FIDE[[i]])[colnames(FIDE[[i]]) %in% c("Wtit","wtit","WTIT", "WTit")] <- "Womens_Title"
+  colnames(FIDE[[i]])[colnames(FIDE[[i]]) %in% c("TITLE","Title","title","Tit")] <- "Title"
+  colnames(FIDE[[i]])[grepl(string, colnames(FIDE[[i]]))] <- "Rating"
+  colnames(FIDE[[i]])[grepl("Born|Age|age|BIRTHDAY|B-day|Bday", colnames(FIDE[[i]]))] <- "Age_Birthday"
+  colnames(FIDE[[i]])[grepl("SEX", colnames(FIDE[[i]]))] <- "Sex"
+  colnames(FIDE[[i]])[grepl("FOA", colnames(FIDE[[i]]))] <- "FIDE_Online_Arena"
+  colnames(FIDE[[i]])[grepl("OTit", colnames(FIDE[[i]]))] <- "Other_Titles"
+  FIDE[[i]] <-  FIDE[[i]] %>%
+                mutate(Date = as.POSIXct(names(FIDE)[i], format="%Y-%m-%d"),
+                       Rating = as.numeric(Rating))
+}
+
+old = c("c", "wc", "WC", "wg", "WF", "wf", "g", "m", "f", "wm", "gm" )
+new = c("CM", "WCM", "WCM", "WGM", "WFM", "WFM", "GM", "IM", "FM", "WIM", "GM")
+
+FIDE <- rbindlist(FIDE, fill = TRUE)%>%
+        select(-V1, -ID_Number)%>%
+        mutate(Title= c(new, Title)[match(Title, c(old, Title))],
+               Date_numeric = year(Date)+yday(Date)/366)%>%
+        filter(!Country %in% c("Fed", "Col"))
+
+```
+
+
+#write dataframe to folder
+
+```{r}
+# fwrite(FIDE, "FIDE.csv")
+# FIDE <- fread("FIDE.csv", data.table = FALSE)
+```
+
+Now that we have the data in a more clean, usable format, it's time we analyzed it.
+
+
+
+```{r, echo=FALSE}
+
+Strange <- FIDE%>%
+           filter(!Title %in% c(new, ""))
+
+Active = c("", "w")
+
+Active_player <- FIDE%>%
+                 filter(Activity %in% Active)%>%
+                 group_by(Date)%>%
+                 summarise(total_count = n(),
+                           avg_rating = mean(Rating, na.rm = T),
+                           sd_rating = sd(Rating, na.rm = T))%>%
+                 mutate(gain_loss = c(NA, diff(total_count)))
+
+
+Inactive_player <- FIDE%>%
+                   filter(!Activity %in% Active)%>%
+                   group_by(Date)%>%
+                   summarise(total_count = n(),
+                             avg_rating = mean(Rating, na.rm = T),
+                             sd_rating = sd(Rating, na.rm = T))
+
+All_players <- FIDE%>%
+               group_by(Date)%>%
+               summarise(total_count = n(),
+               avg_rating = mean(Rating, na.rm = T),
+               sd_rating = sd(Rating, na.rm = T))%>%
+               mutate(gain_loss = c(NA, diff(total_count)))
+
+All_countries <- FIDE%>%
+                 filter(Activity %in% Active)%>%
+                 group_by(Date, Country)%>%
+                 summarise(total_count = n())
+
+```
+
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, cache=TRUE}
+ggplot(data = All_players, aes(x = Date, y = total_count)) + 
+  geom_line(color = "#FC4E07", size = 2)+
+  xlab("Year")+
+  ylab("# of players")+
+  theme_bw()  -> p1
+
+ggplot(data = All_players, aes(x = Date, y = gain_loss)) + 
+  geom_line(color = "#FC4E07", size = 1)+
+  xlab("Year")+
+  ylab("# of gained/lost")+
+  geom_line(aes(y = 0))+
+  theme_bw() -> p2
+
+ggplot(data = Active_player, aes(x = Date, y = total_count)) + 
+  geom_line(color = "#FC4E07", size = 2)+
+  xlab("Year")+
+  ylab("# of actives")+
+  # geom_segment(aes(x=as.Date("2004-06-01"), xend=as.Date("2008-06-01"), y=120000, yend=70000), 
+  #              arrow = arrow(length = unit(.5, "cm")), size = 2)+
+  # geom_segment(aes(x=as.Date("2004-06-01"), xend=as.Date("2002-02-01"), y=120000, yend=35000), 
+  #              arrow = arrow(length = unit(.5, "cm")), size = 2)+ 
+  # annotate("text", x = as.Date("2006-06-01"), y = 130000, 
+  #          label = "Economic crash of 2008 (the larger chasm)", size = 5)+
+  theme_bw() -> p3
+
+ggplot(data = Inactive_player, aes(x = Date, y = total_count)) + 
+  geom_line(color = "#FC4E07", size = 2)+
+  xlab("Year")+
+  ylab("# of inactives")+
+  # geom_segment(aes(x=as.Date("2004-06-01"), xend=as.Date("2008-06-01"), y=140000, yend=55000), 
+  #              arrow = arrow(length = unit(.5, "cm")), size = 2)+
+  # geom_segment(aes(x=as.Date("2004-06-01"), xend=as.Date("2002-07-01"), y=140000, yend=35000), 
+  #              arrow = arrow(length = unit(.5, "cm")), size = 2)+
+  # annotate("text", x = as.Date("2005-01-01"), y = 155000, 
+  #          label = "Is this corrupted data?", size = 5)+
+  theme_bw() -> p4
+
+plot_grid(p1, p2, p3, p4, labels = c("A", "B", "C", "D"))
+```
+
+
+
+
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
+ggplot(data = Active_player, aes(x = Date, y = avg_rating)) + 
+  geom_line(color = "#FC4E07", size = 2)+
+  xlab("Year")+
+  ylab("Average of Actives")+
+  theme_bw() -> p5
+
+ggplot(data = Inactive_player, aes(x = Date, y = avg_rating)) + 
+  geom_line(color = "#FC4E07", size = 2)+
+  xlab("Year")+
+  ylab("Average of Inactives")+
+  theme_bw() -> p6
+
+ggplot(data = Active_player, aes(x = Date, y = sd_rating)) + 
+  geom_line(color = "#FC4E07", size = 2)+
+  xlab("Year")+
+  ylab("Inactives SD")+
+  theme_bw() -> p7
+
+ggplot(data = Inactive_player, aes(x = Date, y = sd_rating)) + 
+  geom_line(color = "#FC4E07", size = 2)+
+  xlab("Year")+
+  ylab("Inactives SD")+
+  theme_bw() -> p8
+
+plot_grid(p5, p6, p7, p8, labels = c("A", "B", "C", "D"))
+
+```
+
+
+
+```{r, echo=FALSE}
+codes <- fread("~/GitHub/FIDE/Chess Scripts/FIDE Country Codes/FIDE_codes.csv", 
+               sep =  ",", header = TRUE)
+
+
+country_codes <- c("BDI", "BHU", "BUR", "CAF", "CAM", "CGO", "CIV", "CMR", "COD", 
+                   "CPV", "CUR", "DJI", "ERI", "FID", "FIE", "GAB", "GUM", "Ind", 
+                   "IVC", "KOR", "KOS", "KSA", "LAO", "LBN", "LBR", "LCA", "LES", 
+                   "MDV", "MTN", "NET", "NRU", "OMA", "PLW", "ROU", "SCG", "SGP", 
+                   "SLE", "SOL", "SSD", "STP", "SWZ", "TLS", "TPE", "TTO") 
+
+countries <- c("Berundi", "Bhutan", "Burkina Faso", "Central African Republic", "Cambodia", 
+               "Republic of the Congo", "Cote d'Ivoire", "Cameroon", "Democratic Congo", 
+               "Cape Verde", "Curaçao", "Djibouti", "Eritrea", "Finland", "FIE", "Gabon", 
+               "Guam", "India", "Côte d'Ivoire", "South Korea", "Kosovo", "Saudi Arabia", 
+               "Laos", "Lebanon", "Liberia", "Saint Lucia", "Lesotho", "Maldives", "Mauritania", 
+               "NET", "Nauru", "Oman", "Palau", "Romania", "Serbia and Montenegro", "Singapore", 
+               "Sierra Leonne", "Solomon Islands", "South Sudan", "Sao Tome and Principe", "Swaziland", 
+               "East Timor (Timor-Leste)	", "Taiwan", "Trinidad and Tobago") 
+
+Country_diff <- All_countries%>%
+                arrange(Country, Date)%>%
+                group_by(Country)%>%
+                mutate(Diff = total_count - lag(total_count))%>%
+                filter(!is.na(Diff))%>%
+                mutate(Country_name = c(codes$Country, Country)[match(Country, c(codes$Code, Country))],
+                       Country_name = c(countries, Country_name)[match(Country_name, c(country_codes, Country_name))])
+
+
+Notable <- Country_diff%>%
+           filter(abs(Diff) > 500)%>%
+           .$Country_name%>%
+           unique()
+
+
+Arranged <- Country_diff%>%
+            arrange(Date, Diff)
+```
+
+
+```{r, echo = FALSE, cache=TRUE}
+Country_diff%>%
+filter(Country_name %in% Notable)%>%
+ggplot() +
+geom_line(aes(x = Date, y = Diff, colour = Country_name))+
+theme_bw()
+# +theme(legend.position = "none")
+```
+
+#Titled player count over time
+
+```{r, echo=FALSE}
+w_old = c("WCM", "WFM", "WGM", "WIM")
+w_new = rep("W Title", length(w_old))
+
+FIDE%>%
+filter(Title %in% unique(new))%>%
+group_by(Date, Title)%>%
+tally()%>%
+mutate(w_titles = c(w_new, Title)[match(Title, c(w_old, Title))])-> titled
+
+titled%>%
+group_by(Date, w_titles)%>%
+summarise(n = sum(n)) -> titles_group
+
+FIDE%>%
+filter(Games > 0, Activity == "")%>%
+group_by(Date)%>%
+summarise(n = n())%>%
+mutate(roll = rollmean(n, k = 6, fill = NA))-> Games
+```
+
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, cache=TRUE}
+titled%>%
+ggplot(aes(x=Date, y= n, group=Title, color=Title)) +
+geom_line(size = 1.5) -> p9
+
+titles_group%>%
+ggplot(aes(x=Date, y= n, group=w_titles, color=w_titles)) +
+geom_line(size = 1.5) -> p10
+
+titles_group %>%
+group_by(w_titles) %>%
+mutate(Diff = n - lag(n))%>%
+ggplot(aes(x=Date, y= Diff, group=w_titles, color=w_titles)) +
+geom_line(size = 1.5) -> p11
+
+Games%>%
+ggplot() +
+geom_line(aes(x=Date, y= roll), size = 1.5, color = "red")+
+theme_bw() -> p12
+
+
+plot_grid(p9, p10, p11, p12, labels = c("A", "B", "C", "D"))
+```
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, eval=FALSE}
+FIDE%>%
+group_by(Date_numeric)%>%
+tally()%>%
+.$Date_numeric%>%
+.[seq(1, length(.), by = 1)] -> years_increment
+
+transition <- FIDE%>%
+              filter(Date_numeric %in% years_increment, 
+                     !(Age_Birthday < 1850),
+                     Rating < 2900,
+                     Rating > 1000,
+                     Activity %in% Active,
+                     Sex %in% c("F", "M"))%>%
+              select(Rating, Sex, Date_numeric)%>%
+              arrange(Date_numeric)
+
+theme_set(theme_bw())
+transition%>%
+ggplot() +
+geom_density(aes(x = Rating, group=Sex, fill=Sex), alpha = .3)+
+labs(title = 'Year: {frame_time}')+
+transition_time(Date_numeric)
+
+```
+
+
+```{r, echo=FALSE, message=FALSE, cache=TRUE}
+titled <- FIDE%>%
+          filter(Title %in% new, Date_numeric == max(Date_numeric))%>%
+          group_by(Title, Country)%>%
+          tally()%>%
+          arrange(Title, -n)%>%
+          group_by(Title)%>%
+          top_n(n = 10)
+
+titled%>%
+filter(Title %in% c("CM", "FM", "IM", "GM"))%>%
+ggplot(aes(x= Country, y =n))+
+    geom_bar(stat ="identity")+
+    coord_flip()+
+    xlab("Country")+
+    ylab("Counts")+
+    facet_wrap(~Title)+
+    theme_bw()+
+    theme(axis.text=element_text(size=6))
+
+```
+
+
+```{r, fig.height= 8, echo=FALSE, warning=FALSE, message=FALSE}
+strongest <- FIDE%>%
+             filter(Date_numeric == max(Date_numeric), 
+                    Activity %in% Active,
+                    as.numeric(Age_Birthday) > 1900, 
+                    as.numeric(Age_Birthday) < 2019,
+                    Rating > 900, 
+                    Rating < 3000)%>%
+             transmute(Country, Age = 2020-as.numeric(Age_Birthday), Rating)
+
+
+breaks <- seq(min(strongest$Age), max(strongest$Age), 15)
+break_labels = paste(breaks[-length(breaks)], breaks[-1], sep = "-")
+
+strongest%>%
+mutate(Age_groups = cut(Age, 
+                        breaks=breaks, 
+                        include.lowest=TRUE, 
+                        right=FALSE, 
+                        labels=break_labels))%>%
+filter(!is.na(Age_groups))%>%
+group_by(Country, Age_groups)%>%
+summarise(count = n(), average_rating = mean(Rating)%>%round())%>%
+filter(count > 200)%>%
+arrange(Age_groups, -average_rating)%>%
+select(-count)%>%
+group_by(Age_groups)%>%
+top_n(n = 7)%>%
+ggplot(aes(x= Country, y= average_rating))+
+    geom_bar(stat ="identity")+
+    coord_flip()+
+    xlab("Country")+
+    ylab("Average Ratng")+
+    ggtitle("Highest rated age groups by country")+
+    facet_wrap(~Age_groups, ncol = 2)+
+    theme_bw()+
+    theme(axis.text=element_text(size=7))
+
+```
+
+
+
+```{r, echo=FALSE}
+
+# library(ggplot2)
+# library(gganimate)
+# library(tidyverse)
+# 
+# fill_in = data.frame(value = c(), year = c())
+# for (i in seq(1, 300, by = 10)){
+#   value = rnorm(i*20)
+#   year = rep(i, length(value))+2000
+#   stuff = data.frame(value = value, year = year)
+#   fill_in = rbind(fill_in, stuff)
+# }
+# 
+# 
+# ggplot(data = fill_in, mapping = aes(x=value, fill=as.factor(year)))+ 
+# geom_density(alpha = .3)
+# 
+# 
+# 
+# ggplot(fill_in, aes(value)) +
+# geom_density(alpha = .3)+
+# labs(title = 'Year: {frame_time}') +
+# transition_time(year)
+
+
+# rm(FIDE)
+
+# ggplot(NOV19,aes(x=Age,y=Rating))+
+# stat_density_2d(aes(fill = ..level..), geom="polygon")+
+# theme_bw()
+#
+#
+# nov19_titled <- NOV19%>%
+#                 filter(!Title %in% c(""), Womens_Title == "")
+# 
+# ggplot(nov19_titled,aes(Age, Rating, color=Title)) + 
+#   geom_point(alpha = .3) +
+#   scale_fill_brewer(palette="Set1") +
+#   theme(legend.position = "right")+
+#   theme_bw()+
+#   ggtitle("Age vs Rating of different titles for November 2019")
+#
+# library(gapminder)
+# gapminder%>%
+# ggplot(aes(x= gdpPercap, y = lifeExp,
+#            size = pop, colour = country)) +
+# geom_point(alpha = 0.7, show.legend = FALSE) +
+# scale_colour_manual(values = country_colors) +
+# scale_size(range = c(2, 12)) +
+# scale_x_log10() +
+# facet_wrap(~continent) +
+# labs(title = 'Year: {frame_time}', x = 'GDP per capita', y = 'life expectancy') +
+# transition_time(year) +
+# ease_aes('linear')
+#
+# FIDE%>%
+# filter(Rating > 2830)%>%
+# .$Name%>%
+# unique() -> top_player
+# 
+# #Visualize the data
+# WC_caliber_players <- FIDE%>%
+#   filter(Name %in% top_player, Activity == "")%>%
+#   select(Name, Rating, Date)%>%
+#   arrange(Name, Date)
+# 
+# 
+# dygraphed <- WC_caliber_players %>%
+#              spread(key = Name, value = Rating)%>%
+#              xts(.[,which(colnames(.)!= "Date")],order.by =  .$Date)
+# 
+# dygraph(dygraphed, main = "Player's rating over Time") %>%
+#   dyOptions(drawPoints = TRUE, pointSize = 2, axisLineWidth = 4) %>%
+#   dyAxis("y", label = "Rating", valueRange = c(1900, 3200))%>%
+#   dyRangeSelector()%>%
+#   dyLegend(width = 400)
+#
+# data <- fread("SEP19.csv", sep = "*", data.table = FALSE)
+#
+#
+# library(ggplot2)
+# data%>%
+# mutate(Rating = as.numeric(NOV19))%>%
+# filter(Flag == "wi")%>%
+# na.omit()%>%
+# ggplot(aes_string(x="Rating"))+
+# geom_density(size=2, alpha=.4)+
+# geom_histogram(aes(y = ..density..), bins = 50, col= "red")+ 
+# labs(title="Histogram overlayed with Density curve") +
+# labs(x="Rating", y="Percentage of players in population")
+```

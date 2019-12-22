@@ -1,0 +1,339 @@
+---
+title: "FIDE Chess Download"
+author: "Anuj Dahiya"
+date: "11/16/2019"
+output: html_document
+---
+
+```{r}
+library(knitr)
+library(dplyr)
+library(data.table)
+library(Kmisc)
+library(microbenchmark)
+library(stringi)
+library(doParallel)
+```
+
+```{r}
+setwd(choose.dir())
+
+year_vector <- as.character(1:as.numeric(substr(Sys.Date(), 3, 4)))
+month_vector <- tolower(substr(month.name, 1, 3))5
+url_vector = url_vect_destfile = rep(0, length(month_vector)*length(year_vector))
+```
+
+```{r}
+latest <- format(Sys.Date(), format="%b%Y")
+latest <- paste(tolower(substr(latest, 1, 1)), substr(latest, 2, 3), substr(latest, nchar(latest)-1, nchar(latest)), "frl.zip", sep = "")
+
+latest
+```
+
+```{r}
+for(i in 1:length(year_vector)){
+  if(nchar(year_vector[i]) == 1){
+    year_vector[i] = paste("0", year_vector[i], sep = "")
+  }
+}
+
+year_vector
+```
+
+```{r}
+for(i in seq_along(year_vector)){
+  for(j in seq_along(month_vector)){
+    if(12*(i-1)+j <= 140){
+      url_vector[12*(i-1)+j] = paste("http://ratings.fide.com/download/", month_vector[j], year_vector[i], "frl.zip", sep = "")
+    }
+    else if(12*(i-1)+j > 140){
+      url_vector[12*(i-1)+j] = paste("http://ratings.fide.com/download/standard_", month_vector[j], year_vector[i], "frl.zip", sep = "")
+    }
+    url_vect_destfile[12*(i-1)+j] <- substr(url_vector[12*(i-1)+j], nchar(url_vector[12*(i-1)+j])- 11 , nchar(url_vector[12*(i-1)+j]))
+  }
+}
+
+url_vect_destfile <- url_vect_destfile[1:which(url_vect_destfile == latest)]
+url_vector <- url_vector[1:which(url_vect_destfile == latest)]
+```
+
+```{r}
+data.frame(URL = url_vector,
+           Destination = url_vect_destfile)%>%
+slice(c(1:5, (n()-4):n()))%>% #first 5 and last 5 observations
+kable()
+```
+
+```{r}
+rm(list=setdiff(ls(), c("url_vector", "url_vect_destfile")))
+
+download_all <- function(link, dest){
+  if (!file.exists(dest)) {
+    tryCatch({
+      download.file(link, dest, method="auto") 
+    }, error=function(e){})
+  }
+}
+
+n = 227
+last_n = (length(url_vect_destfile)-n):length(url_vect_destfile)
+old <- getOption("warn"); options(warn = -1)
+invisible(mapply(download_all, url_vector[last_n], url_vect_destfile[last_n]))
+options(warn = old)
+```
+
+```{r}
+invisible(sapply(list.files(pattern = "*.zip"), function(x) unzip(x, exdir = getwd())))
+
+unlink(list.files(pattern = "*.zip"))
+```
+
+
+# reformat function
+
+```{r}
+library(knitr)
+library(dplyr)
+library(data.table)
+library(Kmisc)
+library(microbenchmark)
+library(stringi)
+library(foreach)
+library(doParallel)
+
+reformat <- function(file_csv, df){
+
+#Reformat October 2002
+if(file_csv == "OCT02FRL.TXT"){df[1] <- df[1]%>%
+                                           gsub("COUNTRY", "  Fed ", .)%>%
+                                           gsub("GAMES", "Gms", .)%>%
+                                           gsub("BIRTHDAY", " BIRTHDAY", .)}
+
+#Reformat April 2003
+else if(file_csv == "APR03FRL.TXT"){df[1] <- df[1]%>%
+                                          gsub("   CODE  ","ID_NUMBER",.)%>%
+                                          gsub("COUNTRY","  FED  ",.)%>%
+                                          gsub(" APR03", "APR03 ", .)%>%
+                                          gsub(" GAMES", "GMS   ", .)%>%
+                                          gsub("  BIRTHDAY", "BIRTHDAY  ", .)%>%
+                                          gsub(" FLAG", "FLAG ", .)}
+
+#Reformat April, July, October 2004, January, July 2005
+else if(file_csv %in% c("APR04FRL.TXT","JUL04FRL.TXT","OCT04FRL.TXT", "JAN05FRL.TXT", "JUL05FRL.TXT")){
+                                                df[1] <- df[1]%>%
+                                                gsub("COUNTRY", "   FED ", . )%>%
+                                                gsub("GAMES", "GAME ", .)%>%
+                                                gsub(" BIRTHDAY", "BIRTHDAY", .)}
+
+#Reformat January 2006 to July 2012
+else if(file_csv == "JAN06FRL.TXT"){df <- df[-2]}
+else if(file_csv %in% c("APR06FRL.TXT", "JUL06FRL.TXT", "OCT06FRL.TXT",
+                      list.files(pattern = "[0][7-9][Ff][Rr][Ll].[Tt][Xx][Tt]"),
+                      list.files(pattern = "[1][0-1][Ff][Rr][Ll].[Tt][Xx][Tt]"),
+                      list.files(pattern = "[1][2][Ff][Rr][Ll].[Tt][Xx][Tt]")[1:5])){
+                                                                                      df[1] <- df[1] %>% gsub("Titl", "Tit ", .)%>%
+                                                                                                         gsub("Games", "Game ", .)%>%
+                                                                                                         gsub("July", "Jul", .)
+}
+
+df[1] <- gsub("ID Number", "ID_NUMBER", df[1])%>%
+         gsub("ID number", "ID_NUMBER", .)
+
+return(df)
+}
+
+```
+
+
+
+# indexes 
+
+```{r}
+indexes <- function(df){
+            column_vector<- df[1]
+            indexes <- rep(0, nchar(df[1]))
+            for(i in 1:nchar(column_vector)){
+              index = grep("\\s[A-z]", substr(column_vector, i, i+1))
+              if (identical(index, integer(0)) == TRUE){indexes[i] = 0}
+              else {indexes[i] = 1}
+                                            }
+            return(which(indexes == 1))
+                      }
+```
+
+
+# insert delimeters quickly
+
+```{r}
+utf_func <- function(df, indexed){
+v <- utf8ToInt(df)
+v[indexed ] <- utf8ToInt("*")
+return(intToUtf8(v))
+}
+``` 
+
+# write files
+```{r}
+fwrite_wrapper <- function(filename, df){
+if (file.exists(filename)) {unlink(filename)}
+fwrite(list(df), file = filename, quote = FALSE)
+}
+```
+
+# file rename
+```{r}
+filenamer <- function(Year_num) {
+  Year_num%>%
+  substr(., nchar(.)-11, nchar(.)-7)%>%
+  toupper()%>%
+  paste(., ".csv", sep = "")
+}
+```
+
+
+# work on APR05FRL.TXT
+
+```{r}
+setwd("~/GitHub/Chess_data/FIDE Data/Data NOV19")
+
+# All_files_fwrite <- function(year_vector){
+# text_insert_first = c("jul03frl.txt","OCT03FRL.TXT", "JAN04FRL.TXT", "APR05FRL.TXT")
+# columns = "ID_NUMBER NAME                            TITLE FED  RATING GM  Bday      Flag "
+# 
+# if(year_vector %in% text_insert_first){
+# df = readLines(year_vector)
+#   if(nchar(df[1]) != 0) {
+#     cat("", df, file = year_vector, sep = "\n")
+#     df <- readLines(year_vector)
+#     df[1] <- columns} else{df[1] <- columns}
+# } else {df = readlines(year_vector)}
+#   
+# df <- reformat(year_vector, df)
+# indexed = indexes(df)
+# df = sapply(df , utf_func, indexed = indexed, USE.NAMES = FALSE)
+# filename <- filenamer(year_vector)
+# fwrite_wrapper(df, file = filename)
+# 
+# }
+
+
+# invisible(mapply(All_files_fwrite, Year_num))
+
+multi_processing <- function(Year_num){
+                    cl <- makeCluster(detectCores()) 
+                    registerDoParallel(cl)
+                    foreach(i = Year_num, 
+                            .combine = "rbind", 
+                            .packages = c("dplyr", "data.table", "Kmisc", "stringi")) %dopar% {
+
+reformat <- function(file_csv, df){
+
+#Reformat October 2002
+if(file_csv == "OCT02FRL.TXT"){df[1] <- df[1]%>%
+                                           gsub("COUNTRY", "  Fed ", .)%>%
+                                           gsub("GAMES", "Gms", .)%>%
+                                           gsub("BIRTHDAY", " BIRTHDAY", .)}
+
+#Reformat April 2003
+else if(file_csv == "APR03FRL.TXT"){df[1] <- df[1]%>%
+                                          gsub("   CODE  ","ID_NUMBER",.)%>%
+                                          gsub("COUNTRY","  FED  ",.)%>%
+                                          gsub(" APR03", "APR03 ", .)%>%
+                                          gsub(" GAMES", "GMS   ", .)%>%
+                                          gsub("  BIRTHDAY", "BIRTHDAY  ", .)%>%
+                                          gsub(" FLAG", "FLAG ", .)}
+
+#Reformat April, July, October 2004, January, July 2005
+else if(file_csv %in% c("APR04FRL.TXT","JUL04FRL.TXT","OCT04FRL.TXT", "JAN05FRL.TXT", "JUL05FRL.TXT")){
+                                                df[1] <- df[1]%>%
+                                                gsub("COUNTRY", "   FED ", . )%>%
+                                                gsub("GAMES", "GAME ", .)%>%
+                                                gsub(" BIRTHDAY", "BIRTHDAY", .)}
+
+#Reformat January 2006 to July 2012
+else if(file_csv == "JAN06FRL.TXT"){df <- df[-2]}
+else if(file_csv %in% c("APR06FRL.TXT", "JUL06FRL.TXT", "OCT06FRL.TXT",
+                      list.files(pattern = "[0][7-9][Ff][Rr][Ll].[Tt][Xx][Tt]"),
+                      list.files(pattern = "[1][0-1][Ff][Rr][Ll].[Tt][Xx][Tt]"),
+                      list.files(pattern = "[1][2][Ff][Rr][Ll].[Tt][Xx][Tt]")[1:5])){
+                                                                                      df[1] <- df[1] %>% gsub("Titl", "Tit ", .)%>%
+                                                                                                         gsub("Games", "Game ", .)%>%
+                                                                                                         gsub("July", "Jul", .)
+}
+
+df[1] <- gsub("ID Number", "ID_NUMBER", df[1])%>%
+         gsub("ID number", "ID_NUMBER", .)
+
+return(df)
+}
+
+
+
+indexes <- function(df){
+            column_vector<- df[1]
+            indexes <- rep(0, nchar(df[1]))
+            for(i in 1:nchar(column_vector)){
+              index = grep("\\s[A-z]", substr(column_vector, i, i+1))
+              if (identical(index, integer(0)) == TRUE){indexes[i] = 0}
+              else {indexes[i] = 1}
+                                            }
+            return(which(indexes == 1))
+}
+
+
+
+utf_func <- function(df, indexed){
+v <- utf8ToInt(df)
+v[indexed ] <- utf8ToInt("*")
+return(intToUtf8(v))
+}
+
+
+
+fwrite_wrapper <- function(filename, df){
+if (file.exists(filename)) {unlink(filename)}
+fwrite(list(df), file = filename, quote = FALSE)
+}
+
+
+filenamer <- function(Year_num) {
+  Year_num%>%
+  substr(., nchar(.)-11, nchar(.)-7)%>%
+  toupper()%>%
+  paste(., ".csv", sep = "")
+}
+
+All_files_fwrite <- function(year_vector){
+text_insert_first = c("jul03frl.txt","OCT03FRL.TXT", "JAN04FRL.TXT", "APR05FRL.TXT")
+columns = "ID_NUMBER NAME                            TITLE FED  RATING GM  Bday      Flag "
+
+if(year_vector %in% text_insert_first){
+df = readLines(year_vector)
+  if(nchar(df[1]) != 0) {
+    cat("", df, file = year_vector, sep = "\n")
+    df <- readLines(year_vector)
+    df[1] <- columns} else{df[1] <- columns}
+} else {df = readlines(year_vector)}
+  
+df <- reformat(year_vector, df)
+indexed = indexes(df)
+df = sapply(df , utf_func, indexed = indexed, USE.NAMES = FALSE)
+filename <- filenamer(year_vector)
+fwrite_wrapper(df, file = filename)
+
+}
+
+
+All_files_fwrite(i)
+                            }
+                    
+stopCluster(cl)
+}
+
+Year_num <- list.files(pattern = "[Ff][Rr][Ll].[Tt][Xx][Tt]")
+
+# system.time(invisible(mapply(All_files_fwrite, Year_num)))
+# unlink(list.files(pattern = "*.csv"))
+
+system.time(multi_processing(Year_num))
+```
