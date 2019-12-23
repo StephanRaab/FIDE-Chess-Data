@@ -6,7 +6,7 @@ This repository is to help all chess players utilize and work with [public chess
 
 # Where is the data?
 
-The data is located in the [Data files folder](https://github.com/AnujDahiya24/FIDE/tree/master/Data%20files).
+The data is located in the `Data files` [folder](https://github.com/AnujDahiya24/FIDE/tree/master/Data%20files).
 
 ---
 # Example data
