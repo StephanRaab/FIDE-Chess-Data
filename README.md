@@ -116,7 +116,7 @@ ID_NUMBER NAME                             TITLE COUNTRY JAN01 GAMES FLAG
 ```
 - The entire 2nd row is missing (Jacob Aagaard's information is missing).
 
-### Some don’t even have column headers to begin with
+### Some don’t even have column headers
 
 ```  
  1701991  Aaberg, Anton                          SWE     2300    0   i   
