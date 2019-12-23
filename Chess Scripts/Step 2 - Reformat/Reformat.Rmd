@@ -14,17 +14,19 @@ The first steps to succesfully reformatting all of the text files in the `Downlo
 
 ```{r, warning=FALSE, message=FALSE}
 library(knitr)
-library(dplyr)
+library(tidyverse)
 library(data.table)
 library(Kmisc)
 library(foreach)
 library(doParallel)
+library(stringi)
+library(lubridate)
 ```
 
 A very quick summary of why each package is used:
 
 - `knitr` is imported to set the working directory for the R-Markdown document.
-- `dplyr` is useful for its `%>%` (pipe) operator.
+- `tidyverse` is useful for its `%>%` (pipe) operator.
 - `data.table` is extremely fast for writing dataframes to stored files.
 - `Kmisc` is used for its `readlines()` which the fast version of R's base function, `readLines()` .
 - `foreach` and `doParallel` are useful for parallel processing exporting data.frames to csv files
@@ -222,14 +224,11 @@ multi_processing <- function(Year_num){
 The final chunk here is divided into a few steps:
 
 - `Year_num` gathers all of the text files into a vector.
-- `unlink()` makes sure to delete all of the `.csv` files in our destination directory.
 - `system.time()` captures how long this process takes. If `multi_processing(Year_num)` does not run, you can run the commented out line below it.
 - The last line prints out example `.csv` files that been created in the destination directory.
 
 ```{r, cache=TRUE}
 Year_num <- list.files(path = path, pattern = "[Ff][Rr][Ll].[Tt][Xx][Tt]")
-
-unlink(list.files(path = destination, pattern = "*.csv"))
 
 system.time(multi_processing(Year_num))
 

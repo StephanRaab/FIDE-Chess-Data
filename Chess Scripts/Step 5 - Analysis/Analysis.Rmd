@@ -120,7 +120,10 @@ else if (i > 1) {string = paste(string, vector_months[i], sep = "|")}
 string = paste(string, "RATING", sep = "|")
 
 # names(FIDE) <- month_num
-  
+
+old = c("c", "wc", "WC", "wg", "WF", "wf", "g", "m", "f", "wm", "gm" )
+new = c("CM", "WCM", "WCM", "WGM", "WFM", "WFM", "GM", "IM", "FM", "WIM", "GM")
+
 #Insert month column
 for(i in 1:length(FIDE)){
   colnames(FIDE[[i]])[grepl("Name|NAME|name", colnames(FIDE[[i]]))] <- "Name"
@@ -138,18 +141,16 @@ for(i in 1:length(FIDE)){
   colnames(FIDE[[i]])[grepl("OTit", colnames(FIDE[[i]]))] <- "Other_Titles"
   FIDE[[i]] <-  FIDE[[i]] %>%
                 mutate(Date = as.POSIXct(names(FIDE)[i], format="%Y-%m-%d"),
-                       Rating = as.numeric(Rating))
+                       Date_numeric = year(Date)+yday(Date)/366,
+                       Rating = as.numeric(Rating),
+                       Title= c(new, Title)[match(Title, c(old, Title))])%>%
+                filter(!Country %in% c("Fed", "Col"))
 }
 
-old = c("c", "wc", "WC", "wg", "WF", "wf", "g", "m", "f", "wm", "gm" )
-new = c("CM", "WCM", "WCM", "WGM", "WFM", "WFM", "GM", "IM", "FM", "WIM", "GM")
 
-FIDE <- rbindlist(FIDE, fill = TRUE)%>%
-        select(-V1, -ID_Number)%>%
-        mutate(Title= c(new, Title)[match(Title, c(old, Title))],
-               Date_numeric = year(Date)+yday(Date)/366)%>%
-        filter(!Country %in% c("Fed", "Col"))
 
+# FIDE <- rbindlist(FIDE, fill = TRUE)%>%
+        # select(-V1, -ID_Number)
 ```
 
 
