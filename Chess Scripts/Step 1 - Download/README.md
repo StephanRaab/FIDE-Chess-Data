@@ -1,6 +1,6 @@
 # Introduction
 
-The first step has us downloading the profile player data (zipped text files) from [FIDE's website](http://ratings.fide.com/download_lists.phtml). Feel free to explore FIDE's website. It seems as if data prior to 2015 is not being displayed anymore. Thankfully, the URLs still host the `.zip` files that we will download.
+The first step has us downloading the profile player data (zipped text files) from [FIDE's website](http://ratings.fide.com/download_lists.phtml). Feel free to explore FIDE's website. It seems as if data prior to 2015 is not being displayed anymore. Thankfully, all of the URLs still host the `.zip` files that we will download and are **not** broken.
 
 If you want to: 
 
@@ -11,8 +11,8 @@ If you want to:
 # Quick Links
 
 - [Data (all text files)](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%201%20-%20Download/Downloaded%20files)
-- [Tutorial](https://github.com/AnujDahiya24/FIDE/blob/master/Chess%20Scripts/Step%201%20-%20Download/Download.pdf)
-- [R-Markdown file](https://github.com/AnujDahiya24/FIDE/blob/master/Chess%20Scripts/Step%201%20-%20Download/Download.Rmd)
+- [Tutorial](https://github.com/AnujDahiya24/FIDE/blob/master/Chess%20Scripts/Step%201%20-%20Download/Download%20Scripts/Download.pdf)
+- [R-Markdown file](https://github.com/AnujDahiya24/FIDE/blob/master/Chess%20Scripts/Step%201%20-%20Download/Download%20Scripts/Download.Rmd)
 
 # Download the FIDE files
 

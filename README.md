@@ -92,7 +92,7 @@ ID NUMBER NAME                             TIT  Fed     JAN   GMs FLAG
 - `GMs` is different from `Games`
 - `JAN` should be `JAN01`
 
-### Some have their columns out line or missing columns labels outright
+### Some have their columns out of line or missing columns labels outright
 
 
 ```
@@ -132,7 +132,7 @@ ID_NUMBER NAME                             TITLE COUNTRY JAN01 GAMES FLAG
 
 ![](https://tygabox.com/wp-content/uploads/2019/04/lifecycle-tbs-colors.jpg)
 
-The process of acquiring the data through visualizing it is divided into 5 steps. Please click each step below for how I made the data usuable.
+The process of acquiring the data through visualizing it is divided into 5 steps. Please click each step below for how I made the data usable.
 
 1. [Download the FIDE files](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%201%20-%20Download)
 
