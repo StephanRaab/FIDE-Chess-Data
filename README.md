@@ -85,8 +85,6 @@ ID NUMBER NAME                             TIT  Fed     JAN   GMs FLAG
  1401815  Aagaard, Jacob                   m    DEN     2374   18       
  1406248  Aage, Bjarke                          DEN     2063    0       
 ```  
-In the example above:
-
 - `ID NUMBER` is not `ID_NUMBER`, which is problematic for various programmatic reasons.
 - `TIT` is different from `TITLE`
 - `FED` is different from `Country`.
@@ -103,9 +101,6 @@ ID_NUMBER   NAME                        TITLE   COUNTRYJAN01        FLAG
  1401815  Aagaard, Jacob                   m     DEN     2374   18       
  1406248  Aage, Bjarke                           DEN     2063    0       
 ```
-
-In the example above:
-
 - `NAME` is out of position
 - `COUNTRY` and `JAN01` are one word instead of being separated into two
 - `GAMES` is missing
@@ -119,8 +114,6 @@ ID_NUMBER NAME                             TITLE COUNTRY JAN01 GAMES FLAG
 
  1406248  Aage, Bjarke                           DEN     2063    0       
 ```
-In the example above:
-
 - The entire 2nd row is missing (Jacob Aagaard's information is missing).
 
 ### Some don’t even have column headers to begin with
@@ -130,8 +123,6 @@ In the example above:
  1401815  Aagaard, Jacob                   m     DEN     2374   18       
  1406248  Aage, Bjarke                           DEN     2063    0       
 ```
-In the example above:
-
 - The column headers aren't even included in the data.
 
 ---
