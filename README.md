@@ -66,7 +66,7 @@ ID_NUMBER NAME                             TITLE COUNTRY JAN01 GAMES FLAG
  1406248  Aage, Bjarke                           DEN     2063    0       
 ```
 
-There are several issues with working with the data, but the most pressing one is that there is no clear delimeter to import the files on. A regular comma delimeter will not work because the text does not contain commas to separate the columns.
+There are several issues with working with the data, but the most pressing one is that there is no clear delimeter to import the files on. A regular comma delimeter will not work because the text does not contain commas to separate the columns. Whitespace and tab delimeters won't work either.
 
 One [github user](https://github.com/xdurana/fider/blob/master/R/zzz.R) has imported FIDE data via fixed widths. This works quite well for **most** of the data and I'll look into reading in the text files faster using this [stackoverflow post's](https://stackoverflow.com/questions/24715894/faster-way-to-read-fixed-width-files) benchmarking results.
 
