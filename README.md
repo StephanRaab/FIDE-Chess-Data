@@ -54,7 +54,10 @@ I chose to work on this project because of several reasons:
 - I wanted to improve my skills in at least 1 or 2 programming languages.
 - I take an interest in any data about chess that has not been extensively analyzed.
 
-For the longest time, I wasn't able to import text files downloaded from [FIDE's data download page](http://ratings.fide.com/download_lists.phtml), into R. A typical `read.csv()` statement will not work because the data has no defined delimeter to parse columns on.  
+
+# Issues
+
+After downloading the files, I wasn't able to import text files downloaded from [FIDE's data download page](http://ratings.fide.com/download_lists.phtml), into R. A typical `read.csv()` statement will not work because the data has no defined delimeter to parse columns on.  
 
 For example, the earliest dataset on FIDE's website is from January 2001. Let's take a moment to look at the first few rows of the raw text file.
 
@@ -71,8 +74,6 @@ There are several issues with working with the data, but the most pressing one i
 One [github user](https://github.com/xdurana/fider/blob/master/R/zzz.R) has imported FIDE data via fixed widths. This works quite well for most, if not all of the data and I'll look into reading in the text files faster using this [stackoverflow post's](https://stackoverflow.com/questions/24715894/faster-way-to-read-fixed-width-files) benchmarking results.
 
 When I first started working on this project, I didn't quite understand it required fixed width functions such as `read_fwf()`. I was new to R and my main motivation was I wanted to learn R and Python in a creative setting.
-
-# Issues
 
 There are several other issues with the rest of the text files (Text files run from January 2001 through December 2019). Just to name a few (shown with table visuals):
 
