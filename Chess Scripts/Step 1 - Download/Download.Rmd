@@ -1,10 +1,9 @@
 ---
 title: "FIDE Chess Download"
 author: "Anuj Dahiya"
-date: "11/16/2019"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
 output:
   pdf_document: default
-  html_document: default
 ---
 
 
@@ -13,17 +12,9 @@ output:
 The purpose of this document is to show how I downloaded all of the standard rating files from the FIDE organizations website.
 
 
-# Set up working directory
-
-Before proceeding, we need to set up a working directory to store all of the downloaded files. Make sure to have an empty folder you can dump the files into. I've created a `Downloaded files` subfolder within the folder of this `.Rmd` document.
-
-```{r}
-knitr::opts_knit$set(root.dir = "~/GitHub/FIDE/Chess Scripts/Step 1 - Download/Downloaded files")
-```
-
 # Import libraries
 
-I don't think any packages are necessary to download any of the files. Still though, I use `knitr` and `dplyr` to display a table of urls that we will download later on.
+I don't think any packages are necessary to download any of the files. Still though, I use `knitr` and `dplyr` to display a table of urls that we will call on to download from later on.
 
 ```{r, message=FALSE, warning=FALSE}
 library(knitr)
@@ -31,18 +22,39 @@ library(dplyr)
 ```
 
 
+# Set up working directory
+
+Before proceeding, we need to set up a working directory to store all of the downloaded files. Make sure to have an empty folder you can dump the files into. I've created a `Downloaded files` subfolder within the folder of this `.Rmd` document.
+
+**IMPORTANT: Please adjust `path` to the path of the folder you want the data to be in.**
+
+If you're not sure how to set your directory, you can choose `path` interactively using `choose.dir()`. If you choose to do so, make sure to comment out the first line and uncomment out the 2nd line.
+
+
+```{r}
+path = "~/GitHub/FIDE/Chess Scripts/Step 1 - Download/Downloaded files"
+#path = choose.dir()
+
+opts_knit$set(root.dir = path)
+```
+
 # FIDE file format
 
 
 R's default is to adjust all numbers, beginning with 0, and truncatte the leading zeros. 
 
-Below is used to grab the most up to date available data (it should be the current month).
-
+Below we setup many useful vectors of strings that will be useful for creating urls that we will download the `.zip` files from.
 
 ```{r}
 year_vector <- as.character(1:as.numeric(substr(Sys.Date(), 3, 4)))
 month_vector <- tolower(substr(month.name, 1, 3))
 url_vector = url_vect_destfile = rep(0, length(month_vector)*length(year_vector))
+
+for(i in 1:length(year_vector)){
+  if(nchar(year_vector[i]) == 1){
+    year_vector[i] = paste("0", year_vector[i], sep = "")
+  }
+}
 
 latest <- format(Sys.Date(), format="%b%Y")
 latest <- paste(tolower(substr(latest, 1, 1)), substr(latest, 2, 3), substr(latest, nchar(latest)-1, nchar(latest)), "frl.zip", sep = "")
@@ -50,15 +62,8 @@ latest <- paste(tolower(substr(latest, 1, 1)), substr(latest, 2, 3), substr(late
 latest
 ```
 
-```{r}
-for(i in 1:length(year_vector)){
-  if(nchar(year_vector[i]) == 1){
-    year_vector[i] = paste("0", year_vector[i], sep = "")
-  }
-}
+`latest` tells us the most recent file FIDE should have hosted on their website.
 
-year_vector
-```
 
 Below, we put it all together using a somewhat ugly for loop, but it accomplishes our job nicely to create the urls we desire. Note that in August 2014 (which explains the `else if` statement at the 140th iteration), FIDE added an extra word, "standard_" to the URLs to be downloaded from. 
 
@@ -77,22 +82,30 @@ for(i in seq_along(year_vector)){
 
 url_vect_destfile <- url_vect_destfile[1:which(url_vect_destfile == latest)]
 url_vector <- url_vector[1:which(url_vect_destfile == latest)]
+
+rm(list=setdiff(ls(), c("url_vector", "url_vect_destfile")))
 ```
 
-
+# URLs and their files
 
 ```{r, echo=FALSE}
 data.frame(URL = url_vector,
-           Destination = url_vect_destfile)%>%
+           File = url_vect_destfile)%>%
 slice(c(1:5, (n()-4):n()))%>% #first/last 5 observations
 kable()
 ```
 
+Above is a trimmed table of URLs and their corallary files. This is what what will be inputted in the `download_all()` function down below.
 
+# Download all chess files silently
+
+I'm fairly sure you can remove the two lines involving `old`, but I'd keep them in case you start to get spammed with messages.
+
+`download_all()` quietly checks each URL we will visit and downloads the file present at each URL. If a file doesn't exist at a URL (many of the early year URLs don't), then the function skips over the error.
+
+**Note:** Download times vary!
 
 ```{r, eval=FALSE}
-rm(list=setdiff(ls(), c("url_vector", "url_vect_destfile")))
-
 download_all <- function(link, dest){
   if (!file.exists(dest)) {
     tryCatch({
@@ -108,7 +121,7 @@ options(warn = old)
 ```
 
 
-# Cleaning 
+# Unzipping and cleaning 
 
 Some brief housecleaning is taken care of below After the step below, you should only have text files in the directory you set at the beginning. All that's done below is unzipping the `.zip` files and deleting the `.zip` files.
 
@@ -118,12 +131,12 @@ invisible(sapply(list.files(pattern = "*.zip"), function(x) unzip(x, exdir = get
 unlink(list.files(pattern = "*.zip"))
 ```
 
-Lastly, we can verify what is in our directory.
 
+Lastly, we can verify what is in our directory.
 
 ```{r}
 list.files(pattern = "*.txt")%>%
 head()
 ```
 
-Onto Step #2 now.
+As we can see, we can see the downloaded and unzipped text files: Success!
