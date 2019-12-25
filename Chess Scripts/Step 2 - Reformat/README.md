@@ -123,7 +123,7 @@ After this function is executed on every one of the `.txt` files, they will beco
 
 # ⌚ Time Length
 
-**Note:** The files take some time to process and modify. It took me about 5 minutes to process all of the files (through December 2019) on my computer, which runs on 8 cores.
+**Note:** The files (through December 2019) take some time to process and modify (5 minutes) on my computer, which runs on 8 cores.
 
 # ❓ Questions?
 
