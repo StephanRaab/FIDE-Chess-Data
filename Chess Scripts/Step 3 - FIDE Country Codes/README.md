@@ -24,6 +24,8 @@ Python was used to scrape the table (BeautifulSoup is extremely useful). You can
 | ALB | Albania |
 | ALG | Algeria |
 
+# 🗄️ Metadata Information
+
 | Code | 3 letter country code |
 |--- | ---|
 | Country | Country name |
