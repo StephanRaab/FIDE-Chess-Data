@@ -35,7 +35,7 @@ From the [FIDE Download Rating List page](http://ratings.fide.com/download.phtml
 | Sex | a FIDE player's sex (Male/Female) |
 | Tit | a FIDE player's title (GM, IM, FM, Women titles, etc.) |
 | OTit | a FIDE player's other title(s) (Arbiters, Organizers, Trainers, etc.) |
-| FOA (Fide Online Arena) | a FIDE player's FOA titles |
+| FOA | a FIDE player's FOA (Fide Online Arena) titles |
 | Rating | a FIDE player's rating |
 | Gms | a FIDE player's # of games played in a month |
 | K | a FIDE player's K-factor |
