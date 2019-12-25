@@ -1,4 +1,4 @@
-# Introduction 
+# 📚 Introduction 
 
 The second step has us modifying all of the text files from FIDE's website. In order to modify all of the files quickly, we will utilize parallel processing: It's a big time saver.
 
@@ -8,13 +8,13 @@ If you want to:
 2. View the process of the data downloading, then see the `Tutorial` below
 3. Run the script yourself, then you should download the `R-Markdown file` below and run it on your local machine.
 
-# Quick Links
+# ⚡ Quick Links
 
 - [Data (all csv files)](https://github.com/AnujDahiya24/FIDE-Chess-Data/tree/master/Chess%20Scripts/Step%202%20-%20Reformat/Data%20csvs)
 - [Tutorial](https://github.com/AnujDahiya24/FIDE-Chess-Data/blob/master/Chess%20Scripts/Step%202%20-%20Reformat/Reformat%20Scripts/Reformat.pdf)
 - [R-Markdown file](https://github.com/AnujDahiya24/FIDE-Chess-Data/blob/master/Chess%20Scripts/Step%202%20-%20Reformat/Reformat%20Scripts/Reformat.Rmd)
 
-# Issues 
+# ⚠️ Issues 
 
 After downloading the files in Step 1, I wasn't able to import text files downloaded from [FIDE's data download page](http://ratings.fide.com/download_lists.phtml), into R. A typical `read.csv()` statement will not work because the data has no defined delimeter to parse columns on.  
 
@@ -85,7 +85,7 @@ ID_NUMBER NAME                             TITLE COUNTRY JAN01 GAMES FLAG
 ```
 - The column headers aren't even included in the data.
 
-# Reformat files
+# 🧹 Reformat files
 
 ![](https://www.howtogeek.com/wp-content/uploads/blogs/files/2008/07/310.png)
 
@@ -111,10 +111,10 @@ multi_processing <- function(Year_num){
 After this function is executed on every one of the `.txt` files, they will become usuable `.csv` files.
 
 
-# Time Length
+# ⌚ Time Length
 
 **Note:** The files take some time to process and modify. It took me about 5 minutes to run on my computer, which runs on 8 cores.
 
-# Questions?
+# ❓ Questions?
 
 Please post inquiries in [Issues](https://github.com/AnujDahiya24/FIDE/issues).
