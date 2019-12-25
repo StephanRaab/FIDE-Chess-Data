@@ -42,9 +42,9 @@ From the [FIDE Download Rating List page](http://ratings.fide.com/download.phtml
 | Birthday | a FIDE player's birth year | 1993 |
 | Flag | a FIDE player's level of activity | Inactive, Active |
 
-** IA - International Arbiter,  FT - FIDE Trainer, NI - National Instructor
+###### ** IA - International Arbiter,  FT - FIDE Trainer, NI - National Instructor
 
-***  Fide Online Arena
+###### ***  Fide Online Arena
 
 ---
 
