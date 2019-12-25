@@ -27,20 +27,20 @@ An example of what the FIDE **Standard** Rating data looks like in December 2019
 
 From the [FIDE Download Rating List page](http://ratings.fide.com/download.phtml), we can understand each column a bit more:
 
-| Column name | Detail |
-| --- | --- |
-| ID_NUMBER | a FIDE player's ID |
-| Name | a FIDE player's name |
-| Fed | a FIDE player's federation (country) |
-| Sex | a FIDE player's sex (Male/Female) |
-| Tit | a FIDE player's title (GM, IM, FM, Women titles, etc.) |
-| OTit | a FIDE player's other title(s) (Arbiters, Organizers, Trainers, etc.) |
-| FOA | a FIDE player's FOA (Fide Online Arena) titles |
-| Rating | a FIDE player's rating |
-| Gms | a FIDE player's # of games played in a month |
-| K | a FIDE player's K-factor |
-| Birthday | a FIDE player's birth year |
-| Flag | a FIDE player's level of activity (Active/Inactive) |
+| Column name | Meaning | Exampl |
+| --- | :--- | --- |
+| ID_NUMBER | a FIDE player's ID | 123456 |
+| Name | a FIDE player's name | Carlsen, Magnus |
+| Fed | a FIDE player's federation | IND |
+| Sex | a FIDE player's sex | Male, Female |
+| Tit | a FIDE player's title | GM, IM, FM, etc. |
+| OTit | a FIDE player's other title(s) | Arbiters, Organizers, Trainers, etc. |
+| FOA | a FIDE player's FOA (Fide Online Arena) titles | AGM, AIM, AFM, etc. |
+| Rating | a FIDE player's rating | 2168 |
+| Gms | # of games played in a month | 46 |
+| K | a FIDE player's K-factor | 40 |
+| Birthday | a FIDE player's birth year | 1993 |
+| Flag | a FIDE player's level of activity | Inactive, Active |
 
 ---
 
