@@ -24,11 +24,11 @@ library(lubridate)
 
 In order to access the data we need to specify the folder we want to access the files from. We do this by defining a path to find them and set the path with `opts_knit$set(root.dir = path)`. In an R-Markdown document, it is required that you set the directory using this function. We can see the files in the directory with `head()`.
 
-We also create a destination path with `dest` for later use so that we can export the files properly. `country_path` is a path to a dataset from which we will clean up the data on.
+We also create a destination path with `dest` for later use so that we can export the files properly. `country_path` is a path to a dataset from which we will reference.
 
 ```{r}
 path = "~/GitHub/FIDE/Chess Scripts/Step 2 - Reformat/Data csvs/"
-country_path = "~/GitHub/FIDE/Chess Scripts/Step 3 - FIDE Country Codes/FIDE_codes.csv"
+country_path = "~/GitHub/FIDE/Chess Scripts/Step 3 - FIDE Country Codes/Country Data/FIDE_codes.csv"
 dest =  "~/GitHub/FIDE/Chess Scripts/Step 4 - Cleaning/Cleaned csvs/"
 opts_knit$set(root.dir = path)
 
@@ -74,9 +74,9 @@ We can see that the datasets correspond to dates on which the is recorded.
 
 # Import all datasets
 
-Below, we import and assign all of the datasets into memory. The only objects we need to hold onto is the data and several folder path references for later on.
+Below, we import and assign all of the datasets into memory. The only objects we need to hold onto is the data and several folder path references for later on. Therefore, we will remove everything unneeded with `rm(list=setdiff(ls())` below.
 
-```{r, message=FALSE, warning=FALSE, eval=FALSE}
+```{r, message=FALSE, warning=FALSE, eval = FALSE}
 for(i in 1:length(full_path)) {
 assign(month_num[i], fread(full_path[i], sep = "*", data.table = FALSE, 
                            strip.white = TRUE, blank.lines.skip = TRUE))
@@ -90,7 +90,7 @@ rm(list=setdiff(ls(), c("FIDE", "path", "temp", "dest", "country_path")))
 
 # Data prep
 
-```{r, eval=FALSE}
+```{r, eval = FALSE}
 vector_months <- c(month.abb, tolower(month.abb),toupper(month.abb))
 string = ""
 for (i in 1:length(vector_months)){
@@ -166,6 +166,8 @@ head()%>%
 select(Name, Country, Rating, Title, Date)%>%
 kable()
 ```
+
+
 
 ```{r}
 list.files(path = dest, pattern = "*.csv")%>%head()
