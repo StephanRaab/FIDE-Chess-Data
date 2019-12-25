@@ -34,15 +34,17 @@ From the [FIDE Download Rating List page](http://ratings.fide.com/download.phtml
 | Fed | a FIDE player's federation | USA |
 | Sex | a FIDE player's sex | Male, Female |
 | Tit | a FIDE player's title | GM, IM, FM, etc. |
-| OTit | a FIDE player's other title(s) | Arbiters, Organizers, Trainers |
-| FOA | a FIDE player's FOA** titles | AGM, AIM, AFM, etc. |
+| OTit | a FIDE player's other title(s)** | IA, FT, NI, etc.|
+| FOA | a FIDE player's FOA*** titles | AGM, AIM, AFM, etc. |
 | Rating | a FIDE player's rating | 2168 |
 | Gms | # of games played in a month | 46 |
 | K | a FIDE player's K-factor | 40 |
 | Birthday | a FIDE player's birth year | 1993 |
 | Flag | a FIDE player's level of activity | Inactive, Active |
 
- **  Fide Online Arena (Arena titles)
+** IA - International Arbiter,  FT - FIDE Trainer, NI - National Instructor
+
+***  Fide Online Arena
 
 ---
 
