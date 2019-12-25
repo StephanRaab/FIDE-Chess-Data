@@ -1,7 +1,7 @@
 ---
 title: "Reformat"
 author: "Anuj Dahiya"
-date: "12/11/2019"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
 output: pdf_document
 ---
 
@@ -227,6 +227,7 @@ The final chunk here is divided into a few steps:
 - `system.time()` captures how long this process takes. If `multi_processing(Year_num)` does not run, you can run the commented out line below it.
 - The last line prints out example `.csv` files that been created in the destination directory.
 
+
 ```{r, cache=TRUE}
 Year_num <- list.files(path = path, pattern = "[Ff][Rr][Ll].[Tt][Xx][Tt]")
 
@@ -237,6 +238,7 @@ system.time(multi_processing(Year_num))
 
 head(list.files(path = destination, pattern = "*.csv"))
 ```
+
 
 We can see the `.csv` files have been created, as a result.
 

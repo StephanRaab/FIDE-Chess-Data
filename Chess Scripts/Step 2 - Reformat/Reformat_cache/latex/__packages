@@ -1,8 +1,0 @@
-base
-knitr
-dplyr
-data.table
-Kmisc
-foreach
-iterators
-doParallel
