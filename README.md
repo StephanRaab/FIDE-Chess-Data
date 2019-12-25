@@ -40,7 +40,7 @@ From the [FIDE Download Rating List page](http://ratings.fide.com/download.phtml
 | Gms | # of games played in a month | 46 |
 | K | a FIDE player's K-factor | 40 |
 | Birthday | a FIDE player's birth year | 1993 |
-| Flag | a FIDE player's level of activity | i, wi, "" |
+| Flag | a FIDE player's level of activity | i, wi |
 
 ###### ** IA - International Arbiter,  FT - FIDE Trainer, NI - National Instructor
 ###### *** Fide Online Arena
