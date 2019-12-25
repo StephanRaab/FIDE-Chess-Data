@@ -50,7 +50,7 @@ From the [FIDE Download Rating List page](http://ratings.fide.com/download.phtml
 
 I chose to work on this project because of several reasons:
 
-- Chess players like to see visuals of themselves, their competitors & friends, top players and populations .
+- Chess players like to see visuals of themselves, friends, competitors, top players and across demographics.
 - I wanted to improve my skills in at least 1 or 2 programming languages.
 - I take an interest in any data about chess that has not been extensively analyzed.
 
