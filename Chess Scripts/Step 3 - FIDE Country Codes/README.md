@@ -12,7 +12,7 @@ If you want to:
 - [Country Data](https://github.com/AnujDahiya24/FIDE-Chess-Data/blob/master/Chess%20Scripts/Step%203%20-%20FIDE%20Country%20Codes/Country%20Data/FIDE_codes.csv)
 - [Tutorial](https://github.com/AnujDahiya24/FIDE-Chess-Data/blob/master/Chess%20Scripts/Step%203%20-%20FIDE%20Country%20Codes/Country%20Scripts/FIDE%20country%20codes.ipynb)
 
-# 🔄 Country Table
+# 🗺️ Country Table
 
 ![](https://geology.com/world/world-map-360.gif)
 
