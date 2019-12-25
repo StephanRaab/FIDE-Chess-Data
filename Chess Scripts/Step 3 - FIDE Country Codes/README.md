@@ -5,7 +5,7 @@ The thirds step has us scraping a table of FIDE Country Codes from this [URL](ht
 If you want to: 
 
 1. View the table, see the `Country Data` hyperlink below.
-2. View/Run the scraping `Tutorial` below and.
+2. View/Run the program, see the scraping `Tutorial` below.
 
 # ⚡ Quick Links
 
