@@ -1,15 +1,15 @@
-# Introduction
+# 📚 Introduction
 
 ![FIDE](https://images.hamodia.com/hamod-uploads/2017/11/27160118/download.jpg) ![calendar](https://print-a-calendar.com/printable-calendars/one-page-year-thumbnail.png)
 
 This repository is to help all chess players utilize and work with [public chess profile data](http://ratings.fide.com/download_lists.phtml) provided by the `FIDE` organization (through December 2019). Most of the work done, in this repository, is done through R and a bit of Python.
 
-# Where is the data?
+# 🗺️ Where is the data?
 
 The data is located in the `Data files` [folder](https://github.com/AnujDahiya24/FIDE/tree/master/Data%20files).
 
 ---
-# Example data
+# 📊 Example data
 
 An example of what the FIDE **Standard** Rating data looks like in December 2019:  
 
@@ -23,7 +23,7 @@ An example of what the FIDE **Standard** Rating data looks like in December 2019
 
 ---
 
-# Metadata information
+# 🗄️ Metadata information
 
 From the [FIDE Download Rating List page](http://ratings.fide.com/download.phtml), we can understand each column a bit more:
 
@@ -44,7 +44,7 @@ From the [FIDE Download Rating List page](http://ratings.fide.com/download.phtml
 
 ---
 
-# Why did I do this?
+# ♟️ Why did I do this?
 
 ![](https://imgflip.com/s/meme/Futurama-Fry.jpg)
 
@@ -56,7 +56,7 @@ I chose to work on this project because of several reasons:
 
 ---
 
-# Lifecycle of data
+# 🧬 Lifecycle of data
 
 ![](https://tygabox.com/wp-content/uploads/2019/04/lifecycle-tbs-colors.jpg)
 
@@ -76,6 +76,6 @@ The process of acquiring the data through visualizing it is divided into 6 steps
 
 ---
 
-# Questions?
+# ❓ Questions?
 
 Please post inquiries about the data in [Issues](https://github.com/AnujDahiya24/FIDE/issues).
