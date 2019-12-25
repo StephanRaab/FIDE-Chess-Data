@@ -1,6 +1,6 @@
 # 📚 Introduction 
 
-The thirds step has us scraping a table of FIDE Country Codes from this [URL](https://www.olimpbase.org/help/help41.html). This is a handy table to convert the `Country` column values over to more interpretable values.
+The thirds step has us scraping a table of FIDE Country Codes from this [URL](https://www.olimpbase.org/help/help41.html). This is a handy table to convert the `Country` column values over to more interpretable values in Step 4.
 
 If you want to: 
 
