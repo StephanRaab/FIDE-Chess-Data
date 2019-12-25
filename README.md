@@ -132,7 +132,7 @@ ID_NUMBER NAME                             TITLE COUNTRY JAN01 GAMES FLAG
 
 ![](https://tygabox.com/wp-content/uploads/2019/04/lifecycle-tbs-colors.jpg)
 
-The process of acquiring the data through visualizing it is divided into 5 steps. Please click each step below for how I made the data usable.
+The process of acquiring the data through visualizing it is divided into 6 steps. Please click each step below for how I made the data usable.
 
 1. [Download the FIDE files](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%201%20-%20Download)
 
@@ -140,9 +140,11 @@ The process of acquiring the data through visualizing it is divided into 5 steps
 
 3. [Scrape country code data (Optional)](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%203%20-%20FIDE%20Country%20Codes)
  
-4. [Visualize the data](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%204%20-%20Analysis)
+4. [Cleaning the data](https://github.com/AnujDahiya24/FIDE-Chess-Data/tree/master/Chess%20Scripts/Step%204%20-%20Cleaning)
 
-5. [To Dos & Experimental work](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%205%20-%20Experimental%20work)
+5. [Visualize the data](https://github.com/AnujDahiya24/FIDE-Chess-Data/tree/master/Chess%20Scripts/Step%205%20-%20Analysis)
+
+6. [To Dos & Experimental work](https://github.com/AnujDahiya24/FIDE-Chess-Data/tree/master/Chess%20Scripts/Step%206%20-%20Experimental%20work)
 
 ---
 
