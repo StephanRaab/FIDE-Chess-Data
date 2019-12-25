@@ -46,7 +46,7 @@ From the [FIDE Download Rating List page](http://ratings.fide.com/download.phtml
 
 # ♟️ Why did I do this?
 
-![](https://imgflip.com/s/meme/Futurama-Fry.jpg)
+<!--- j![](https://imgflip.com/s/meme/Futurama-Fry.jpg) ---> 
 
 I chose to work on this project because of several reasons:
 
@@ -58,7 +58,7 @@ I chose to work on this project because of several reasons:
 
 # 🧬 Lifecycle of data
 
-![](https://tygabox.com/wp-content/uploads/2019/04/lifecycle-tbs-colors.jpg)
+<!--- ![](https://tygabox.com/wp-content/uploads/2019/04/lifecycle-tbs-colors.jpg) ---> 
 
 The process of acquiring the data through visualizing it is divided into 6 steps. Please click each step below for how I made the data usable.
 
