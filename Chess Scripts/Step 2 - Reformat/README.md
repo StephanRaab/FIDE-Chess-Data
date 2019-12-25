@@ -98,7 +98,7 @@ ID_NUMBER*NAME                            *TITLE*COUNTRY*JAN01*GAMES*FLAG
  1401815 *Aagaard, Jacob                  *m    *DEN    *2374 * 18  *    
  1406248 *Aage, Bjarke                    *     *DEN    *2063 *  0  *    
 ```
-where we can clearly see `*` delmiters have been inserted. 
+where we can clearly see `*` delmiters have been inserted at indexes where a whitespace occured and was one index before another character.
 
 The `multi_processing()` function below is the general wrapper that weaves everything together (importing, inserting delimeters, export reformatted data to `.csv` format.
 
