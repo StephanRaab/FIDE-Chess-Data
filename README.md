@@ -27,7 +27,7 @@ An example of what the FIDE **Standard** Rating data looks like in December 2019
 
 From the [FIDE Download Rating List page](http://ratings.fide.com/download.phtml), we can understand each column a bit more:
 
-| Column name | Meaning | Exampl |
+| Column name | Meaning | Example |
 | --- | :--- | --- |
 | ID_NUMBER | a FIDE player's ID | 123456 |
 | Name | a FIDE player's name | Carlsen, Magnus |
@@ -43,8 +43,7 @@ From the [FIDE Download Rating List page](http://ratings.fide.com/download.phtml
 | Flag | a FIDE player's level of activity | Inactive, Active |
 
 ###### ** IA - International Arbiter,  FT - FIDE Trainer, NI - National Instructor
-
-###### ***  Fide Online Arena
+###### *** Fide Online Arena
 
 ---
 
