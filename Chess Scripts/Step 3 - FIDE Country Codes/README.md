@@ -1,6 +1,6 @@
 # 📚 Introduction 
 
-The thirds step has us scraping a table of FIDE Country Codes from this [URL](https://www.olimpbase.org/help/help41.html). This is a handy table to convert the `Country` column values over to more interpretable values in Step 4.
+The thirds step has us scraping a table of FIDE Country Codes from this [URL](https://www.olimpbase.org/help/help41.html). This is a handy table to convert the `Country` column values over to more interpretable values in Step 4. In hindsight, I could have saved myself some time by looking at this [link](http://www.enpassant.dk/chess/palview/p3manual/p3flags.htm) within the URL I linked above.
 
 If you want to: 
 
@@ -23,6 +23,11 @@ Python was used to scrape the table (BeautifulSoup is extremely useful). You can
 | AFG | Afghanistan |
 | ALB | Albania |
 | ALG | Algeria |
+
+| Code | 3 letter country code |
+|--- | ---|
+| Country | Country name |
+
 
 # ⌚ Time Length
 
