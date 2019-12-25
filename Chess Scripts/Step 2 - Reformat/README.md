@@ -89,9 +89,19 @@ ID_NUMBER NAME                             TITLE COUNTRY JAN01 GAMES FLAG
 
 ![](https://www.howtogeek.com/wp-content/uploads/blogs/files/2008/07/310.png)
 
-As a result, our next step is to work through each file and transform them into a usable format. 
+As a result, our next step is to work through each file and transform them into a usable format. The approach I took was to insert delimeters at each index (based on the column line) where a space followed by a character occured. For example, the data, after inserting `*` delimeters, would look something like this:
 
-The `multi_processing()` function below is the general wrapper that weaves everything together and cleans each file.
+```
+ID_NUMBER*NAME                            *TITLE*COUNTRY*JAN01*GAMES*FLAG
+  
+ 1701991 *Aaberg, Anton                   *     *SWE    *2300 *  0  *i   
+ 1401815 *Aagaard, Jacob                  *m    *DEN    *2374 * 18  *    
+ 1406248 *Aage, Bjarke                    *     *DEN    *2063 *  0  *    
+```
+where we can clearly see `*` delmiters have been inserted. 
+
+The `multi_processing()` function below is the general wrapper that weaves everything together (importing, inserting delimeters, export reformatted data to `.csv` format.
+
 ```
 #run All_files_fwrite() in parallel 
 
@@ -113,7 +123,7 @@ After this function is executed on every one of the `.txt` files, they will beco
 
 # ⌚ Time Length
 
-**Note:** The files take some time to process and modify. It took me about 5 minutes to run on my computer, which runs on 8 cores.
+**Note:** The files take some time to process and modify. It took me about 5 minutes to process all of the files (through December 2019) on my computer, which runs on 8 cores.
 
 # ❓ Questions?
 
