@@ -2,8 +2,7 @@
 title: "Analysis"
 output:
   pdf_document: default
-  word_document: default
-date: "11/18/2019"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
 ---
 
 
@@ -24,6 +23,7 @@ library(stringi)
 library(cowplot)
 library(gganimate)
 library(lubridate)
+library(knitr)
 ```
 
 `tidyverse` imports dplyr, tidyr and several other useful packages for data wrangling and manipulation.
@@ -37,14 +37,10 @@ The data is stored in a path we have to manipulate to get to.
 
 
 ```{r, echo=FALSE}
-path = "~/GitHub/FIDE/Chess Scripts/Step 2 - Reformat/Data csvs/"
-
-knitr::opts_knit$set(root.dir = path)
-
-temp = list.files(path = path, 
-                  pattern = "\\.csv?")
-
-head(temp)
+path = "~/GitHub/FIDE/Chess Scripts/Step 4 - Cleaning/Cleaned csvs/"
+opts_knit$set(root.dir = path)
+temp = list.files(path = path, pattern = "*.csv")
+proper_temp <- paste(path, temp, sep = "")
 ```
 
 # Create functions to rename datasets
@@ -77,81 +73,23 @@ We can see that the datasets correspond to dates on which the is recorded.
 
 Due to the data being quite large, your RAM may be used heavily. 
 
+I'll look to investigate if parallelizing `rbindlist()` is possible at some point. Please bear with the computation time.
 
 ```{r, echo=FALSE}
-proper_temp <- paste(path, temp, sep = "")
-
 
 for(i in 1:length(proper_temp)) {
 assign(month_num[i], fread(proper_temp[i], sep = "*", data.table = FALSE, 
                            strip.white = TRUE, blank.lines.skip = TRUE))
 }
 
+#statement below takes a very long time to run because of rbindlist()
+FIDE <- mget(ls(pattern = "[0-9][0-9]-[0-9][0-9]"))%>%
+        rbindlist(fill = TRUE)
+        
+rm(list=setdiff(ls(), c("FIDE")))
+
 ```
 
-
-```{r, include=FALSE, echo=FALSE}
-
-# cl<-makeCluster(detectCores()) 
-# registerDoParallel(cl)
-# temp_short = proper_temp[1:5]
-# FIDE<-foreach(i=proper_temp, .export = "fread") %dopar% {
-# t <- fread(i, sep = "*", data.table = FALSE, strip.white = TRUE, 
-# blank.lines.skip = TRUE)
-#                                                                  }
-# stopCluster(cl)
-```
-
-
-```{r, warning=FALSE, message=FALSE, results="hide", echo=FALSE}
-
-
-#Put datasets in list
-FIDE <- mget(ls(pattern = "[0-9][0-9]-[0-9][0-9]"))
-rm(list=setdiff(ls(), c("FIDE", "ptm")))
-
-#Help rename columns in the data
-vector_months <- c(month.abb, tolower(month.abb),toupper(month.abb))
-string = ""
-for (i in 1:length(vector_months)){
-if (i == 1){string = vector_months[i]}
-else if (i > 1) {string = paste(string, vector_months[i], sep = "|")}
-}
-string = paste(string, "RATING", sep = "|")
-
-# names(FIDE) <- month_num
-
-old = c("c", "wc", "WC", "wg", "WF", "wf", "g", "m", "f", "wm", "gm" )
-new = c("CM", "WCM", "WCM", "WGM", "WFM", "WFM", "GM", "IM", "FM", "WIM", "GM")
-
-#Insert month column
-for(i in 1:length(FIDE)){
-  colnames(FIDE[[i]])[grepl("Name|NAME|name", colnames(FIDE[[i]]))] <- "Name"
-  colnames(FIDE[[i]])[grepl("NUMBER", colnames(FIDE[[i]]))] <- "ID_Number"
-  colnames(FIDE[[i]])[grepl("Fed|FED|COUNTRY", colnames(FIDE[[i]]))] <- "Country"
-  colnames(FIDE[[i]])[grepl("Gms|GAMES|GM|Game|GAME", colnames(FIDE[[i]]))] <- "Games"
-  colnames(FIDE[[i]])[grepl("K", colnames(FIDE[[i]]))] <- "K_factor"
-  colnames(FIDE[[i]])[grepl("FLAG|Flag|flag", colnames(FIDE[[i]]))] <- "Activity"
-  colnames(FIDE[[i]])[colnames(FIDE[[i]]) %in% c("Wtit","wtit","WTIT", "WTit")] <- "Womens_Title"
-  colnames(FIDE[[i]])[colnames(FIDE[[i]]) %in% c("TITLE","Title","title","Tit")] <- "Title"
-  colnames(FIDE[[i]])[grepl(string, colnames(FIDE[[i]]))] <- "Rating"
-  colnames(FIDE[[i]])[grepl("Born|Age|age|BIRTHDAY|B-day|Bday", colnames(FIDE[[i]]))] <- "Age_Birthday"
-  colnames(FIDE[[i]])[grepl("SEX", colnames(FIDE[[i]]))] <- "Sex"
-  colnames(FIDE[[i]])[grepl("FOA", colnames(FIDE[[i]]))] <- "FIDE_Online_Arena"
-  colnames(FIDE[[i]])[grepl("OTit", colnames(FIDE[[i]]))] <- "Other_Titles"
-  FIDE[[i]] <-  FIDE[[i]] %>%
-                mutate(Date = as.POSIXct(names(FIDE)[i], format="%Y-%m-%d"),
-                       Date_numeric = year(Date)+yday(Date)/366,
-                       Rating = as.numeric(Rating),
-                       Title= c(new, Title)[match(Title, c(old, Title))])%>%
-                filter(!Country %in% c("Fed", "Col"))
-}
-
-
-
-# FIDE <- rbindlist(FIDE, fill = TRUE)%>%
-        # select(-V1, -ID_Number)
-```
 
 
 #write dataframe to folder
@@ -165,13 +103,33 @@ Now that we have the data in a more clean, usable format, it's time we analyzed 
 
 
 
-```{r, echo=FALSE}
+# Set up basic filters 
 
-Strange <- FIDE%>%
-           filter(!Title %in% c(new, ""))
-
+```{r}
+Titles = c("CM", "WCM",  "WGM", "WFM", "IM", "FM", "WIM", "GM", "")
+Titles_only = c("CM", "WCM",  "WGM", "WFM", "IM", "FM", "WIM", "GM")
 Active = c("", "w")
+Inactive = c("i", "wi")
+```
 
+# Irregular values by year
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE, cache=TRUE}
+FIDE%>%
+filter(!Title %in% Titles | !Activity %in% c(Active, Inactive))%>%
+group_by(Date_numeric)%>%
+tally()%>%
+arrange(-n)%>%
+head(10)%>%
+kable()
+```
+
+
+I'll look to address many of the values in the early datasets eventually. For now though, over 99.9% of the data is interpretable. 
+
+# Player counts by Activity
+
+```{r}
 Active_player <- FIDE%>%
                  filter(Activity %in% Active)%>%
                  group_by(Date)%>%
@@ -182,24 +140,28 @@ Active_player <- FIDE%>%
 
 
 Inactive_player <- FIDE%>%
-                   filter(!Activity %in% Active)%>%
+                   filter(Activity %in% Inactive)%>%
                    group_by(Date)%>%
                    summarise(total_count = n(),
                              avg_rating = mean(Rating, na.rm = T),
-                             sd_rating = sd(Rating, na.rm = T))
+                             sd_rating = sd(Rating, na.rm = T))%>%
+                   mutate(gain_loss = c(NA, diff(total_count)))
 
 All_players <- FIDE%>%
+               filter(Activity %in% c(Active, Inactive))%>%
                group_by(Date)%>%
                summarise(total_count = n(),
                avg_rating = mean(Rating, na.rm = T),
                sd_rating = sd(Rating, na.rm = T))%>%
                mutate(gain_loss = c(NA, diff(total_count)))
+```
 
+
+```{r}
 All_countries <- FIDE%>%
                  filter(Activity %in% Active)%>%
                  group_by(Date, Country)%>%
                  summarise(total_count = n())
-
 ```
 
 
@@ -281,24 +243,6 @@ plot_grid(p5, p6, p7, p8, labels = c("A", "B", "C", "D"))
 
 
 ```{r, echo=FALSE}
-codes <- fread("~/GitHub/FIDE/Chess Scripts/FIDE Country Codes/FIDE_codes.csv", 
-               sep =  ",", header = TRUE)
-
-
-country_codes <- c("BDI", "BHU", "BUR", "CAF", "CAM", "CGO", "CIV", "CMR", "COD", 
-                   "CPV", "CUR", "DJI", "ERI", "FID", "FIE", "GAB", "GUM", "Ind", 
-                   "IVC", "KOR", "KOS", "KSA", "LAO", "LBN", "LBR", "LCA", "LES", 
-                   "MDV", "MTN", "NET", "NRU", "OMA", "PLW", "ROU", "SCG", "SGP", 
-                   "SLE", "SOL", "SSD", "STP", "SWZ", "TLS", "TPE", "TTO") 
-
-countries <- c("Berundi", "Bhutan", "Burkina Faso", "Central African Republic", "Cambodia", 
-               "Republic of the Congo", "Cote d'Ivoire", "Cameroon", "Democratic Congo", 
-               "Cape Verde", "Curaçao", "Djibouti", "Eritrea", "Finland", "FIE", "Gabon", 
-               "Guam", "India", "Côte d'Ivoire", "South Korea", "Kosovo", "Saudi Arabia", 
-               "Laos", "Lebanon", "Liberia", "Saint Lucia", "Lesotho", "Maldives", "Mauritania", 
-               "NET", "Nauru", "Oman", "Palau", "Romania", "Serbia and Montenegro", "Singapore", 
-               "Sierra Leonne", "Solomon Islands", "South Sudan", "Sao Tome and Principe", "Swaziland", 
-               "East Timor (Timor-Leste)	", "Taiwan", "Trinidad and Tobago") 
 
 Country_diff <- All_countries%>%
                 arrange(Country, Date)%>%
@@ -560,4 +504,64 @@ ggplot(aes(x= Country, y= average_rating))+
 # geom_histogram(aes(y = ..density..), bins = 50, col= "red")+ 
 # labs(title="Histogram overlayed with Density curve") +
 # labs(x="Rating", y="Percentage of players in population")
+```
+
+
+
+```{r, warning=FALSE, message=FALSE, results="hide", echo=FALSE}
+
+# cl<-makeCluster(detectCores()) 
+# registerDoParallel(cl)
+# temp_short = proper_temp[1:5]
+# FIDE<-foreach(i=proper_temp, .export = "fread") %dopar% {
+# t <- fread(i, sep = "*", data.table = FALSE, strip.white = TRUE, 
+# blank.lines.skip = TRUE)
+#                                                                  }
+# stopCluster(cl)
+
+#Put datasets in list
+# FIDE <- mget(ls(pattern = "[0-9][0-9]-[0-9][0-9]"))
+# rm(list=setdiff(ls(), c("FIDE", "ptm")))
+
+# #Help rename columns in the data
+# vector_months <- c(month.abb, tolower(month.abb),toupper(month.abb))
+# string = ""
+# for (i in 1:length(vector_months)){
+# if (i == 1){string = vector_months[i]}
+# else if (i > 1) {string = paste(string, vector_months[i], sep = "|")}
+# }
+# string = paste(string, "RATING", sep = "|")
+
+# names(FIDE) <- month_num
+# 
+# old = c("c", "wc", "WC", "wg", "WF", "wf", "g", "m", "f", "wm", "gm" )
+# new = c("CM", "WCM", "WCM", "WGM", "WFM", "WFM", "GM", "IM", "FM", "WIM", "GM")
+# 
+# #Insert month column
+# for(i in 1:length(FIDE)){
+#   colnames(FIDE[[i]])[grepl("Name|NAME|name", colnames(FIDE[[i]]))] <- "Name"
+#   colnames(FIDE[[i]])[grepl("NUMBER", colnames(FIDE[[i]]))] <- "ID_Number"
+#   colnames(FIDE[[i]])[grepl("Fed|FED|COUNTRY", colnames(FIDE[[i]]))] <- "Country"
+#   colnames(FIDE[[i]])[grepl("Gms|GAMES|GM|Game|GAME", colnames(FIDE[[i]]))] <- "Games"
+#   colnames(FIDE[[i]])[grepl("K", colnames(FIDE[[i]]))] <- "K_factor"
+#   colnames(FIDE[[i]])[grepl("FLAG|Flag|flag", colnames(FIDE[[i]]))] <- "Activity"
+#   colnames(FIDE[[i]])[colnames(FIDE[[i]]) %in% c("Wtit","wtit","WTIT", "WTit")] <- "Womens_Title"
+#   colnames(FIDE[[i]])[colnames(FIDE[[i]]) %in% c("TITLE","Title","title","Tit")] <- "Title"
+#   colnames(FIDE[[i]])[grepl(string, colnames(FIDE[[i]]))] <- "Rating"
+#   colnames(FIDE[[i]])[grepl("Born|Age|age|BIRTHDAY|B-day|Bday", colnames(FIDE[[i]]))] <- "Age_Birthday"
+#   colnames(FIDE[[i]])[grepl("SEX", colnames(FIDE[[i]]))] <- "Sex"
+#   colnames(FIDE[[i]])[grepl("FOA", colnames(FIDE[[i]]))] <- "FIDE_Online_Arena"
+#   colnames(FIDE[[i]])[grepl("OTit", colnames(FIDE[[i]]))] <- "Other_Titles"
+#   FIDE[[i]] <-  FIDE[[i]] %>%
+#                 mutate(Date = as.POSIXct(names(FIDE)[i], format="%Y-%m-%d"),
+#                        Date_numeric = year(Date)+yday(Date)/366,
+#                        Rating = as.numeric(Rating),
+#                        Title= c(new, Title)[match(Title, c(old, Title))])%>%
+#                 filter(!Country %in% c("Fed", "Col"))
+# }
+
+
+
+# FIDE <- rbindlist(FIDE, fill = TRUE)%>%
+        # select(-V1, -ID_Number)
 ```
