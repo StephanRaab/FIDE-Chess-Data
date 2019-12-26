@@ -14,7 +14,7 @@ If you want to:
 
 ---
 
-# Cleaning files
+# 🧹 Cleaning files
 
 ![](https://miro.medium.com/max/500/1*yWFQiGjlgHUVYeh4ELELyw.jpeg)
 
