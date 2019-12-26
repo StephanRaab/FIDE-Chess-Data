@@ -2,7 +2,7 @@
 
 ![FIDE](https://images.hamodia.com/hamod-uploads/2017/11/27160118/download.jpg) ![calendar](https://print-a-calendar.com/printable-calendars/one-page-year-thumbnail.png)
 
-This repository is to help all chess players utilize and work with [public chess profile data](http://ratings.fide.com/download_lists.phtml) provided by the `FIDE` organization (through December 2019). Most of the work done, in this repository, is done through R and a bit of Python.
+This repository is to help all chess players utilize and work with [public chess profile data](http://ratings.fide.com/download_lists.phtml) provided by the `FIDE` organization (through December 2019). The work in this repository is done through R and Python.
 
 # 🗺️ Where is the data?
 
@@ -27,20 +27,23 @@ An example of what the FIDE **Standard** Rating data looks like in December 2019
 
 From the [FIDE Download Rating List page](http://ratings.fide.com/download.phtml), we can understand each column a bit more:
 
-| Column name | Detail |
-| --- | --- |
-| ID_NUMBER | a FIDE player's ID |
-| Name | a FIDE player's name |
-| Fed | a FIDE player's federation (country) |
-| Sex | a FIDE player's sex (Male/Female) |
-| Tit | a FIDE player's title (GM, IM, FM, Women titles, etc.) |
-| OTit | a FIDE player's other title(s) (Arbiters, Organizers, Trainers, etc.) |
-| FOA (Fide Online Arena) | a FIDE player's FOA titles |
-| Rating | a FIDE player's rating |
-| Gms | a FIDE player's # of games played in a month |
-| K | a FIDE player's K-factor |
-| Birthday | a FIDE player's birth year |
-| Flag | a FIDE player's level of activity (Active/Inactive) |
+| Column name | Meaning | Example |
+| --- | :--- | --- |
+| ID_NUMBER | a FIDE player's ID | 123456 |
+| Name | a FIDE player's name | Carlsen, Magnus |
+| Fed | a FIDE player's federation | USA |
+| Sex | a FIDE player's sex | M, F |
+| Tit | a FIDE player's title | GM, IM, FM, etc. |
+| OTit | a FIDE player's other title(s)** | IA, FT, NI, etc.|
+| FOA | a FIDE player's FOA*** titles | AGM, AIM, AFM, etc. |
+| Rating | a FIDE player's rating | 2168 |
+| Gms | # of games played in a month | 46 |
+| K | a FIDE player's K-factor | 40 |
+| Birthday | a FIDE player's birth year | 1993 |
+| Flag | a FIDE player's level of activity | i, wi |
+
+###### ** IA - International Arbiter,  FT - FIDE Trainer, NI - National Instructor
+###### *** Fide Online Arena
 
 ---
 
@@ -50,9 +53,13 @@ From the [FIDE Download Rating List page](http://ratings.fide.com/download.phtml
 
 I chose to work on this project because of several reasons:
 
-- Chess players like to see visuals of themselves, friends, competitors, top players and players across various demographics.
+- FIDE's publically available data is in an unorganized layout. There is no **Download** all button to acquire all of their data. FIDE also doesn't publically list data prior to February 2015 when there is data running back going back as early as 2001.  People may find FIDE's website frusterating to work with, as a result and I wanted to alleviate any pain site viewers had.
+
+- Chess players like to see visuals of themselves, friends, competitors, top players and players across various demographics. I wanted to provide these visuals.
+
 - I wanted to improve my skills in at least 1 or 2 programming languages.
-- I take an interest in any data about chess that has not been extensively analyzed.
+
+- I've always taken an interest in any data about chess that has not been extensively analyzed. My curiosity drives me.
 
 ---
 
