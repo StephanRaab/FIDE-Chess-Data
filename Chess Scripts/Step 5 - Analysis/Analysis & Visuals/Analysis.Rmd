@@ -24,6 +24,7 @@ library(cowplot)
 library(gganimate)
 library(lubridate)
 library(knitr)
+require(scales)
 ```
 
 `tidyverse` imports dplyr, tidyr and several other useful packages for data wrangling and manipulation.
@@ -132,7 +133,7 @@ I'll look to address many of the values in the early datasets eventually. For no
 ```{r}
 Active_player <- FIDE%>%
                  filter(Activity %in% Active)%>%
-                 group_by(Date)%>%
+                 group_by(Date_numeric)%>%
                  summarise(total_count = n(),
                            avg_rating = mean(Rating, na.rm = T),
                            sd_rating = sd(Rating, na.rm = T))%>%
@@ -141,7 +142,7 @@ Active_player <- FIDE%>%
 
 Inactive_player <- FIDE%>%
                    filter(Activity %in% Inactive)%>%
-                   group_by(Date)%>%
+                   group_by(Date_numeric)%>%
                    summarise(total_count = n(),
                              avg_rating = mean(Rating, na.rm = T),
                              sd_rating = sd(Rating, na.rm = T))%>%
@@ -149,7 +150,7 @@ Inactive_player <- FIDE%>%
 
 All_players <- FIDE%>%
                filter(Activity %in% c(Active, Inactive))%>%
-               group_by(Date)%>%
+               group_by(Date_numeric)%>%
                summarise(total_count = n(),
                avg_rating = mean(Rating, na.rm = T),
                sd_rating = sd(Rating, na.rm = T))%>%
@@ -157,30 +158,27 @@ All_players <- FIDE%>%
 ```
 
 
-```{r}
-All_countries <- FIDE%>%
-                 filter(Activity %in% Active)%>%
-                 group_by(Date, Country)%>%
-                 summarise(total_count = n())
-```
-
 
 ```{r, warning=FALSE, message=FALSE, echo=FALSE, cache=TRUE}
-ggplot(data = All_players, aes(x = Date, y = total_count)) + 
-  geom_line(color = "#FC4E07", size = 2)+
+ggplot(data = All_players, aes(x = Date_numeric, y = total_count)) + 
+  geom_line(color = "#FC4E07", size = 1)+
   xlab("Year")+
   ylab("# of players")+
-  theme_bw()  -> p1
+  theme_bw()+
+  scale_y_continuous(labels = comma)-> p1
 
-ggplot(data = All_players, aes(x = Date, y = gain_loss)) + 
+
+
+ggplot(data = All_players, aes(x = Date_numeric, y = gain_loss)) + 
   geom_line(color = "#FC4E07", size = 1)+
   xlab("Year")+
   ylab("# of gained/lost")+
   geom_line(aes(y = 0))+
-  theme_bw() -> p2
+  theme_bw()+
+  scale_y_continuous(labels = comma) -> p2
 
-ggplot(data = Active_player, aes(x = Date, y = total_count)) + 
-  geom_line(color = "#FC4E07", size = 2)+
+ggplot(data = Active_player, aes(x = Date_numeric, y = total_count)) + 
+  geom_line(color = "#FC4E07", size = 1)+
   xlab("Year")+
   ylab("# of actives")+
   # geom_segment(aes(x=as.Date("2004-06-01"), xend=as.Date("2008-06-01"), y=120000, yend=70000), 
@@ -189,10 +187,11 @@ ggplot(data = Active_player, aes(x = Date, y = total_count)) +
   #              arrow = arrow(length = unit(.5, "cm")), size = 2)+ 
   # annotate("text", x = as.Date("2006-06-01"), y = 130000, 
   #          label = "Economic crash of 2008 (the larger chasm)", size = 5)+
-  theme_bw() -> p3
+  theme_bw()+
+  scale_y_continuous(labels = comma) -> p3
 
-ggplot(data = Inactive_player, aes(x = Date, y = total_count)) + 
-  geom_line(color = "#FC4E07", size = 2)+
+ggplot(data = Inactive_player, aes(x = Date_numeric, y = total_count)) + 
+  geom_line(color = "#FC4E07", size = 1)+
   xlab("Year")+
   ylab("# of inactives")+
   # geom_segment(aes(x=as.Date("2004-06-01"), xend=as.Date("2008-06-01"), y=140000, yend=55000), 
@@ -201,7 +200,8 @@ ggplot(data = Inactive_player, aes(x = Date, y = total_count)) +
   #              arrow = arrow(length = unit(.5, "cm")), size = 2)+
   # annotate("text", x = as.Date("2005-01-01"), y = 155000, 
   #          label = "Is this corrupted data?", size = 5)+
-  theme_bw() -> p4
+  theme_bw()+
+  scale_y_continuous(labels = comma) -> p4
 
 plot_grid(p1, p2, p3, p4, labels = c("A", "B", "C", "D"))
 ```
@@ -212,26 +212,26 @@ plot_grid(p1, p2, p3, p4, labels = c("A", "B", "C", "D"))
 
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-ggplot(data = Active_player, aes(x = Date, y = avg_rating)) + 
-  geom_line(color = "#FC4E07", size = 2)+
+ggplot(data = Active_player, aes(x = Date_numeric, y = avg_rating)) + 
+  geom_line(color = "#FC4E07", size = 1)+
   xlab("Year")+
   ylab("Average of Actives")+
   theme_bw() -> p5
 
-ggplot(data = Inactive_player, aes(x = Date, y = avg_rating)) + 
-  geom_line(color = "#FC4E07", size = 2)+
+ggplot(data = Inactive_player, aes(x = Date_numeric, y = avg_rating)) + 
+  geom_line(color = "#FC4E07", size = 1)+
   xlab("Year")+
   ylab("Average of Inactives")+
   theme_bw() -> p6
 
-ggplot(data = Active_player, aes(x = Date, y = sd_rating)) + 
-  geom_line(color = "#FC4E07", size = 2)+
+ggplot(data = Active_player, aes(x = Date_numeric, y = sd_rating)) + 
+  geom_line(color = "#FC4E07", size = 1)+
   xlab("Year")+
-  ylab("Inactives SD")+
+  ylab("Actives SD")+
   theme_bw() -> p7
 
-ggplot(data = Inactive_player, aes(x = Date, y = sd_rating)) + 
-  geom_line(color = "#FC4E07", size = 2)+
+ggplot(data = Inactive_player, aes(x = Date_numeric, y = sd_rating)) + 
+  geom_line(color = "#FC4E07", size = 1)+
   xlab("Year")+
   ylab("Inactives SD")+
   theme_bw() -> p8
@@ -244,33 +244,34 @@ plot_grid(p5, p6, p7, p8, labels = c("A", "B", "C", "D"))
 
 ```{r, echo=FALSE}
 
+All_countries <- FIDE%>%
+                 filter(Activity %in% Active)%>%
+                 group_by(Date_numeric, Country)%>%
+                 summarise(total_count = n())
+
 Country_diff <- All_countries%>%
-                arrange(Country, Date)%>%
+                arrange(Country, Date_numeric)%>%
                 group_by(Country)%>%
                 mutate(Diff = total_count - lag(total_count))%>%
-                filter(!is.na(Diff))%>%
-                mutate(Country_name = c(codes$Country, Country)[match(Country, c(codes$Code, Country))],
-                       Country_name = c(countries, Country_name)[match(Country_name, c(country_codes, Country_name))])
+                filter(!is.na(Diff))
 
 
 Notable <- Country_diff%>%
            filter(abs(Diff) > 500)%>%
-           .$Country_name%>%
+           .$Country%>%
            unique()
-
-
-Arranged <- Country_diff%>%
-            arrange(Date, Diff)
 ```
 
 
 ```{r, echo = FALSE, cache=TRUE}
 Country_diff%>%
-filter(Country_name %in% Notable)%>%
+filter(Country %in% Notable)%>%
 ggplot() +
-geom_line(aes(x = Date, y = Diff, colour = Country_name))+
-theme_bw()
-# +theme(legend.position = "none")
+geom_line(aes(x = Date_numeric, y = Diff, colour = Country))+
+theme_bw()+
+ggtitle("Gained/Lost over time")+
+xlab("Year")+
+ylab("Gained/Lost")
 ```
 
 #Titled player count over time
@@ -280,18 +281,18 @@ w_old = c("WCM", "WFM", "WGM", "WIM")
 w_new = rep("W Title", length(w_old))
 
 FIDE%>%
-filter(Title %in% unique(new))%>%
-group_by(Date, Title)%>%
+filter(Title %in% Titles_only)%>%
+group_by(Date_numeric, Title)%>%
 tally()%>%
 mutate(w_titles = c(w_new, Title)[match(Title, c(w_old, Title))])-> titled
 
 titled%>%
-group_by(Date, w_titles)%>%
+group_by(Date_numeric, w_titles)%>%
 summarise(n = sum(n)) -> titles_group
 
 FIDE%>%
-filter(Games > 0, Activity == "")%>%
-group_by(Date)%>%
+filter(Games > 0, Activity %in% Active)%>%
+group_by(Date_numeric)%>%
 summarise(n = n())%>%
 mutate(roll = rollmean(n, k = 6, fill = NA))-> Games
 ```
@@ -299,58 +300,33 @@ mutate(roll = rollmean(n, k = 6, fill = NA))-> Games
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE, cache=TRUE}
 titled%>%
-ggplot(aes(x=Date, y= n, group=Title, color=Title)) +
+ggplot(aes(x=Date_numeric, y= n, group=Title, color=Title)) +
 geom_line(size = 1.5) -> p9
 
 titles_group%>%
-ggplot(aes(x=Date, y= n, group=w_titles, color=w_titles)) +
+ggplot(aes(x=Date_numeric, y= n, group=w_titles, color=w_titles)) +
 geom_line(size = 1.5) -> p10
 
 titles_group %>%
 group_by(w_titles) %>%
 mutate(Diff = n - lag(n))%>%
-ggplot(aes(x=Date, y= Diff, group=w_titles, color=w_titles)) +
+ggplot(aes(x=Date_numeric, y= Diff, group=w_titles, color=w_titles)) +
 geom_line(size = 1.5) -> p11
 
 Games%>%
 ggplot() +
-geom_line(aes(x=Date, y= roll), size = 1.5, color = "red")+
+geom_line(aes(x=Date_numeric, y= roll), size = 1.5, color = "red")+
 theme_bw() -> p12
 
 
 plot_grid(p9, p10, p11, p12, labels = c("A", "B", "C", "D"))
 ```
 
-```{r, message=FALSE, warning=FALSE, echo=FALSE, eval=FALSE}
-FIDE%>%
-group_by(Date_numeric)%>%
-tally()%>%
-.$Date_numeric%>%
-.[seq(1, length(.), by = 1)] -> years_increment
-
-transition <- FIDE%>%
-              filter(Date_numeric %in% years_increment, 
-                     !(Age_Birthday < 1850),
-                     Rating < 2900,
-                     Rating > 1000,
-                     Activity %in% Active,
-                     Sex %in% c("F", "M"))%>%
-              select(Rating, Sex, Date_numeric)%>%
-              arrange(Date_numeric)
-
-theme_set(theme_bw())
-transition%>%
-ggplot() +
-geom_density(aes(x = Rating, group=Sex, fill=Sex), alpha = .3)+
-labs(title = 'Year: {frame_time}')+
-transition_time(Date_numeric)
-
-```
 
 
 ```{r, echo=FALSE, message=FALSE, cache=TRUE}
 titled <- FIDE%>%
-          filter(Title %in% new, Date_numeric == max(Date_numeric))%>%
+          filter(Title %in% Titles_only, Date_numeric == max(Date_numeric))%>%
           group_by(Title, Country)%>%
           tally()%>%
           arrange(Title, -n)%>%
@@ -371,7 +347,7 @@ ggplot(aes(x= Country, y =n))+
 ```
 
 
-```{r, fig.height= 8, echo=FALSE, warning=FALSE, message=FALSE}
+```{r, fig.height= 8, echo=FALSE, warning=FALSE, message=FALSE, results= 'hide'}
 strongest <- FIDE%>%
              filter(Date_numeric == max(Date_numeric), 
                     Activity %in% Active,
@@ -385,20 +361,24 @@ strongest <- FIDE%>%
 breaks <- seq(min(strongest$Age), max(strongest$Age), 15)
 break_labels = paste(breaks[-length(breaks)], breaks[-1], sep = "-")
 
+strongest <- strongest%>%
+             mutate(Age_groups = cut(Age, 
+                                    breaks=breaks, 
+                                    include.lowest=TRUE, 
+                                    right=FALSE, 
+                                    labels=break_labels))%>%
+             filter(!is.na(Age_groups))%>%
+             group_by(Country, Age_groups)%>%
+             summarise(count = n(), average_rating = mean(Rating)%>%round())%>%
+             filter(count > 200)%>%
+             arrange(Age_groups, -average_rating)%>%
+             select(-count)%>%
+             group_by(Age_groups)%>%
+             top_n(n = 7)
+```
+
+```{r, cache = TRUE, message=FALSE, warning=FALSE, echo=FALSE}
 strongest%>%
-mutate(Age_groups = cut(Age, 
-                        breaks=breaks, 
-                        include.lowest=TRUE, 
-                        right=FALSE, 
-                        labels=break_labels))%>%
-filter(!is.na(Age_groups))%>%
-group_by(Country, Age_groups)%>%
-summarise(count = n(), average_rating = mean(Rating)%>%round())%>%
-filter(count > 200)%>%
-arrange(Age_groups, -average_rating)%>%
-select(-count)%>%
-group_by(Age_groups)%>%
-top_n(n = 7)%>%
 ggplot(aes(x= Country, y= average_rating))+
     geom_bar(stat ="identity")+
     coord_flip()+
@@ -408,10 +388,34 @@ ggplot(aes(x= Country, y= average_rating))+
     facet_wrap(~Age_groups, ncol = 2)+
     theme_bw()+
     theme(axis.text=element_text(size=7))
-
 ```
 
 
+```{r, message=FALSE, warning=FALSE, echo=FALSE, eval=FALSE}
+# FIDE%>%
+# group_by(Date_numeric)%>%
+# tally()%>%
+# .$Date_numeric%>%
+# .[seq(1, length(.), by = 1)] -> years_increment
+# 
+# transition <- FIDE%>%
+#               filter(Date_numeric %in% years_increment, 
+#                      !(Age_Birthday < 1850),
+#                      Rating < 2900,
+#                      Rating > 1000,
+#                      Activity %in% Active,
+#                      Sex %in% c("F", "M"))%>%
+#               select(Rating, Sex, Date_numeric)%>%
+#               arrange(Date_numeric)
+# 
+# theme_set(theme_bw())
+# transition%>%
+# ggplot() +
+# geom_density(aes(x = Rating, group=Sex, fill=Sex), alpha = .3)+
+# labs(title = 'Year: {frame_time}')+
+# transition_time(Date_numeric)
+
+```
 
 ```{r, echo=FALSE}
 
