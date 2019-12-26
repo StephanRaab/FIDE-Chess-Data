@@ -48,6 +48,7 @@ for(i in 1:length(FIDE)){
   
 }
 ```
+I'll look to parallelize this for loop to save time moving forward. 
 
 # ⌚ Time Length
 
