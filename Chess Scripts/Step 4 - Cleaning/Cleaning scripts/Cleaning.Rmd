@@ -90,6 +90,8 @@ rm(list=setdiff(ls(), c("FIDE", "path", "temp", "dest", "country_path")))
 
 # Data prep
 
+In order to get the data to have useful and common values, we need to rename dozens of columns and values. 
+
 ```{r, eval = FALSE}
 vector_months <- c(month.abb, tolower(month.abb),toupper(month.abb))
 string = ""
@@ -129,6 +131,10 @@ countries <- c("Berundi", "Bhutan", "Burkina Faso", "Central African Republic", 
 ```
 
 # Ugly data cleaning
+
+This is the ugly part of the document: a `for loop` that is really meaty. Essentially, we will iterate all of the FIDE datasets to adjust each data's columns and values. We need to do this because want common values to merge the data later. 
+
+You are free to use `data.table`'s `rbindlist()` function to merge all of the datasets within `FIDE`, but I chose not to in this file.
 
 ```{r, results='hide', warning=FALSE, message=FALSE, eval=FALSE}
 for(i in 1:length(FIDE)){
