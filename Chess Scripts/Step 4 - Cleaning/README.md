@@ -1,6 +1,5 @@
 # 📚 Introduction
 
-
 If you want to: 
 
 1. View the .csv files, see the `Cleaned csvs` hyperlink below.
@@ -15,9 +14,44 @@ If you want to:
 
 ---
 
+# Cleaning files
+
+![](https://miro.medium.com/max/500/1*yWFQiGjlgHUVYeh4ELELyw.jpeg)
+
+
+To clean the data, we will at some point need to modify each file's column names and values using something like the following in R:
+
+```
+#Iterate over each data.frame in list
+for(i in 1:length(FIDE)){
+
+#Rename columns in each dataset
+  colnames(FIDE[[i]])[grepl("Name|NAME|name", colnames(FIDE[[i]]))] <- "Name"
+  ...... more column editing ......
+  ...... more column editing ......
+  ...... more column editing ......
+  colnames(FIDE[[i]])[grepl("OTit", colnames(FIDE[[i]]))] <- "Other_Titles"
+  
+ #Clean each data.frame
+  FIDE[[i]] <- FIDE[[i]] %>%
+               mutate(Date = as.POSIXct(names(FIDE)[i], format="%Y-%m-%d"),
+                      Date_numeric = year(Date)+yday(Date)/366,
+                      Rating = as.numeric(Rating),
+                      Title= c(new, Title)[match(Title, c(old, Title))],
+                      Country = c(codes$Country, Country)[match(Country, c(codes$Code, Country))],
+                      Country = c(countries, Country)[match(Country, c(country_codes, Country))])%>%
+                      filter(!Country %in% c("Fed", "Col"))%>%
+                      select(-one_of("V1"))
+                      
+  #Write to new file
+  fwrite(FIDE[[i]] , file = paste(dest, files[i], sep = ""), sep = "*")
+  
+}
+```
+
 # ⌚ Time Length
 
-Note: The files take a few minutes to process and export to the proper destination.
+Note: The files take a few minutes to process the data and export it to the proper destination.
 
 ---
 
