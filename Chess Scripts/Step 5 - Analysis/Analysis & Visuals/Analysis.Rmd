@@ -221,13 +221,13 @@ strongest <- strongest%>%
              group_by(Age_groups)%>%
              top_n(n = 7)
 
-titled <- FIDE%>%
-          filter(Title %in% Titles_only, Date_numeric == max(Date_numeric))%>%
-          group_by(Title, Country)%>%
-          tally()%>%
-          arrange(Title, -n)%>%
-          group_by(Title)%>%
-          top_n(n = 10)
+titled_only <- FIDE%>%
+               filter(Title %in% Titles_only, Date_numeric == max(Date_numeric))%>%
+               group_by(Title, Country)%>%
+               tally()%>%
+               arrange(Title, -n)%>%
+               group_by(Title)%>%
+               top_n(n = 10)
 
 
 dec19_titled <- FIDE%>%
@@ -369,7 +369,7 @@ plot_grid(p9, p10, p11, p12, labels = c("A", "B", "C", "D"))
 
 ```{r, echo=FALSE, message=FALSE, echo=FALSE, cache=TRUE}
 
-titled%>%
+titled_only%>%
 filter(Title %in% c("CM", "FM", "IM", "GM"))%>%
 ggplot(aes(x= Country, y =n))+
     geom_bar(stat ="identity")+
