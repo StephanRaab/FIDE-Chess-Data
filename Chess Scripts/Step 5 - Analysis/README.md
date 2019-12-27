@@ -1,6 +1,6 @@
-![](https://github.com/AnujDahiya24/FIDE-Chess-Data/blob/master/Chess%20Scripts/Step%206%20-%20Experimental%20work/Men_women_gif.gif)
-
 # 📚 Introduction
+
+![](https://github.com/AnujDahiya24/FIDE-Chess-Data/blob/master/Chess%20Scripts/Step%206%20-%20Experimental%20work/Experiments/Men_women_gif.gif)
 
 If you want to: 
 
