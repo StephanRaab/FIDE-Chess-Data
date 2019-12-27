@@ -4,6 +4,8 @@
 
 This repository is to help all chess players utilize and work with [public chess profile data](http://ratings.fide.com/download_lists.phtml) provided by the `FIDE` organization (through December 2019). The work in this repository is done through R and Python.
 
+FIDE's website is a hassle to work through and has limited visuals about chess players.
+
 # 🗺️ Where is the data?
 
 The data is located in this [folder](https://github.com/AnujDahiya24/FIDE-Chess-Data/tree/master/Chess%20Scripts/Step%204%20-%20Cleaning/Cleaned%20csvs).
