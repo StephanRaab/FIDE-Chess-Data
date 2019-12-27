@@ -9,9 +9,8 @@ date: '`r format(Sys.Date(), "%B %d, %Y")`'
 
 The purpose of this document is to make use of the data stored within the `FIDE` data folder. 
 
-Before beginning, we need to import several packages that help run the code below.
 
-```{r, message= FALSE, warning=FALSE}
+```{r, message= FALSE, warning=FALSE, echo=FALSE}
 library(tidyverse)
 library(data.table)
 library(cowplot)
@@ -27,56 +26,37 @@ library(gganimate)
 library(lubridate)
 ```
 
-`tidyverse` imports dplyr, tidyr and several other useful packages for data wrangling and manipulation.
-
-`data.table` is used purely for speeding up imports.
 
 
-# Access the data
-
-The data is stored in a path we have to manipulate to get to.
-
-
-```{r}
+```{r, echo=FALSE}
 path = "~/GitHub/FIDE/Chess Scripts/Step 4 - Cleaning/Cleaned csvs/"
 opts_knit$set(root.dir = path)
 temp = list.files(path = path, pattern = "*.csv")
 proper_temp <- paste(path, temp, sep = "")
 ```
 
-# Create functions to rename datasets
 
-Below, I define a few functions that help us rename the datasets eventually
 
-```{r}
+
+```{r, echo=FALSE}
 num <- function(x) match(tolower(x), tolower(month.abb))
 month <- function(x){return(substr(x, 1, 3))}
 add_zero <- function(x){if (x <= 9){x = paste("0", x, sep = "")}; return(x)}
 ```
 
-# Get the month number of all of the files in the dataset
 
-Below, I rename create the variables names when they are imported in memory.
 
-```{r}
+```{r, echo=FALSE}
 temp%>%
 sapply(month)%>%
 sapply(num)%>%
 sapply(add_zero)%>%
 paste("20", substr(temp, 4, 5), "-", ., "-", "01", sep = "")-> month_num
-
-head(month_num)
 ```
 
-We can see that the datasets correspond to dates on which the is recorded.
 
-# Import a sample of datasets 
 
-Due to the data being quite large, your RAM may be used heavily. 
-
-I'll look to investigate if parallelizing `rbindlist()` is possible at some point. Please bear with the computation time.
-
-```{r}
+```{r, eval=FALSE, echo=FALSE}
 
 for(i in 1:length(proper_temp)) {
 assign(month_num[i], fread(proper_temp[i], sep = "*", data.table = FALSE, 
@@ -93,9 +73,13 @@ rm(list=setdiff(ls(), c("FIDE")))
 
 
 
+
+```{r, echo=FALSE}
+
 #write dataframe to folder
 
-```{r}
+# DO NOT RUN UNLESS YOU WANT THE BIG file
+
 # fwrite(FIDE, "FIDE.csv")
 # FIDE <- fread("FIDE.csv", data.table = FALSE)
 ```
@@ -103,15 +87,14 @@ rm(list=setdiff(ls(), c("FIDE")))
 Now that we have the data in a more clean, usable format, it's time we analyzed it.
 
 
-
-# Set up basic filters 
-
-```{r}
+```{r, echo=FALSE}
 Titles = c("CM", "WCM",  "WGM", "WFM", "IM", "FM", "WIM", "GM", "")
 Titles_only = c("CM", "WCM",  "WGM", "WFM", "IM", "FM", "WIM", "GM")
 Active = c("", "w")
 Inactive = c("i", "wi")
 ```
+
+\pagebreak
 
 # Irregular values by year
 
@@ -128,9 +111,9 @@ kable()
 
 I'll look to address many of the values in the early datasets eventually. For now though, over 99.9% of the data is interpretable. 
 
-# Player counts by Activity
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, results='hide', eval=FALSE}
 Active_player <- FIDE%>%
                  filter(Activity %in% Active)%>%
                  group_by(Date_numeric)%>%
@@ -241,6 +224,8 @@ dec19_titled <- FIDE%>%
 ```
 
 
+\pagebreak
+
 # Total player count over time
 
 ```{r, warning=FALSE, message=FALSE, echo=FALSE, cache=TRUE}
@@ -288,6 +273,8 @@ ggplot(data = Inactive_player, aes(x = Date_numeric, y = total_count)) +
 plot_grid(p1, p2, p3, p4, labels = c("A", "B", "C", "D"))
 ```
 
+\pagebreak
+
 # Rating stability over time (misleading)
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
@@ -319,6 +306,7 @@ plot_grid(p5, p6, p7, p8, labels = c("A", "B", "C", "D"))
 
 ```
 
+\pagebreak
 
 
 # Which countries have seen the greatest changes in player counts?
@@ -333,6 +321,10 @@ ggtitle("Gained/Lost over time")+
 xlab("Year")+
 ylab("Gained/Lost")
 ```
+
+
+\pagebreak
+
 
 # Titled player count over time
 
@@ -365,7 +357,9 @@ xlab("Year") -> p12
 plot_grid(p9, p10, p11, p12, labels = c("A", "B", "C", "D"))
 ```
 
+\pagebreak
 
+# Titled player counts by country
 
 ```{r, echo=FALSE, message=FALSE, echo=FALSE, cache=TRUE}
 
@@ -382,7 +376,9 @@ ggplot(aes(x= Country, y =n))+
 
 ```
 
+\pagebreak
 
+# Strongest countries by age group
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE, cache = TRUE}
 strongest%>%
