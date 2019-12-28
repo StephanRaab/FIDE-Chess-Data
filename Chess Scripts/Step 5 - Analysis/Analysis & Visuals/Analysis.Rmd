@@ -1,62 +1,36 @@
 ---
 title: "Analysis"
-output:
-  pdf_document: default
+output: pdf_document
 date: '`r format(Sys.Date(), "%B %d, %Y")`'
 ---
-
 
 
 The purpose of this document is to make use of the data stored within the `FIDE` data folder. 
 
 
-```{r, message= FALSE, warning=FALSE, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, eval=FALSE}
 library(tidyverse)
 library(data.table)
 library(cowplot)
 library(scales)
 library(knitr)
-library(xts)
-library(dygraphs)
-library(foreach)
-library(doParallel)
-library(zoo) 
-library(stringi)
-library(gganimate)
-library(lubridate)
-```
+library(zoo)
 
-
-
-```{r, echo=FALSE}
 path = "~/GitHub/FIDE/Chess Scripts/Step 4 - Cleaning/Cleaned csvs/"
 opts_knit$set(root.dir = path)
 temp = list.files(path = path, pattern = "*.csv")
 proper_temp <- paste(path, temp, sep = "")
-```
 
-
-
-
-```{r, echo=FALSE}
 num <- function(x) match(tolower(x), tolower(month.abb))
 month <- function(x){return(substr(x, 1, 3))}
 add_zero <- function(x){if (x <= 9){x = paste("0", x, sep = "")}; return(x)}
-```
 
-
-
-```{r, echo=FALSE}
 temp%>%
 sapply(month)%>%
 sapply(num)%>%
 sapply(add_zero)%>%
 paste("20", substr(temp, 4, 5), "-", ., "-", "01", sep = "")-> month_num
-```
 
-
-
-```{r, eval=FALSE, echo=FALSE}
 
 for(i in 1:length(proper_temp)) {
 assign(month_num[i], fread(proper_temp[i], sep = "*", data.table = FALSE, 
@@ -69,51 +43,12 @@ FIDE <- mget(ls(pattern = "[0-9][0-9]-[0-9][0-9]"))%>%
         
 rm(list=setdiff(ls(), c("FIDE")))
 
-```
-
-
-
-
-```{r, echo=FALSE}
-
-#write dataframe to folder
-
-# DO NOT RUN UNLESS YOU WANT THE BIG file
-
-# fwrite(FIDE, "FIDE.csv")
-# FIDE <- fread("FIDE.csv", data.table = FALSE)
-```
-
-Now that we have the data in a more clean, usable format, it's time we analyzed it.
-
-
-```{r, echo=FALSE}
 Titles = c("CM", "WCM",  "WGM", "WFM", "IM", "FM", "WIM", "GM", "")
 Titles_only = c("CM", "WCM",  "WGM", "WFM", "IM", "FM", "WIM", "GM")
 Active = c("", "w")
 Inactive = c("i", "wi")
-```
-
-\pagebreak
-
-# Irregular values by year
-
-```{r,echo=FALSE, warning=FALSE, message=FALSE, cache=TRUE}
-FIDE%>%
-filter(!Title %in% Titles | !Activity %in% c(Active, Inactive))%>%
-group_by(Date_numeric)%>%
-tally()%>%
-arrange(-n)%>%
-head(10)%>%
-kable()
-```
 
 
-I'll look to address many of the values in the early datasets eventually. For now though, over 99.9% of the data is interpretable. 
-
-
-
-```{r, echo=FALSE, message=FALSE, warning=FALSE, results='hide', eval=FALSE}
 Active_player <- FIDE%>%
                  filter(Activity %in% Active)%>%
                  group_by(Date_numeric)%>%
@@ -221,14 +156,43 @@ dec19_titled <- FIDE%>%
                 filter(Age_Birthday > 0, Age_Birthday < 120,
                       Rating > 950, !Title %in% c(""), Womens_Title == "")
 
+#write dataframe to folder
+
+# DO NOT RUN UNLESS YOU WANT THE BIG file
+
+# fwrite(FIDE, "FIDE.csv")
+# FIDE <- fread("FIDE.csv", data.table = FALSE)
+
 ```
+
+
+
+
+\pagebreak
+
+# Irregular values by year
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
+FIDE%>%
+filter(!Title %in% Titles | !Activity %in% c(Active, Inactive))%>%
+group_by(Date_numeric)%>%
+tally()%>%
+arrange(-n)%>%
+head(10)%>%
+kable()
+```
+
+
+
+I'll look to address many of the values in the early datasets eventually. For now though, over 99.9% of the data is interpretable. 
 
 
 \pagebreak
 
 # Total player count over time
 
-```{r, warning=FALSE, message=FALSE, echo=FALSE, cache=TRUE}
+```{r, warning=FALSE, message=FALSE, echo=FALSE, cache = TRUE}
 ggplot(data = All_players, aes(x = Date_numeric, y = total_count)) + 
   geom_line(color = "#FC4E07", size = 1)+
   xlab("Year")+
@@ -277,7 +241,7 @@ plot_grid(p1, p2, p3, p4, labels = c("A", "B", "C", "D"))
 
 # Rating stability over time (misleading)
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, cache = TRUE}
 ggplot(data = Active_player, aes(x = Date_numeric, y = avg_rating)) + 
   geom_line(color = "#FC4E07", size = 1)+
   xlab("Year")+
@@ -311,7 +275,7 @@ plot_grid(p5, p6, p7, p8, labels = c("A", "B", "C", "D"))
 
 # Which countries have seen the greatest changes in player counts?
 
-```{r, echo = FALSE, cache=TRUE}
+```{r, echo = FALSE, warning=TRUE, message=TRUE, cache = TRUE}
 Country_diff%>%
 filter(Country %in% Notable)%>%
 ggplot() +
@@ -329,7 +293,7 @@ ylab("Gained/Lost")
 # Titled player count over time
 
 
-```{r, message=FALSE, warning=FALSE, echo=FALSE, cache=TRUE}
+```{r, message=FALSE, warning=FALSE, echo=FALSE, cache = TRUE}
 titled%>%
 ggplot(aes(x=Date_numeric, y= n, group=Title, color=Title)) +
 geom_line(size = 1.5)+
@@ -361,8 +325,7 @@ plot_grid(p9, p10, p11, p12, labels = c("A", "B", "C", "D"))
 
 # Titled player counts by country
 
-```{r, echo=FALSE, message=FALSE, echo=FALSE, cache=TRUE}
-
+```{r, echo=FALSE, message=FALSE, echo=FALSE, cache = TRUE}
 titled_only%>%
 filter(Title %in% c("CM", "FM", "IM", "GM"))%>%
 ggplot(aes(x= Country, y =n))+
@@ -373,7 +336,6 @@ ggplot(aes(x= Country, y =n))+
     facet_wrap(~Title)+
     theme_bw()+
     theme(axis.text=element_text(size=6))
-
 ```
 
 \pagebreak
@@ -390,12 +352,13 @@ ggplot(aes(x= Country, y= average_rating))+
     ggtitle("Highest rated age groups by country")+
     facet_wrap(~Age_groups, ncol = 2)+
     theme_bw()+
-    theme(axis.text=element_text(size=7))
+    theme(axis.text=element_text(size=6))
 ```
 
+\pagebreak
 
 
-```{r, echo=FALSE, cache=TRUE}
+```{r, echo=FALSE, cache = TRUE}
 
 dec19_titled%>%
 ggplot(aes(Age_Birthday, Rating, color=Title)) +
@@ -410,6 +373,14 @@ ggplot(aes(Age_Birthday, Rating, color=Title)) +
 
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
+# library(xts)
+# library(dygraphs)
+# library(foreach)
+# library(doParallel)
+# library(stringi)
+# library(gganimate)
+# library(lubridate)
+
 # FIDE%>%
 # group_by(Date_numeric)%>%
 # tally()%>%
@@ -457,36 +428,8 @@ ggplot(aes(Age_Birthday, Rating, color=Title)) +
 # transition_time(year)
 
 
-# rm(FIDE)
 
-# ggplot(NOV19,aes(x=Age,y=Rating))+
-# stat_density_2d(aes(fill = ..level..), geom="polygon")+
-# theme_bw()
-#
-#
-# nov19_titled <- NOV19%>%
-#                 filter(!Title %in% c(""), Womens_Title == "")
-# 
-# ggplot(nov19_titled,aes(Age, Rating, color=Title)) +
-#   geom_point(alpha = .3) +
-#   scale_fill_brewer(palette="Set1") +
-#   theme(legend.position = "right")+
-#   theme_bw()+
-#   ggtitle("Age vs Rating of different titles for November 2019")
-#
-# library(gapminder)
-# gapminder%>%
-# ggplot(aes(x= gdpPercap, y = lifeExp,
-#            size = pop, colour = country)) +
-# geom_point(alpha = 0.7, show.legend = FALSE) +
-# scale_colour_manual(values = country_colors) +
-# scale_size(range = c(2, 12)) +
-# scale_x_log10() +
-# facet_wrap(~continent) +
-# labs(title = 'Year: {frame_time}', x = 'GDP per capita', y = 'life expectancy') +
-# transition_time(year) +
-# ease_aes('linear')
-#
+
 # FIDE%>%
 # filter(Rating > 2830)%>%
 # .$Name%>%
@@ -522,59 +465,4 @@ ggplot(aes(Age_Birthday, Rating, color=Title)) +
 # geom_histogram(aes(y = ..density..), bins = 50, col= "red")+ 
 # labs(title="Histogram overlayed with Density curve") +
 # labs(x="Rating", y="Percentage of players in population")
-
-# cl<-makeCluster(detectCores()) 
-# registerDoParallel(cl)
-# temp_short = proper_temp[1:5]
-# FIDE<-foreach(i=proper_temp, .export = "fread") %dopar% {
-# t <- fread(i, sep = "*", data.table = FALSE, strip.white = TRUE, 
-# blank.lines.skip = TRUE)
-#                                                                  }
-# stopCluster(cl)
-
-#Put datasets in list
-# FIDE <- mget(ls(pattern = "[0-9][0-9]-[0-9][0-9]"))
-# rm(list=setdiff(ls(), c("FIDE", "ptm")))
-
-# #Help rename columns in the data
-# vector_months <- c(month.abb, tolower(month.abb),toupper(month.abb))
-# string = ""
-# for (i in 1:length(vector_months)){
-# if (i == 1){string = vector_months[i]}
-# else if (i > 1) {string = paste(string, vector_months[i], sep = "|")}
-# }
-# string = paste(string, "RATING", sep = "|")
-
-# names(FIDE) <- month_num
-# 
-# old = c("c", "wc", "WC", "wg", "WF", "wf", "g", "m", "f", "wm", "gm" )
-# new = c("CM", "WCM", "WCM", "WGM", "WFM", "WFM", "GM", "IM", "FM", "WIM", "GM")
-# 
-# #Insert month column
-# for(i in 1:length(FIDE)){
-#   colnames(FIDE[[i]])[grepl("Name|NAME|name", colnames(FIDE[[i]]))] <- "Name"
-#   colnames(FIDE[[i]])[grepl("NUMBER", colnames(FIDE[[i]]))] <- "ID_Number"
-#   colnames(FIDE[[i]])[grepl("Fed|FED|COUNTRY", colnames(FIDE[[i]]))] <- "Country"
-#   colnames(FIDE[[i]])[grepl("Gms|GAMES|GM|Game|GAME", colnames(FIDE[[i]]))] <- "Games"
-#   colnames(FIDE[[i]])[grepl("K", colnames(FIDE[[i]]))] <- "K_factor"
-#   colnames(FIDE[[i]])[grepl("FLAG|Flag|flag", colnames(FIDE[[i]]))] <- "Activity"
-#   colnames(FIDE[[i]])[colnames(FIDE[[i]]) %in% c("Wtit","wtit","WTIT", "WTit")] <- "Womens_Title"
-#   colnames(FIDE[[i]])[colnames(FIDE[[i]]) %in% c("TITLE","Title","title","Tit")] <- "Title"
-#   colnames(FIDE[[i]])[grepl(string, colnames(FIDE[[i]]))] <- "Rating"
-#   colnames(FIDE[[i]])[grepl("Born|Age|age|BIRTHDAY|B-day|Bday", colnames(FIDE[[i]]))] <- "Age_Birthday"
-#   colnames(FIDE[[i]])[grepl("SEX", colnames(FIDE[[i]]))] <- "Sex"
-#   colnames(FIDE[[i]])[grepl("FOA", colnames(FIDE[[i]]))] <- "FIDE_Online_Arena"
-#   colnames(FIDE[[i]])[grepl("OTit", colnames(FIDE[[i]]))] <- "Other_Titles"
-#   FIDE[[i]] <-  FIDE[[i]] %>%
-#                 mutate(Date = as.POSIXct(names(FIDE)[i], format="%Y-%m-%d"),
-#                        Date_numeric = year(Date)+yday(Date)/366,
-#                        Rating = as.numeric(Rating),
-#                        Title= c(new, Title)[match(Title, c(old, Title))])%>%
-#                 filter(!Country %in% c("Fed", "Col"))
-# }
-
-
-
-# FIDE <- rbindlist(FIDE, fill = TRUE)%>%
-        # select(-V1, -ID_Number)
 ```

@@ -9,15 +9,7 @@ dplyr
 stringr
 forcats
 data.table
-zoo
-xts
-dygraphs
-foreach
-iterators
-doParallel
-stringi
 cowplot
-gganimate
-lubridate
-knitr
 scales
+knitr
+zoo
