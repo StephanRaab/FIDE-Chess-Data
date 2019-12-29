@@ -5,9 +5,6 @@ date: '`r format(Sys.Date(), "%B %d, %Y")`'
 ---
 
 
-The purpose of this document is to make use of the data stored within the `FIDE` data folder. 
-
-
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, eval=FALSE}
 library(tidyverse)
 library(data.table)
@@ -166,9 +163,8 @@ dec19_titled <- FIDE%>%
 ```
 
 
+The purpose of this document is to visually analyze all of the FIDE data files collected in the previous step's folder. 
 
-
-\pagebreak
 
 # Irregular values by year
 
@@ -184,6 +180,7 @@ kable()
 ```
 
 
+As we can see from the table above, most of irregular values in the files come from early on (2001 - 2005) rather than the latest files.
 
 I'll look to address many of the values in the early datasets eventually. For now though, over 99.9% of the data is interpretable. 
 
@@ -237,6 +234,14 @@ ggplot(data = Inactive_player, aes(x = Date_numeric, y = total_count)) +
 plot_grid(p1, p2, p3, p4, labels = c("A", "B", "C", "D"))
 ```
 
+`A`:
+
+`B`:
+
+`C`:
+
+`D`:
+
 \pagebreak
 
 # Rating stability over time (misleading)
@@ -270,6 +275,14 @@ plot_grid(p5, p6, p7, p8, labels = c("A", "B", "C", "D"))
 
 ```
 
+`A`:
+
+`B`:
+
+`C`:
+
+`D`:
+
 \pagebreak
 
 
@@ -285,6 +298,8 @@ ggtitle("Gained/Lost over time")+
 xlab("Year")+
 ylab("Gained/Lost")
 ```
+
+`Explanation`:
 
 
 \pagebreak
@@ -321,6 +336,14 @@ xlab("Year") -> p12
 plot_grid(p9, p10, p11, p12, labels = c("A", "B", "C", "D"))
 ```
 
+`A`:
+
+`B`:
+
+`C`:
+
+`D`:
+
 \pagebreak
 
 # Titled player counts by country
@@ -337,6 +360,14 @@ ggplot(aes(x= Country, y =n))+
     theme_bw()+
     theme(axis.text=element_text(size=6))
 ```
+
+`CM`:
+
+`FM`:
+
+`GM`:
+
+`IM`:
 
 \pagebreak
 
@@ -355,6 +386,18 @@ ggplot(aes(x= Country, y= average_rating))+
     theme(axis.text=element_text(size=6))
 ```
 
+`6-21`:
+
+`21-26`:
+
+`36-51`:
+
+`51-66`:
+
+`66-81`:
+
+`81-96`:
+
 \pagebreak
 
 
@@ -371,6 +414,7 @@ ggplot(aes(Age_Birthday, Rating, color=Title)) +
 
 ```
 
+`Explanation`:
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
 # library(xts)
