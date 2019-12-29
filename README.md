@@ -2,7 +2,8 @@
 
 ![FIDE](https://images.hamodia.com/hamod-uploads/2017/11/27160118/download.jpg) ![calendar](https://print-a-calendar.com/printable-calendars/one-page-year-thumbnail.png)
 
-This repository is to help all chess players utilize and work with [public chess profile data](http://ratings.fide.com/download_lists.phtml) provided by the `FIDE` organization (through December 2019). The work in this repository is done through R and Python.
+This repository is to help all chess players utilize and work with [public chess profile data](http://ratings.fide.com/download_lists.phtml) provided by the `FIDE` organization (through December 2019). FIDE's website is cumbersome, at times, to work with and has limited visuals about chess players.
+
 
 # 🗺️ Where is the data?
 
@@ -49,7 +50,7 @@ From the [FIDE Download Rating List page](http://ratings.fide.com/download.phtml
 
 # ♟️ Why did I do this?
 
-<!--- j![](https://imgflip.com/s/meme/Futurama-Fry.jpg) ---> 
+j![](https://imgflip.com/s/meme/Futurama-Fry.jpg)
 
 I chose to work on this project because of several reasons:
 
@@ -65,21 +66,21 @@ I chose to work on this project because of several reasons:
 
 # 🧬 Lifecycle of data
 
-<!--- ![](https://tygabox.com/wp-content/uploads/2019/04/lifecycle-tbs-colors.jpg) ---> 
+![](https://tygabox.com/wp-content/uploads/2019/04/lifecycle-tbs-colors.jpg)
 
-The process of acquiring the data through visualizing it is divided into 6 steps. Please click each step below for how I made the data usable.
+The process of acquiring the data through visualizing it is divided and all of it is done through R and Python. Please click each step below for how I made the data usable.
 
 1. [Download the FIDE files](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%201%20-%20Download)
 
-2. [Reformat the text files](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%202%20-%20Reformat)
+2. [Reformating the text files](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%202%20-%20Reformat)
 
-3. [Scrape country code data](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%203%20-%20FIDE%20Country%20Codes)
+3. [Scraping country code data](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%203%20-%20FIDE%20Country%20Codes)
  
 4. [Cleaning the data](https://github.com/AnujDahiya24/FIDE-Chess-Data/tree/master/Chess%20Scripts/Step%204%20-%20Cleaning)
 
-5. [Visualize the data](https://github.com/AnujDahiya24/FIDE-Chess-Data/tree/master/Chess%20Scripts/Step%205%20-%20Analysis)
+5. [Visualizing the data](https://github.com/AnujDahiya24/FIDE-Chess-Data/tree/master/Chess%20Scripts/Step%205%20-%20Analysis)
 
-6. [To Dos & Experimental work](https://github.com/AnujDahiya24/FIDE-Chess-Data/tree/master/Chess%20Scripts/Step%206%20-%20Experimental%20work)
+6. [Future Work](https://github.com/AnujDahiya24/FIDE-Chess-Data/tree/master/Chess%20Scripts/Step%206%20-%20Experimental%20work)
 
 ---
 
