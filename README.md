@@ -54,11 +54,11 @@ j![](https://imgflip.com/s/meme/Futurama-Fry.jpg)
 
 I chose to work on this project because of several reasons:
 
-- FIDE's publically available data is in an unorganized layout. There is no **Download** all button to acquire all of their data. FIDE also doesn't publically list data prior to February 2015 when there is data running back going back as early as 2001.  People may find FIDE's website frusterating to work with, as a result and I wanted to alleviate any pain site viewers had.
+- FIDE's publically available data is in an unorganized layout. There is no **Download** all button to acquire all of their data. FIDE also doesn't publically list data prior to February 2015 when there is data running back going back as early as 2001.  Asa result, site visitors may find FIDE's website frusterating to work with and I wanted to help overcome their struggles.
 
 - Chess players like to see visuals of themselves, friends, competitors, top players and players across various demographics. I wanted to provide these visuals.
 
-- I wanted to improve my skills in at least 1 or 2 programming languages.
+- I wanted to improve my skills in 2 programming languages.
 
 - I've always taken an interest in any data about chess that has not been extensively analyzed. My curiosity drives me.
 
