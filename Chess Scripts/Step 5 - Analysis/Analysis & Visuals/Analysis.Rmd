@@ -417,6 +417,13 @@ ggplot(aes(Age_Birthday, Rating, color=Title)) +
 `Explanation`:
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
+
+# FIDE%>%
+# filter(Rating > 1000, Rating < 2900)%>%
+# group_by(Date_numeric)%>% 
+# mutate(percrank=rank(Rating)/length(Rating))%>%
+# filter(Name == "Dahiya, Anuj") -> Anuj
+
 # library(xts)
 # library(dygraphs)
 # library(foreach)
