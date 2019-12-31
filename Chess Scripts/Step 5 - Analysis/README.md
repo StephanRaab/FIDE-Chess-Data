@@ -26,7 +26,7 @@ I find this graph to be interesting because it shows a few strange trends:
 
 # ⌚ Time Length
 
-Note: The files take a several minutes to combine because of functions like `rbindlist()`, unfortunately.
+Note: The `Analysis.pdf` file take a several minutes to knit because of funcions like `rbindlist()` that combine all of the datasets together.
 
 ---
 
