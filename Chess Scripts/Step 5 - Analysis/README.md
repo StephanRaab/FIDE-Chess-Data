@@ -2,8 +2,16 @@
 
 ![](https://github.com/AnujDahiya24/FIDE-Chess-Data/blob/master/Chess%20Scripts/Step%206%20-%20Experimental%20work/Experiments/Men_women_gif.gif)
 
-If you want to: 
+**FIDE player (Active) rating distribution of Males & Females over time.
 
+I find this graph to be interesting because it shows a few strange trends:
+
+- The graphs look like play-dough that has been slowly compressed over time.
+- There were no players rated below 2200 in many of the early datasets provided by FIDE.
+- Around 2014, both the male and female distributions looked fairly Guassian in their shape
+- Since 2014, FIDE's rating floor of 1000 has prevented players from naturally falling below the floor. I will look to explore the differences between the male and female distributions. There's some interesting sociological phenomenon present here that has not vocalized in public.
+
+If you want to: 
 1. View the process of the data visualization, then see the `Tutorial` below
 2. Run the script yourself, then you should download the `R-Markdown file` below and run it on your local machine.
 
