@@ -50,6 +50,8 @@ for(i in 1:length(FIDE)){
 ```
 I'll look to parallelize this for loop to save time moving forward. 
 
+**Note::** The `Age_Birthday` needs a considerable amount of work. Many of the dates have differing formats, so I will need to write a function that will reformat the data.
+
 # ⌚ Time Length
 
 Note: The files take a few minutes to process the data and export it to the proper destination.
