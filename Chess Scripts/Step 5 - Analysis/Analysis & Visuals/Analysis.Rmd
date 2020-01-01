@@ -5,13 +5,14 @@ date: '`r format(Sys.Date(), "%B %d, %Y")`'
 ---
 
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE, eval=TRUE}
 library(tidyverse)
 library(data.table)
 library(cowplot)
 library(scales)
 library(knitr)
 library(zoo)
+# library(gganimate)
 
 path = "~/GitHub/FIDE/Chess Scripts/Step 4 - Cleaning/Cleaned csvs/"
 opts_knit$set(root.dir = path)
@@ -70,6 +71,8 @@ All_players <- FIDE%>%
                avg_rating = mean(Rating, na.rm = T),
                sd_rating = sd(Rating, na.rm = T))%>%
                mutate(gain_loss = c(NA, diff(total_count)))
+
+
 
 All_countries <- FIDE%>%
                  filter(Activity %in% Active)%>%
@@ -159,6 +162,18 @@ dec19_titled <- FIDE%>%
 
 # fwrite(FIDE, "FIDE.csv")
 # FIDE <- fread("FIDE.csv", data.table = FALSE)
+
+
+
+# all_titled <- FIDE%>%
+#               filter(Activity %in% Active,
+#                      Rating > 960, Rating < 2900, Title %in% c("FM", "IM", "GM"))%>%
+#               select(Title,  Rating, Date_numeric, Age_Birthday)%>%
+#               mutate(year = as.numeric(Age_Birthday))%>%
+#               filter(year > 1900, year < 2020)%>%
+#               mutate(Age = Date_numeric-year)%>%
+#               select(-Age_Birthday, -year)%>%
+#               na.omit()
 
 ```
 
@@ -312,10 +327,29 @@ dec19_titled%>%
 ggplot(aes(Age_Birthday, Rating, color=Title)) +
   geom_point(alpha = .3) +
   scale_fill_brewer(palette="Set1") +
-  theme(legend.position = "right")+
+  theme(legend.position = "bottom")+
   theme_bw()+
-  ggtitle("Age vs Rating of different titles for December 2019")+
-  xlab("Age")-> p18
+  xlab("Age")+
+  ylab("Rating")-> p18
+
+
+
+# find_hull <- function(df) df[chull(df$Age, df$Rating), ]
+# hulls <-plyr::ddply(all_titled, "Title", find_hull)
+# 
+# all_titled%>%
+# filter(Date_numeric == max(Date_numeric))%>%
+# ggplot(aes(Age, Rating, color=Title, fill = Title)) +
+# geom_point(alpha = .3) +
+# geom_polygon(data = hulls, alpha = 0.5) +
+# scale_fill_brewer(palette="Set1") +
+# theme(legend.position = "right")+
+# ggtitle("Age vs Rating")+
+# xlab("Age")+
+# ylab("Rating")
+# + labs(title = 'Year: {frame_time}')
+# +transition_time(Date_numeric)
+
 ``` 
 
 
@@ -381,7 +415,7 @@ This explains the slow decrease in average rating and increase in standard devia
 
 # Which countries have seen the greatest changes in player counts?
 
-```{r, echo = FALSE, warning=TRUE, message=TRUE, fig.height=7, fig.width=9}
+```{r, echo = FALSE, warning=TRUE, message=TRUE, fig.height=7, fig.width=9, cache=TRUE}
 p11
 ```
 
@@ -445,11 +479,15 @@ p17
 \pagebreak
 
 
-```{r, echo=FALSE, cache=TRUE}
+# Age vs Rating of titled players (December 2019)
+
+```{r, echo=FALSE, cache=TRUE, fig.height= 8, fig.width= 6}
 p18
 ```
 
 `Explanation`:
+
+The most aesthetically pleasing graph to look at is the one above. It reveals aesthetically nice
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
 
@@ -464,31 +502,7 @@ p18
 # library(foreach)
 # library(doParallel)
 # library(stringi)
-# library(gganimate)
 # library(lubridate)
-
-# FIDE%>%
-# group_by(Date_numeric)%>%
-# tally()%>%
-# .$Date_numeric%>%
-# .[seq(1, length(.), by = 1)] -> years_increment
-# 
-# transition <- FIDE%>%
-#               filter(Date_numeric %in% years_increment, 
-#                      !(Age_Birthday < 1850),
-#                      Rating < 2900,
-#                      Rating > 1000,
-#                      Activity %in% Active,
-#                      Sex %in% c("F", "M"))%>%
-#               select(Rating, Sex, Date_numeric)%>%
-#               arrange(Date_numeric)
-# 
-# theme_set(theme_bw())
-# transition%>%
-# ggplot() +
-# geom_density(aes(x = Rating, group=Sex, fill=Sex), alpha = .3)+
-# labs(title = 'Year: {frame_time}')+
-# transition_time(Date_numeric)
 
 # library(ggplot2)
 # library(gganimate)
@@ -551,4 +565,39 @@ p18
 # geom_histogram(aes(y = ..density..), bins = 50, col= "red")+ 
 # labs(title="Histogram overlayed with Density curve") +
 # labs(x="Rating", y="Percentage of players in population")
+
+
+# library(ggplot2)
+# library(gganimate)
+# 
+# all_titled <- FIDE%>%
+#               filter(Activity %in% Active,
+#                      Rating > 960, Rating < 2900, Title %in% c("FM", "IM", "GM"))%>%
+#               select(Title,  Rating, Date_numeric, Age_Birthday)%>%
+#               mutate(year = as.numeric(Age_Birthday))%>%
+#               filter(year > 1900, year < 2020)%>%
+#               mutate(Age = Date_numeric-year)%>%
+#               select(-Age_Birthday, -year)%>%
+#               na.omit()
+# 
+# years_increment = all_titled$Date_numeric%>%
+#                   unique()%>%
+#                  .[seq(1, length(.), 3)]
+# 
+# # find_hull <- function(df) df[chull(df$Age, df$Rating), ]
+# # hulls <-plyr::ddply(all_titled, "Title", find_hull)
+# 
+# all_titled%>%
+# filter(Date_numeric %in% years_increment)%>%
+# ggplot(aes(Age, Rating, color=Title))+ # fill = Title here
+# geom_point(alpha = .3)+
+# # geom_polygon(data = hulls, alpha = 0.5) +
+# scale_fill_brewer(palette="Set1")+
+# theme(legend.position = "right", panel.grid.major = element_blank(), panel.grid.minor = element_blank())+
+# ggtitle("Age vs Rating")+
+# xlab("Age")+
+# ylab("Rating")+
+# labs(title = 'Year: {frame_time}')+
+# transition_time(Date_numeric)
+
 ```
