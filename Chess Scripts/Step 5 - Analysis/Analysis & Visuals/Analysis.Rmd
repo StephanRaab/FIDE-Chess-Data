@@ -5,7 +5,7 @@ date: '`r format(Sys.Date(), "%B %d, %Y")`'
 ---
 
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, eval=TRUE}
+```{r echo=FALSE, message=FALSE, warning=FALSE, eval=FALSE}
 library(tidyverse)
 library(data.table)
 library(cowplot)
@@ -481,13 +481,17 @@ p17
 
 # Age vs Rating of titled players (December 2019)
 
-```{r, echo=FALSE, cache=TRUE, fig.height= 8, fig.width= 6}
+```{r, echo=FALSE, cache=TRUE, fig.height= 6.5, fig.width= 6}
 p18
 ```
 
-`Explanation`:
+The most aesthetically pleasing graph to look at is the one above. It reveals a few aesthetically pleasing observations:
 
-The most aesthetically pleasing graph to look at is the one above. It reveals aesthetically nice
+- Bands of players can be separated by titles categories: an obvious points is that the top blue band is all GMs, the highest rated group. Below the  blue band are IMs (purple band), FMs (green band) and CMs (red band). 
+
+- CMs and FMs vary greatly across rating categories because it has become much easier for lower rated players to acquire titles in youth tournaments and via interzonal tournaments.
+
+- There is a slight negative corrrelation, among all titled player groups, between Age and Rating. 
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
 
