@@ -12,6 +12,7 @@ library(cowplot)
 library(scales)
 library(knitr)
 library(zoo)
+library(ggdark)
 # library(gganimate)
 
 path = "~/GitHub/FIDE/Chess Scripts/Step 4 - Cleaning/Cleaned csvs/"
@@ -75,7 +76,7 @@ All_players <- FIDE%>%
 
 
 All_countries <- FIDE%>%
-                 filter(Activity %in% Active)%>%
+                 filter(Activity %in% c(Active, Inactive))%>%
                  group_by(Date_numeric, Country)%>%
                  summarise(total_count = n())
 
@@ -183,7 +184,7 @@ ggplot(data = All_players, aes(x = Date_numeric, y = total_count)) +
   geom_line(color = "#FC4E07", size = 1)+
   xlab("Year")+
   ylab("# of players")+
-  theme_bw()+
+  dark_theme_gray()+
   scale_y_continuous(labels = comma)-> p1
 
 
@@ -197,7 +198,7 @@ ggplot(data = Active_player, aes(x = Date_numeric, y = total_count)) +
   #              arrow = arrow(length = unit(.5, "cm")), size = 2)+ 
   # annotate("text", x = as.Date("2006-06-01"), y = 130000, 
   #          label = "Economic crash of 2008 (the larger chasm)", size = 5) +
-  theme_bw()+
+  dark_theme_gray()+
   scale_y_continuous(labels = comma) -> p2
 
 ggplot(data = Inactive_player, aes(x = Date_numeric, y = total_count)) + 
@@ -210,8 +211,8 @@ ggplot(data = Inactive_player, aes(x = Date_numeric, y = total_count)) +
   #              arrow = arrow(length = unit(.5, "cm")), size = 2)+
   # annotate("text", x = as.Date("2005-01-01"), y = 155000, 
   #          label = "Is this corrupted data?", size = 5)+
-  theme_bw()+
-  scale_y_continuous(labels = comma) -> p3
+  dark_theme_gray()+
+  scale_y_continuous(labels = comma)-> p3
 
 ggplot(data = All_players, aes(x = Date_numeric, y = gain_loss)) + 
   geom_line(color = "#FC4E07", size = 1)+
@@ -219,9 +220,9 @@ ggplot(data = All_players, aes(x = Date_numeric, y = gain_loss)) +
   ylab("# of gained/lost")+
   ggtitle("# of total gained/lost")+
   geom_line(aes(y = 0))+
-  theme_bw()+
+  dark_theme_gray()+
   theme(plot.title = element_text(size = 6, face = "bold"))+
-  scale_y_continuous(labels = comma) -> p4
+  scale_y_continuous(labels = comma)-> p4
 
 ggplot(data = Active_player, aes(x = Date_numeric, y = gain_loss)) + 
   geom_line(color = "#FC4E07", size = 1)+
@@ -229,9 +230,9 @@ ggplot(data = Active_player, aes(x = Date_numeric, y = gain_loss)) +
   ylab("# of gained/lost")+  
   ggtitle("# of Actives gained/lost")+
   geom_line(aes(y = 0))+
-  theme_bw()+
+  dark_theme_gray()+
   theme(plot.title = element_text(size = 6, face = "bold"))+
-  scale_y_continuous(labels = comma) -> p5
+  scale_y_continuous(labels = comma)-> p5
 
 ggplot(data = Inactive_player, aes(x = Date_numeric, y = gain_loss)) + 
   geom_line(color = "#FC4E07", size = 1)+
@@ -239,53 +240,56 @@ ggplot(data = Inactive_player, aes(x = Date_numeric, y = gain_loss)) +
   ylab("# of gained/lost")+
   ggtitle("# of Inactives gained/lost")+
   geom_line(aes(y = 0))+
-  theme_bw()+
+  dark_theme_gray()+
   theme(plot.title = element_text(size = 6, face = "bold"))+
-  scale_y_continuous(labels = comma) -> p6
+  scale_y_continuous(labels = comma)-> p6
 
 ggplot(data = Active_player, aes(x = Date_numeric, y = avg_rating)) + 
   geom_line(color = "#FC4E07", size = 1)+
   xlab("Year")+
   ylab("Average of Actives")+
-  theme_bw() -> p7
+  dark_theme_gray()-> p7
 
 ggplot(data = Inactive_player, aes(x = Date_numeric, y = avg_rating)) + 
   geom_line(color = "#FC4E07", size = 1)+
   xlab("Year")+
   ylab("Average of Inactives")+
-  theme_bw() -> p8
+  dark_theme_gray()-> p8
 
 ggplot(data = Active_player, aes(x = Date_numeric, y = sd_rating)) + 
   geom_line(color = "#FC4E07", size = 1)+
   xlab("Year")+
   ylab("Actives SD")+
-  theme_bw() -> p9
+  dark_theme_gray()-> p9
 
 ggplot(data = Inactive_player, aes(x = Date_numeric, y = sd_rating)) + 
   geom_line(color = "#FC4E07", size = 1)+
   xlab("Year")+
   ylab("Inactives SD")+
-  theme_bw() -> p10
+  dark_theme_gray()-> p10
 
 Country_diff%>%
 filter(Country %in% Notable)%>%
 ggplot() +
 geom_line(aes(x = Date_numeric, y = Diff, colour = Country))+
-theme_bw()+
+dark_theme_gray()+
 facet_wrap(~Country)+
 ggtitle("Gained/Lost over time")+
 xlab("Year")+
 ylab("Gained/Lost")+ 
-theme(legend.position = "none")-> p11
+theme(legend.position = "none")+
+geom_hline(aes(yintercept = 0))-> p11
 
 titled%>%
 ggplot(aes(x=Date_numeric, y= n, group=Title, color=Title)) +
 geom_line(size = 1.5)+
+dark_theme_gray()+
 xlab("Year")-> p12
 
 titles_group%>%
 ggplot(aes(x=Date_numeric, y= n, group=w_titles, color=w_titles)) +
 geom_line(size = 1.5)+
+dark_theme_gray()+
 xlab("Year") -> p13
 
 titles_group %>%
@@ -293,12 +297,13 @@ group_by(w_titles) %>%
 mutate(Diff = n - lag(n))%>%
 ggplot(aes(x=Date_numeric, y= Diff, group=w_titles, color=w_titles)) +
 geom_line(size = 1.5)+
-xlab("Year") -> p14
+xlab("Year")+
+dark_theme_gray()-> p14
 
 Games%>%
 ggplot() +
 geom_line(aes(x=Date_numeric, y= roll), size = 1.5, color = "red")+
-theme_bw()+
+dark_theme_gray()+
 xlab("Year") -> p15
 
 titled_only%>%
@@ -309,7 +314,7 @@ ggplot(aes(x= Country, y =n))+
     xlab("Country")+
     ylab("Counts")+
     facet_wrap(~Title)+
-    theme_bw()+
+    dark_theme_gray()+
     theme(axis.text=element_text(size=6)) -> p16
 
 strongest%>%
@@ -320,15 +325,15 @@ ggplot(aes(x= Country, y= average_rating))+
     ylab("Average Ratng")+
     ggtitle("Highest rated age groups by country")+
     facet_wrap(~Age_groups, ncol = 2)+
-    theme_bw()+
+    dark_theme_gray()+
     theme(axis.text=element_text(size=6)) -> p17
 
 dec19_titled%>%
 ggplot(aes(Age_Birthday, Rating, color=Title)) +
   geom_point(alpha = .3) +
   scale_fill_brewer(palette="Set1") +
+  dark_theme_gray()+
   theme(legend.position = "bottom")+
-  theme_bw()+
   xlab("Age")+
   ylab("Rating")-> p18
 
@@ -381,7 +386,7 @@ I'll look to address many of the values in the early datasets eventually. For no
 # Total player count over time
 
 ```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.height= 6, cache=TRUE}
-plot_grid(p1, p4, p2, p5, p3, p6, labels = c("A", "B", "C", "D", "E", "F"), ncol = 2)
+plot_grid(p1, p4, p2, p5, p3, p6, labels = c("A", "B", "C", "D", "E", "F"), ncol = 2) 
 ```
 
 
@@ -393,7 +398,7 @@ This dip may be due to the economic crash during that time, but I need to do mor
 
 Charts `B`, `D` and `F` show the number of players gained and lost over time.
 
-The most relevant of the 3 graphs is `B` which shows several instances where total player counts dropped off. I genuinely don't if the data is faulty because of my doing or if FIDE is providing incomplete datasets. 
+The most relevant of the 3 graphs is `B` which shows several instances where total player counts dropped off. I genuinely don't if the data is faulty because of my doing or if FIDE is providing incomplete datasets based off pf the charts.
 
 
 \pagebreak
@@ -401,13 +406,12 @@ The most relevant of the 3 graphs is `B` which shows several instances where tot
 # Rating stability over time (misleading)
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE, fig.height=10.5, fig.width= 9}
-plot_grid(p7, p8, p9, p10, labels = c("G", "H", "I", "J"))
+plot_grid(p7, p8, p9, p10, labels = c("G", "H", "I", "J")) 
 ```
 
-Each chart above shows how the Active and Inactive player's average rating and standard deviation have progressed over time. For the most part, it is a meaningless metric because FIDE has brought in more **lower** rated chess players into the player pool over time. 
+Each chart above shows how the Active and Inactive player's average rating and rating standard deviation have progressed over time. For the most part, it is a meaningless metric because FIDE has brought in more **lower** rated chess players into the player pool over time. 
 
-This explains the slow decrease in average rating and increase in standard deviation over time.
-
+This explains the steady decrease in average rating and increase in standard deviation over time.
 
 
 \pagebreak
@@ -415,11 +419,11 @@ This explains the slow decrease in average rating and increase in standard devia
 
 # Which countries have seen the greatest changes in player counts?
 
-```{r, echo = FALSE, warning=TRUE, message=TRUE, fig.height=7, fig.width=9, cache=TRUE}
+```{r, echo = FALSE, warning=TRUE, message=TRUE, fig.height=9, fig.width=9, cache=TRUE}
 p11
+ 
 ```
 
-`Explanation`:
 
 
 \pagebreak
@@ -429,7 +433,7 @@ p11
 
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE, cache=TRUE}
-plot_grid(p12, p13, p14, p15, labels = c("K", "L", "M", "N"))
+plot_grid(p12, p13, p14, p15, labels = c("K", "L", "M", "N")) 
 ```
 
 `A`:
@@ -445,7 +449,7 @@ plot_grid(p12, p13, p14, p15, labels = c("K", "L", "M", "N"))
 # Titled player counts by country
 
 ```{r, echo=FALSE, message=FALSE, echo=FALSE, cache=TRUE}
-p16
+p16 
 ```
 
 `CM`:
@@ -460,29 +464,19 @@ p16
 
 # Strongest countries by age group
 
-```{r, message=FALSE, warning=FALSE, echo=FALSE, cache=TRUE}
-p17
+```{r, message=FALSE, warning=FALSE, echo=FALSE, cache=TRUE, fig.height= 8}
+p17 
 ```
 
-`6-21`:
 
-`21-26`:
-
-`36-51`:
-
-`51-66`:
-
-`66-81`:
-
-`81-96`:
 
 \pagebreak
 
 
 # Age vs Rating of titled players (December 2019)
 
-```{r, echo=FALSE, cache=TRUE, fig.height= 6.5, fig.width= 6}
-p18
+```{r, echo=FALSE, cache=FALSE, fig.height= 6.5, fig.width= 6}
+p18 
 ```
 
 The most aesthetically pleasing graph to look at is the one above. It reveals a few aesthetically pleasing observations:
