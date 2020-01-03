@@ -50,7 +50,7 @@ From the [FIDE Download Rating List page (old)](http://ratings.fide.com/download
 
 # ♟️ Why did I do this?
 
-j![](https://imgflip.com/s/meme/Futurama-Fry.jpg)
+![](https://imgflip.com/s/meme/Futurama-Fry.jpg)
 
 I chose to work on this project because of several reasons:
 
