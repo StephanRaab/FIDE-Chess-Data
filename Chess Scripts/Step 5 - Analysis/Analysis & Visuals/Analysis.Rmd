@@ -259,25 +259,33 @@ ggplot(data = Active_player, aes(x = Date_numeric, y = avg_rating)) +
   geom_line(color = "#FC4E07", size = 1)+
   xlab("Year")+
   ylab("Average of Actives")+
-  dark_theme_gray()-> p7
+  dark_theme_gray()+
+  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .1), 
+        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .1))-> p7
 
 ggplot(data = Inactive_player, aes(x = Date_numeric, y = avg_rating)) + 
   geom_line(color = "#FC4E07", size = 1)+
   xlab("Year")+
   ylab("Average of Inactives")+
-  dark_theme_gray()-> p8
+  dark_theme_gray()+
+  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .1), 
+        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .1))-> p8
 
 ggplot(data = Active_player, aes(x = Date_numeric, y = sd_rating)) + 
   geom_line(color = "#FC4E07", size = 1)+
   xlab("Year")+
   ylab("Actives SD")+
-  dark_theme_gray()-> p9
+  dark_theme_gray()+
+  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .1), 
+        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .1))-> p9
 
 ggplot(data = Inactive_player, aes(x = Date_numeric, y = sd_rating)) + 
   geom_line(color = "#FC4E07", size = 1)+
   xlab("Year")+
   ylab("Inactives SD")+
-  dark_theme_gray()-> p10
+  dark_theme_gray()+
+  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .1), 
+        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .1))-> p10
 
 Country_diff%>%
 filter(Country %in% Notable)%>%
@@ -289,19 +297,25 @@ ggtitle("Gained/Lost over time")+
 xlab("Year")+
 ylab("Gained/Lost")+ 
 theme(legend.position = "none")+
-geom_hline(aes(yintercept = 0))-> p11
+geom_hline(aes(yintercept = 0))+
+  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .1), 
+        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .1))-> p11
 
 titled%>%
 ggplot(aes(x=Date_numeric, y= n, group=Title, color=Title)) +
 geom_line(size = 1.5)+
 dark_theme_gray()+
-xlab("Year")-> p12
+xlab("Year")+
+  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .1), 
+        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .1))-> p12
 
 titles_group%>%
 ggplot(aes(x=Date_numeric, y= n, group=w_titles, color=w_titles)) +
 geom_line(size = 1.5)+
 dark_theme_gray()+
-xlab("Year") -> p13
+xlab("Year")+
+  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .1), 
+        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .1)) -> p13
 
 titles_group %>%
 group_by(w_titles) %>%
@@ -309,27 +323,34 @@ mutate(Diff = n - lag(n))%>%
 ggplot(aes(x=Date_numeric, y= Diff, group=w_titles, color=w_titles)) +
 geom_line(size = 1.5)+
 xlab("Year")+
-dark_theme_gray()-> p14
+dark_theme_gray()+
+  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .1), 
+        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .1))-> p14
 
 Games%>%
 ggplot() +
 geom_line(aes(x=Date_numeric, y= roll), size = 1.5, color = "red")+
 dark_theme_gray()+
-xlab("Year") -> p15
+xlab("Year")+
+theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .1), 
+      panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .1)) -> p15
 
 titled_only%>%
 filter(Title %in% c("CM", "FM", "IM", "GM"))%>%
-ggplot(aes(x= Country, y =n, color = Country))+
+ggplot(aes(x= Country, y =n, fill = Country))+
     geom_bar(stat ="identity")+
     coord_flip()+
     xlab("Country")+
     ylab("Counts")+
     facet_wrap(~Title)+
     dark_theme_gray()+
-    theme(axis.text=element_text(size=6)) -> p16
+    theme(axis.text=element_text(size=6))+
+    theme(legend.position = "none")+
+    theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .1), 
+          panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .1)) -> p16
 
 strongest%>%
-ggplot(aes(x= Country, y= average_rating, color = Country))+
+ggplot(aes(x= Country, y= average_rating, fill = Country))+
     geom_bar(stat ="identity")+
     coord_flip()+
     xlab("Country")+
@@ -337,7 +358,10 @@ ggplot(aes(x= Country, y= average_rating, color = Country))+
     ggtitle("Highest rated age groups by country")+
     facet_wrap(~Age_groups, ncol = 2)+
     dark_theme_gray()+
-    theme(axis.text=element_text(size=6)) -> p17
+    theme(axis.text=element_text(size=6))+
+    theme(legend.position = "none")+
+    theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .1), 
+          panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .1)) -> p17
 
 dec19_titled%>%
 ggplot(aes(Age_Birthday, Rating, color=Title)) +
@@ -346,7 +370,9 @@ ggplot(aes(Age_Birthday, Rating, color=Title)) +
   dark_theme_gray()+
   theme(legend.position = "bottom")+
   xlab("Age")+
-  ylab("Rating")-> p18
+  ylab("Rating")+
+  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .1), 
+        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .1)) -> p18
 
 
 
@@ -403,13 +429,9 @@ plot_grid(p1, p4, p2, p5, p3, p6, labels = c("A", "B", "C", "D", "E", "F"), ncol
 
 The four charts above reveal the total count of FIDE's members over time. Chart `A` shows a smooth gradual increasing growth curve among total players. This may lead you to believe that more chess players are playing tournaments, but a player's **activity** is a better metric to go by. 
 
-**Activity** is defined by if a given FIDE player had played a rated FIDE game within the past 12 months. If we take this into account, charts `C` and `E` show how the total active & inactive player count increase over time. Both charts show a fairly linear trend over time, but from 2007 to 2010 in each graph, there was a noticeable drop off in the active player base and increase in the inactive player base. I have my doubts on if there is faulty data here because chart `A` shows no irregularity during that time. 
+**Activity** is defined by if a given FIDE player had played a rated FIDE game within the past 12 months. If we take this into account, charts `C` and `E` show how the total active & inactive player count increase over time. Both charts show a fairly linear trend over time, but from 2007 to 2010 in each graph, there was a noticeable drop off in the active player base and increase in the inactive player base. I have my doubts on if there is faulty data here because chart `A` shows no irregularity during that time. This dip may be due to the economic crash during that time, but I need to do more exploration on this topic before making any definitive statements. Exploring variation by country may also be worth doing.
 
-This dip may be due to the economic crash during that time, but I need to do more exploration on this topic before making any definitive statements. (Exploring the dip by country is future work)
-
-Charts `B`, `D` and `F` show the number of players gained and lost over time.
-
-The most relevant of the 3 graphs is `B` which shows several instances where total player counts dropped off. I genuinely don't if the data is faulty because of my doing or if FIDE is providing incomplete data sets based off of the charts.
+Charts `B`, `D` and `F` show the number of players gained and lost over time. The most relevant of the 3 graphs is `B` which shows several instances where total player counts dropped off. I genuinely don't if the data is faulty because of my doing or if FIDE is providing incomplete data sets based off of the charts.
 
 
 \pagebreak
