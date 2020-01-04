@@ -12,7 +12,7 @@ library(scales)
 library(knitr)
 library(zoo)
 library(ggdark)
-# library(gganimate)
+library(gganimate)
 ```
 
 
@@ -354,8 +354,6 @@ filter(Title %in% c("CM", "FM", "IM", "GM"))%>%
 ggplot(aes(x= Country, y =n, fill = Country))+
     geom_bar(stat ="identity")+
     coord_flip()+
-    xlab("Country")+
-    ylab("Counts")+
     facet_wrap(~Title, scales = "free")+
     dark_theme_gray()+
     theme(axis.text=element_text(size=6))+
@@ -366,7 +364,6 @@ strongest%>%
 ggplot(aes(x= Country, y= average_rating, fill = Country))+
     geom_bar(stat ="identity")+
     coord_flip()+
-    xlab("Country")+
     ylab("Average Rating")+
     ggtitle("Highest rated age groups by country")+
     facet_wrap(~Age_groups, ncol = 2, scales="free")+
@@ -470,7 +467,6 @@ This explains the steady decrease in average rating and increase in standard dev
 
 ```{r, echo = FALSE, warning=TRUE, message=TRUE, fig.height=9, fig.width=9, cache=FALSE}
 p11
- 
 ```
 
 
@@ -536,7 +532,7 @@ The most aesthetically pleasing graph to look at is the one above. It reveals a 
 
 - There is a slight negative correlation, among all titled player groups, between Age and Rating. 
 
-```{r, message=FALSE, warning=FALSE, echo=FALSE}
+```{r, message=FALSE, warning=FALSE, echo=FALSE, eval=FALSE}
 
 # FIDE%>%
 # filter(Rating > 1000, Rating < 2900)%>%
@@ -614,37 +610,44 @@ The most aesthetically pleasing graph to look at is the one above. It reveals a 
 # labs(x="Rating", y="Percentage of players in population")
 
 
-# library(ggplot2)
-# library(gganimate)
+# years_increment = FIDE$Date_numeric%>%
+#                   unique()%>%
+#                  .[seq(1, length(.), 1)]
 # 
 # all_titled <- FIDE%>%
 #               filter(Activity %in% Active,
-#                      Rating > 960, Rating < 2900, Title %in% c("FM", "IM", "GM"))%>%
-#               select(Title,  Rating, Date_numeric, Age_Birthday)%>%
+#                      Rating > 960, Rating < 2900, 
+#                      Title %in% c("FM", "IM", "GM"))%>%
+#               select(Title,  Rating, 
+#                      Date_numeric, Age_Birthday)%>%
 #               mutate(year = as.numeric(Age_Birthday))%>%
 #               filter(year > 1900, year < 2020)%>%
 #               mutate(Age = Date_numeric-year)%>%
 #               select(-Age_Birthday, -year)%>%
-#               na.omit()
-# 
-# years_increment = all_titled$Date_numeric%>%
-#                   unique()%>%
-#                  .[seq(1, length(.), 3)]
-# 
-# # find_hull <- function(df) df[chull(df$Age, df$Rating), ]
-# # hulls <-plyr::ddply(all_titled, "Title", find_hull)
-# 
+#               na.omit()%>%
+#               filter(Date_numeric %in% years_increment)
+
+
+
+# find_hull <- function(df) df[chull(df$Age, df$Rating), ]
+# hulls <-plyr::ddply(all_titled, "Title", find_hull)
+
 # all_titled%>%
-# filter(Date_numeric %in% years_increment)%>%
 # ggplot(aes(Age, Rating, color=Title))+ # fill = Title here
 # geom_point(alpha = .3)+
 # # geom_polygon(data = hulls, alpha = 0.5) +
+# dark_theme_bw()+
 # scale_fill_brewer(palette="Set1")+
-# theme(legend.position = "right", panel.grid.major = element_blank(), panel.grid.minor = element_blank())+
+# theme(legend.position = "bottom")+
 # ggtitle("Age vs Rating")+
 # xlab("Age")+
 # ylab("Rating")+
 # labs(title = 'Year: {frame_time}')+
 # transition_time(Date_numeric)
-
+# 
+# 
+# ggplot(iris, aes(Sepal.Width, Petal.Width)) +
+# geom_point() +
+# labs(title = "{closest_state}") +
+# transition_states(Species, transition_length = 3, state_length = 1)
 ```
