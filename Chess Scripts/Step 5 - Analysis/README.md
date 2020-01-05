@@ -13,6 +13,8 @@ If you want to:
 
 # Visuals
 
+The visual below is an experimental visualization I'm working on improving. It is **not** included in the Tutorial file.
+
 #### FIDE player (Active) rating distribution of Males & Females over time.
 
 ![](https://github.com/AnujDahiya24/FIDE-Chess-Data/blob/master/Chess%20Scripts/Step%206%20-%20Experimental%20work/Experiments/Men_women_gif.gif)
