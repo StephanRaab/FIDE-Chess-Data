@@ -356,7 +356,11 @@ ggplot(aes(x= Country, y =n, fill = Country))+
     coord_flip()+
     facet_wrap(~Title, scales = "free")+
     dark_theme_gray()+
+    xlab("")+ylab("")+
     theme(axis.text=element_text(size=6))+
+    theme(panel.grid.major = element_blank(), 
+          panel.grid.minor = element_blank(),
+          panel.background = element_blank())+
     theme(legend.position = "none")-> p16
 
 
@@ -497,13 +501,13 @@ plot_grid(p12, p13, p14, p15, labels = c("K", "L", "M", "N"))
 p16 
 ```
 
-`CM`:
+Notable observations:
 
-`FM`:
+- Clearly, among `FM`, `IM` and `GM` players, Russia has the most titled players by a large margin. This is not surprising because of Russia's longstanding history (USSR and Soviet Union) of chess.
 
-`GM`:
+- Germany is a clear 2nd amongst `FM`, `IM` and `GM` players. They also lead the pack in `CM` players. This is surprising to me since I've never thought of Germany as being a bastion of strong players. 
 
-`IM`:
+- Every other country lags behind these top-tier powerhouses.
 
 \pagebreak
 
