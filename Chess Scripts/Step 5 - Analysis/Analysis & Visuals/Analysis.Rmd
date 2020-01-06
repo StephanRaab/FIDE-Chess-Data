@@ -16,7 +16,7 @@ library(gganimate)
 ```
 
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, eval=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE, eval=TRUE}
 path = "~/GitHub/FIDE/Chess Scripts/Step 4 - Cleaning/Cleaned csvs/"
 opts_knit$set(root.dir = path)
 temp = list.files(path = path, pattern = "*.csv")
@@ -35,7 +35,8 @@ paste("20", substr(temp, 4, 5), "-", ., "-", "01", sep = "")-> month_num
 
 for(i in 1:length(proper_temp)) {
 assign(month_num[i], fread(proper_temp[i], sep = "*", data.table = FALSE, 
-                           strip.white = TRUE, blank.lines.skip = TRUE))
+                           strip.white = TRUE, blank.lines.skip = TRUE,
+                           nThread= parallel::detectCores()))
 }
 
 #statement below takes a very long time to run because of rbindlist()
@@ -95,10 +96,10 @@ Notable <- Country_diff%>%
            unique()
 
 w_old = c("WCM", "WFM", "WGM", "WIM")
-w_new = rep("W Title", length(w_old))
+w_new = rep("W", length(w_old))
 
 FIDE%>%
-filter(Title %in% Titles_only)%>%
+filter(Title %in% Titles_only, Activity%in% Active)%>%
 group_by(Date_numeric, Title)%>%
 tally()%>%
 mutate(w_titles = c(w_new, Title)[match(Title, c(w_old, Title))])-> titled
@@ -200,8 +201,9 @@ ggplot(data = All_players, aes(x = Date_numeric, y = total_count)) +
   ylab("# of players")+
   dark_theme_gray()+
   scale_y_continuous(labels = comma)+
-  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .05), 
-        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .05))-> p1
+  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .01), 
+        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .01),
+          panel.background = element_blank())-> p1
 
 ggplot(data = Active_player, aes(x = Date_numeric, y = total_count)) + 
   geom_line(color = "#FC4E07", size = 1)+
@@ -215,8 +217,9 @@ ggplot(data = Active_player, aes(x = Date_numeric, y = total_count)) +
   #          label = "Economic crash of 2008 (the larger chasm)", size = 5) +
   dark_theme_gray()+
   scale_y_continuous(labels = comma)+
-  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .05), 
-        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .05)) -> p2
+  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .01), 
+        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .01),
+          panel.background = element_blank()) -> p2
 
 ggplot(data = Inactive_player, aes(x = Date_numeric, y = total_count)) + 
   geom_line(color = "#FC4E07", size = 1)+
@@ -230,8 +233,9 @@ ggplot(data = Inactive_player, aes(x = Date_numeric, y = total_count)) +
   #          label = "Is this corrupted data?", size = 5)+
   dark_theme_gray()+
   scale_y_continuous(labels = comma)+
-  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .05), 
-        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .05))-> p3
+  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .01), 
+        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .01),
+          panel.background = element_blank())-> p3
 
 ggplot(data = All_players, aes(x = Date_numeric, y = gain_loss)) + 
   geom_line(color = "#FC4E07", size = 1)+
@@ -242,8 +246,9 @@ ggplot(data = All_players, aes(x = Date_numeric, y = gain_loss)) +
   dark_theme_gray()+
   theme(plot.title = element_text(size = 6, face = "bold"))+
   scale_y_continuous(labels = comma)+
-  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .05), 
-        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .05))-> p4
+  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .01), 
+        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .01),
+          panel.background = element_blank())-> p4
 
 ggplot(data = Active_player, aes(x = Date_numeric, y = gain_loss)) + 
   geom_line(color = "#FC4E07", size = 1)+
@@ -254,8 +259,9 @@ ggplot(data = Active_player, aes(x = Date_numeric, y = gain_loss)) +
   dark_theme_gray()+
   theme(plot.title = element_text(size = 6, face = "bold"))+
   scale_y_continuous(labels = comma)+
-  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .05), 
-        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .05))-> p5
+  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .01), 
+        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .01),
+          panel.background = element_blank())-> p5
 
 ggplot(data = Inactive_player, aes(x = Date_numeric, y = gain_loss)) + 
   geom_line(color = "#FC4E07", size = 1)+
@@ -266,40 +272,45 @@ ggplot(data = Inactive_player, aes(x = Date_numeric, y = gain_loss)) +
   dark_theme_gray()+
   theme(plot.title = element_text(size = 6, face = "bold"))+
   scale_y_continuous(labels = comma)+
-  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .05), 
-        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .05))-> p6
+  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .01), 
+        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .01),
+          panel.background = element_blank())-> p6
 
 ggplot(data = Active_player, aes(x = Date_numeric, y = avg_rating)) + 
   geom_line(color = "#FC4E07", size = 1)+
   xlab("Year")+
   ylab("Average of Actives")+
   dark_theme_gray()+
-  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .05), 
-        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .05))-> p7
+  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .01), 
+        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .01),
+          panel.background = element_blank())-> p7
 
 ggplot(data = Inactive_player, aes(x = Date_numeric, y = avg_rating)) + 
   geom_line(color = "#FC4E07", size = 1)+
   xlab("Year")+
   ylab("Average of Inactives")+
   dark_theme_gray()+
-  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .05), 
-        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .05))-> p8
+  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .01), 
+        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .01),
+          panel.background = element_blank())-> p8
 
 ggplot(data = Active_player, aes(x = Date_numeric, y = sd_rating)) + 
   geom_line(color = "#FC4E07", size = 1)+
   xlab("Year")+
   ylab("Actives SD")+
   dark_theme_gray()+
-  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .05), 
-        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .05))-> p9
+  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .01), 
+        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .01),
+          panel.background = element_blank())-> p9
 
 ggplot(data = Inactive_player, aes(x = Date_numeric, y = sd_rating)) + 
   geom_line(color = "#FC4E07", size = 1)+
   xlab("Year")+
   ylab("Inactives SD")+
   dark_theme_gray()+
-  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .05), 
-        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .05))-> p10
+  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .01), 
+        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .01),
+          panel.background = element_blank())-> p10
 
 Country_diff%>%
 filter(Country %in% Notable)%>%
@@ -312,42 +323,52 @@ xlab("Year")+
 ylab("Gained/Lost")+ 
 theme(legend.position = "none")+
 geom_hline(aes(yintercept = 0))+
-  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .05), 
-        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .05))-> p11
+  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .01), 
+        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .01),
+          panel.background = element_blank())-> p11
 
 titled%>%
 ggplot(aes(x=Date_numeric, y= n, group=Title, color=Title)) +
 geom_line(size = 1.5)+
 dark_theme_gray()+
 xlab("Year")+
-  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .05), 
-        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .05))-> p12
+  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .01), 
+        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .01),
+          panel.background = element_blank())-> p12
 
 titles_group%>%
 ggplot(aes(x=Date_numeric, y= n, group=w_titles, color=w_titles)) +
 geom_line(size = 1.5)+
 dark_theme_gray()+
 xlab("Year")+
-  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .05), 
-        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .05)) -> p13
+ylab("# of players")+
+labs(color="")+
+theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .01), 
+      panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .01),
+          panel.background = element_blank()) -> p13
 
 titles_group %>%
 group_by(w_titles) %>%
 mutate(Diff = n - lag(n))%>%
+filter(w_titles != "W")%>%
 ggplot(aes(x=Date_numeric, y= Diff, group=w_titles, color=w_titles)) +
-geom_line(size = 1.5)+
-xlab("Year")+
+geom_line(size = 1)+
+labs(x = "Year", y = "Gained/Lost", color="")+
 dark_theme_gray()+
-  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .05), 
-        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .05))-> p14
+facet_wrap(~w_titles, ncol  = 2, scales = "free")+
+  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .01), 
+        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .01),
+        legend.position = "none",
+          panel.background = element_blank())-> p14
 
 Games%>%
 ggplot() +
 geom_line(aes(x=Date_numeric, y= roll), size = 1.5, color = "red")+
 dark_theme_gray()+
 xlab("Year")+
-theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .05), 
-      panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .05)) -> p15
+theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .01), 
+      panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .01),
+          panel.background = element_blank()) -> p15
 
 titled_only%>%
 filter(Title %in% c("CM", "FM", "IM", "GM"))%>%
@@ -373,7 +394,8 @@ ggplot(aes(x= Country, y= average_rating, fill = Country))+
     facet_wrap(~Age_groups, ncol = 2, scales="free")+
     dark_theme_gray()+
     theme(axis.text=element_text(size=6))+
-    theme(legend.position = "none")-> p17
+    theme(legend.position = "none",
+          panel.background = element_blank())-> p17
 
 dec19_titled%>%
 ggplot(aes(Age_Birthday, Rating, color=Title)) +
@@ -383,8 +405,9 @@ ggplot(aes(Age_Birthday, Rating, color=Title)) +
   theme(legend.position = "bottom")+
   xlab("Age")+
   ylab("Rating")+
-  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .05), 
-        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .05)) -> p18
+  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .01), 
+        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .01),
+          panel.background = element_blank()) -> p18
 
 # dec19_titled%>%
 # ggplot(aes(x = Age_Birthday, y = Rating, fill = Title)) +
@@ -480,18 +503,28 @@ p11
 
 # Titled player count over time
 
-
 ```{r, message=FALSE, warning=FALSE, echo=FALSE, cache=FALSE}
-plot_grid(p12, p13, p14, p15, labels = c("K", "L", "M", "N")) 
+p13
 ```
 
-`A`:
+The plot above shows a few interesting trends (W = All women's titles):
 
-`B`:
+- All titled player groups have significantly increased in size over the past 20 years
 
-`C`:
+- Around both 2002 and 2007, there were significant dips in all categories, except in `GM`s and `CM`s. 
 
-`D`:
+- There are about as many `GM`s as `CM`s. It goes to show how stigmatized the CM title is.
+
+
+\pagebreak
+
+
+# Titled players gained/lost over time
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, cache=FALSE}
+p14
+```
+
 
 \pagebreak
 
