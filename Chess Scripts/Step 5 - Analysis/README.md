@@ -1,5 +1,18 @@
 # 📚 Introduction
 
+Welcome to the analytical portion of this repository. There are several topics explored here, but countless more to explore over time. 
+
+A few examples of visuals in the `Tutorial` file below are:
+
+- Total player counts over time
+- Total players gained/lost over time
+- Rating stability graphs
+- Total player gained/lost over time by country (Countries with extreme values)
+- Total titled player counts over time
+- Total titled player counts by country (Latest month)
+- Strongest countries by age group
+- Age vs Rating by title (Latest month)
+
 If you want to: 
 1. View the process of the data visualization, then see the `Tutorial` below
 2. Run the script yourself, then you should download the `R-Markdown file` below and run it on your local machine.
@@ -12,6 +25,8 @@ If you want to:
 ---
 
 # Visuals
+
+Below is an experimental visualization I'm working on improving. It is **not** included in the Tutorial file: it is in the `Experiments` folder in `Step 6`.
 
 #### FIDE player (Active) rating distribution of Males & Females over time.
 
