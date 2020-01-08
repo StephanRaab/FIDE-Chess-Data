@@ -2,27 +2,7 @@
 
 ![FIDE](https://images.hamodia.com/hamod-uploads/2017/11/27160118/download.jpg) ![calendar](https://print-a-calendar.com/printable-calendars/one-page-year-thumbnail.png)
 
-This repository is to help all chess players utilize and work with [public chess profile data](http://ratings.fide.com/download_lists.phtml) provided by the `FIDE` organization (through December 2019). FIDE's website is cumbersome, at times, to work with and has limited visuals about chess players. My hope is that this project helps users avoid the pain of using their website.
-
----
-
-# 🧬 Lifecycle of data
-
-![](https://tygabox.com/wp-content/uploads/2019/04/lifecycle-tbs-colors.jpg)
-
-The process of acquiring the data through visualizing it is divided and all of it is done through R and Python. Please click each step below for how I made the data usable.
-
-1. [Download the FIDE files](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%201%20-%20Download)
-
-2. [Reformating the text files](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%202%20-%20Reformat)
-
-3. [Scraping country code data](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%203%20-%20FIDE%20Country%20Codes)
- 
-4. [Cleaning the data](https://github.com/AnujDahiya24/FIDE-Chess-Data/tree/master/Chess%20Scripts/Step%204%20-%20Cleaning)
-
-5. [Visualizing the data](https://github.com/AnujDahiya24/FIDE-Chess-Data/tree/master/Chess%20Scripts/Step%205%20-%20Analysis)
-
-6. [Future Work](https://github.com/AnujDahiya24/FIDE-Chess-Data/tree/master/Chess%20Scripts/Step%206%20-%20Experimental%20work)
+This repository is to help all chess players utilize and work with [public chess profile data](http://ratings.fide.com/download_lists.phtml) provided by the `FIDE` organization (through December 2019). FIDE's website can be cumbersome to work with and has limited visuals about chess players. My hope is that this project helps users avoid the pain of using their website and provide interesting insights to the chess community.
 
 ---
 
@@ -70,9 +50,26 @@ From the [FIDE Download Rating List page (old)](http://ratings.fide.com/download
 
 ---
 
-# ♟️ Why did I do this?
+# 🧬 Lifecycle of data
 
-![](https://imgflip.com/s/meme/Futurama-Fry.jpg)
+
+
+The process of acquiring the data through visualizing it is divided and all of it is done through R and Python. Please click each step below for how I made the data usable.
+
+| <img src="https://tygabox.com/wp-content/uploads/2019/04/lifecycle-tbs-colors.jpg" width="100"> | <img src="https://seohackercdn-seohacker.netdna-ssl.com/wp-content/uploads/2011/07/Link-Searching.jpg" width = "90"> |
+| --- | --- |
+|Step #1| [Download the data](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%201%20-%20Download)|
+|Step #2| [Reformating the data](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%202%20-%20Reformat)|
+|Step #3| [Scraping country data](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%203%20-%20FIDE%20Country%20Codes)|
+|Step #4| [Cleaning the data](https://github.com/AnujDahiya24/FIDE-Chess-Data/tree/master/Chess%20Scripts/Step%204%20-%20Cleaning)|
+|Step #5| [Visualizing the data](https://github.com/AnujDahiya24/FIDE-Chess-Data/tree/master/Chess%20Scripts/Step%205%20-%20Analysis)|
+|Step #6| [Future Work](https://github.com/AnujDahiya24/FIDE-Chess-Data/tree/master/Chess%20Scripts/Step%206%20-%20Experimental%20work)|
+
+---
+
+# ♟️ Why did I do this? 
+
+<!--- <img src = "https://imgflip.com/s/meme/Futurama-Fry.jpg" height = "50"> --->
 
 I chose to work on this project because of several reasons:
 
