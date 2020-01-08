@@ -58,7 +58,7 @@ From the [FIDE Download Rating List page (old)](http://ratings.fide.com/download
 
 The process of acquiring the data through visualizing it is divided and all of it is done through R and Python. Please click each step below for how I made the data usable.
 
-| <img src="https://tygabox.com/wp-content/uploads/2019/04/lifecycle-tbs-colors.jpg" width="100"> | <img src="https://seohackercdn-seohacker.netdna-ssl.com/wp-content/uploads/2011/07/Link-Searching.jpg" width = "90"> |
+| <img src="https://tygabox.com/wp-content/uploads/2019/04/lifecycle-tbs-colors.jpg" width="60"> | <img src="https://seohackercdn-seohacker.netdna-ssl.com/wp-content/uploads/2011/07/Link-Searching.jpg" width = "50"> |
 | --- | --- |
 |Step #1| [Download the data](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%201%20-%20Download)|
 |Step #2| [Reformating the data](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%202%20-%20Reformat)|
