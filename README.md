@@ -1,4 +1,6 @@
-# 📚 Introduction <img src="https://images.hamodia.com/hamod-uploads/2017/11/27160118/download.jpg" width="50">
+# 📚 Introduction 
+
+<!--- <img src="https://images.hamodia.com/hamod-uploads/2017/11/27160118/download.jpg" width="50"> --->
 
 <!--- ![calendar](https://print-a-calendar.com/printable-calendars/one-page-year-thumbnail.png) --->
 
