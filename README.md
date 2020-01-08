@@ -2,14 +2,36 @@
 
 ![FIDE](https://images.hamodia.com/hamod-uploads/2017/11/27160118/download.jpg) ![calendar](https://print-a-calendar.com/printable-calendars/one-page-year-thumbnail.png)
 
-This repository is to help all chess players utilize and work with [public chess profile data](http://ratings.fide.com/download_lists.phtml) provided by the `FIDE` organization (through December 2019). FIDE's website is cumbersome, at times, to work with and has limited visuals about chess players.
+This repository is to help all chess players utilize and work with [public chess profile data](http://ratings.fide.com/download_lists.phtml) provided by the `FIDE` organization (through December 2019). FIDE's website is cumbersome, at times, to work with and has limited visuals about chess players. My hope is that this project helps users avoid the pain of using their website.
 
+---
+
+# 🧬 Lifecycle of data
+
+![](https://tygabox.com/wp-content/uploads/2019/04/lifecycle-tbs-colors.jpg)
+
+The process of acquiring the data through visualizing it is divided and all of it is done through R and Python. Please click each step below for how I made the data usable.
+
+1. [Download the FIDE files](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%201%20-%20Download)
+
+2. [Reformating the text files](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%202%20-%20Reformat)
+
+3. [Scraping country code data](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%203%20-%20FIDE%20Country%20Codes)
+ 
+4. [Cleaning the data](https://github.com/AnujDahiya24/FIDE-Chess-Data/tree/master/Chess%20Scripts/Step%204%20-%20Cleaning)
+
+5. [Visualizing the data](https://github.com/AnujDahiya24/FIDE-Chess-Data/tree/master/Chess%20Scripts/Step%205%20-%20Analysis)
+
+6. [Future Work](https://github.com/AnujDahiya24/FIDE-Chess-Data/tree/master/Chess%20Scripts/Step%206%20-%20Experimental%20work)
+
+---
 
 # 🗺️ Where is the data?
 
 The data is located in this [folder](https://github.com/AnujDahiya24/FIDE-Chess-Data/tree/master/Chess%20Scripts/Step%204%20-%20Cleaning/Cleaned%20csvs).
 
 ---
+
 # 📊 Example data
 
 An example of what the FIDE **Standard** Rating data looks like in December 2019:  
@@ -64,23 +86,13 @@ I chose to work on this project because of several reasons:
 
 ---
 
-# 🧬 Lifecycle of data
+# ✂️ Clone repo
 
-![](https://tygabox.com/wp-content/uploads/2019/04/lifecycle-tbs-colors.jpg)
+You can clone this repo in Git Bash with the following command
 
-The process of acquiring the data through visualizing it is divided and all of it is done through R and Python. Please click each step below for how I made the data usable.
-
-1. [Download the FIDE files](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%201%20-%20Download)
-
-2. [Reformating the text files](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%202%20-%20Reformat)
-
-3. [Scraping country code data](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%203%20-%20FIDE%20Country%20Codes)
- 
-4. [Cleaning the data](https://github.com/AnujDahiya24/FIDE-Chess-Data/tree/master/Chess%20Scripts/Step%204%20-%20Cleaning)
-
-5. [Visualizing the data](https://github.com/AnujDahiya24/FIDE-Chess-Data/tree/master/Chess%20Scripts/Step%205%20-%20Analysis)
-
-6. [Future Work](https://github.com/AnujDahiya24/FIDE-Chess-Data/tree/master/Chess%20Scripts/Step%206%20-%20Experimental%20work)
+```
+$ git clone https://github.com/AnujDahiya24/FIDE-Chess-Data
+```
 
 ---
 
