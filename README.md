@@ -1,6 +1,6 @@
 # 📚 Introduction 
 
-<img align="right" src="https://images.hamodia.com/hamod-uploads/2017/11/27160118/download.jpg" width="200">
+<img align="right" src="https://images.hamodia.com/hamod-uploads/2017/11/27160118/download.jpg" width="250">
 
 <!--- ![calendar](https://print-a-calendar.com/printable-calendars/one-page-year-thumbnail.png) --->
 
