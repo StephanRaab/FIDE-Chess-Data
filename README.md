@@ -6,6 +6,8 @@
 
 This repository is to help all chess players utilize and work with [public chess profile data](http://ratings.fide.com/download_lists.phtml) provided by the `FIDE` organization (through December 2019). FIDE's website can be cumbersome to work with and has limited visuals about chess players. My hope is that this project helps users avoid the pain of using their website and provide interesting insights to the chess community.
 
+The project is divided into 6 steps, which are outlined [here](https://github.com/AnujDahiya24/FIDE-Chess-Data#-lifecycle-of-data).
+
 ---
 
 # 🗺️ Where is the data?
@@ -75,7 +77,7 @@ The process of acquiring the data through visualizing it is divided and all of i
 
 I chose to work on this project because of several reasons:
 
-- FIDE's publically available data is in an unorganized layout. There is no **Download** all button to acquire all of their data. FIDE also doesn't publically list data prior to February 2015 on the new download page when there is actually data going back as early as 2001. As a result, site visitors may find FIDE's website frusterating to work with and I wanted to help overcome their struggles.
+- FIDE's publically available data is in an unorganized layout. There is no "download all datasets" button to acquire all of their data. FIDE also doesn't publically list data prior to February 2015 on the new download page when there is actually data going back as early as 2001. As a result, site visitors may find FIDE's website frusterating to work with and I wanted to help overcome their struggles.
 
 - Chess players like to see visuals of themselves, friends, competitors, top players and players across various demographics. I wanted to provide these visuals.
 
