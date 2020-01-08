@@ -44,6 +44,8 @@ An example of what the FIDE **Standard** Rating data looks like in December 2019
 
 From the [FIDE Download Rating List page (old)](http://ratings.fide.com/download.phtml), we can understand each column a bit more:
 
+<center>
+
 | Column name | Meaning | Example |
 | --- | :--- | --- |
 | ID_NUMBER | a FIDE player's ID | 123456 |
@@ -58,6 +60,8 @@ From the [FIDE Download Rating List page (old)](http://ratings.fide.com/download
 | K | a FIDE player's K-factor | 40 |
 | Birthday | a FIDE player's birth year | 1993 |
 | Flag | a FIDE player's level of activity | i, wi |
+
+</center>
 
 ###### ** IA - International Arbiter,  FT - FIDE Trainer, NI - National Instructor
 ###### *** Fide Online Arena
