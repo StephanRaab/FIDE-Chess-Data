@@ -1,6 +1,6 @@
-# 📚 Introduction
+# 📚 Introduction <img src="https://images.hamodia.com/hamod-uploads/2017/11/27160118/download.jpg" width="50">
 
-![FIDE](https://images.hamodia.com/hamod-uploads/2017/11/27160118/download.jpg) ![calendar](https://print-a-calendar.com/printable-calendars/one-page-year-thumbnail.png)
+<!--- ![calendar](https://print-a-calendar.com/printable-calendars/one-page-year-thumbnail.png) --->
 
 This repository is to help all chess players utilize and work with [public chess profile data](http://ratings.fide.com/download_lists.phtml) provided by the `FIDE` organization (through December 2019). FIDE's website can be cumbersome to work with and has limited visuals about chess players. My hope is that this project helps users avoid the pain of using their website and provide interesting insights to the chess community.
 
