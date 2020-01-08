@@ -10,7 +10,7 @@ The project is divided into 6 steps, which are outlined [here](https://github.co
 
 ---
 
-<img align="right" src = "https://cdn3.iconfinder.com/data/icons/soda-red/512/new-folder.png" width="250">
+<img align="right" src = "https://cdn0.iconfinder.com/data/icons/Free-Icons-Shimmer-01-Creative-Freedom/256/folder.png" width="200">
 
 # 🗺️ Where is the data?
 
