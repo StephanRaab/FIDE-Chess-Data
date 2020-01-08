@@ -88,7 +88,7 @@ I chose to work on this project because of several reasons:
 
 # ✂️ Clone repo
 
-You can clone this repo in Git Bash with the following command
+You can clone this repo by downloading it via Git Bash with the following:
 
 ```
 $ git clone https://github.com/AnujDahiya24/FIDE-Chess-Data
