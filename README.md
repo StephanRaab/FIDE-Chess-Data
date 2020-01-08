@@ -10,14 +10,15 @@ The project is divided into 6 steps, which are outlined [here](https://github.co
 
 ---
 
-# 🗺️ Where is the data?
+<img align="right" src = "https://cdn3.iconfinder.com/data/icons/soda-red/512/new-folder.png" width="100">
 
-<img align="right" src = "https://cdn3.iconfinder.com/data/icons/soda-red/512/new-folder.png" width="50">
+# 🗺️ Where is the data?
 
 The data is located in this [folder](https://github.com/AnujDahiya24/FIDE-Chess-Data/tree/master/Chess%20Scripts/Step%204%20-%20Cleaning/Cleaned%20csvs). The folder contains over a hundred `.csv` files that can be analyzed.
 
 
 ---
+
 
 # 📊 Example data
 
