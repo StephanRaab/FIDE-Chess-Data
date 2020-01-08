@@ -13,10 +13,11 @@ library(knitr)
 library(zoo)
 library(ggdark)
 library(gganimate)
+library(ggthemes)
 ```
 
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, eval=TRUE}
+```{r echo=FALSE, message=FALSE, warning=FALSE, eval=FALSE}
 path = "~/GitHub/FIDE/Chess Scripts/Step 4 - Cleaning/Cleaned csvs/"
 opts_knit$set(root.dir = path)
 temp = list.files(path = path, pattern = "*.csv")
@@ -91,7 +92,7 @@ Country_diff <- All_countries%>%
 
 
 Notable <- Country_diff%>%
-           filter(abs(Diff) > 600)%>%
+           filter(abs(Diff) > 580)%>%
            .$Country%>%
            unique()
 
@@ -171,6 +172,14 @@ dec19_titled <- FIDE%>%
                 mutate(Age_Birthday = 2020 - as.numeric(Age_Birthday))%>%
                 filter(Age_Birthday > 0, Age_Birthday < 120,
                       Rating > 950, !Title %in% c(""), Womens_Title == "")
+
+
+hist_data <- FIDE%>%
+             filter(Date_numeric == max(Date_numeric), 
+                    Activity %in% Active,
+                    as.numeric(Age_Birthday) > 1900)%>%
+             select(Sex, Rating)
+             
 
 #write dataframe to folder
 
@@ -304,17 +313,17 @@ ggplot(data = Inactive_player, aes(x = Date_numeric, y = sd_rating)) +
 
 Country_diff%>%
 filter(Country %in% Notable)%>%
-ggplot() +
+ggplot()+
 geom_line(aes(x = Date_numeric, y = Diff, colour = Country))+
-dark_theme_gray()+
+dark_theme_classic()+
 facet_wrap(~Country)+
 ggtitle("Gained/Lost over time")+
 xlab("Year")+
 ylab("Gained/Lost")+ 
 theme(legend.position = "none")+
 geom_hline(aes(yintercept = 0))+
-  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .01), 
-        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .01))-> p11
+  theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .05), 
+        panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .05))-> p11
 
 titled%>%
 ggplot(aes(x=Date_numeric, y= n, group=Title, color=Title)) +
@@ -350,7 +359,7 @@ facet_wrap(~w_titles, ncol  = 2, scales = "free")+
 Games%>%
 ggplot() +
 geom_line(aes(x=Date_numeric, y= roll), size = 1.5, color = "red")+
-dark_theme_gray()+
+dark_theme_classic()+
 xlab("Year")+
 theme(panel.grid.major = element_line(linetype = 'solid',colour = "white", size = .01), 
       panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .01)) -> p15
@@ -386,7 +395,7 @@ dec19_titled%>%
 ggplot(aes(Age_Birthday, Rating, color=Title)) +
   geom_point(alpha = .3) +
   scale_fill_brewer(palette="Set1") +
-  dark_theme_gray()+
+  dark_theme_classic()+
   theme(legend.position = "bottom")+
   xlab("Age")+
   ylab("Rating")+
@@ -394,12 +403,26 @@ ggplot(aes(Age_Birthday, Rating, color=Title)) +
         panel.grid.minor = element_line(linetype = 'solid',colour = "white", size = .01),
         panel.background = element_blank()) -> p18
 
+
+hist_data%>%
+mutate(Sex = recode_factor(Sex, "M" = "Male", "F" = "Female"))%>%
+magrittr::set_colnames(c("Male or Female?", "Rating"))%>%
+ggplot(aes(Rating, fill = `Male or Female?`, colour = `Male or Female?`)) +
+geom_density(alpha = .6)+
+labs(x = "", y = "")+
+dark_theme_classic()+
+theme(panel.background = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks.y = element_blank(),
+      legend.position = c(.8, .6)) -> p19
+
+
 # dec19_titled%>%
 # ggplot(aes(x = Age_Birthday, y = Rating, fill = Title)) +
 #   stat_density_2d(geom = "polygon", 
 #                   aes(alpha = ..level..),
 #                   bins = 3)+
-#   dark_theme_gray()
+#   dark_theme_classic()
 
 # find_hull <- function(df) df[chull(df$Age, df$Rating), ]
 # hulls <-plyr::ddply(all_titled, "Title", find_hull)
@@ -463,7 +486,7 @@ Charts `B`, `D` and `F` show the number of players gained and lost over time. Th
 
 # Rating stability over time (misleading)
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=FALSE, fig.height=10.5, fig.width= 9}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=FALSE}
 plot_grid(p7, p8, p9, p10, labels = c("G", "H", "I", "J")) 
 ```
 
@@ -480,7 +503,10 @@ This explains the steady decrease in average rating and increase in standard dev
 ```{r, echo = FALSE, warning=TRUE, message=TRUE, fig.height=9, fig.width=9, cache=FALSE}
 p11
 ```
+ 
+A consistent theme we will see in every graph is a potential corruption of data. The graph above displays the of players gained and lost over time by country. 
 
+- Bulgaria, Finland, Germany, Serbia and Montenagro, and the United State of America saw unusual spikes & dips at various junctures (2002, 2007, 2017)
 
 
 \pagebreak
@@ -510,6 +536,7 @@ The plot above shows a few interesting trends (W = All women's titles):
 p14
 ```
 
+The graph above is graphs the rolling difference of titled player counts over time. As we saw before, there are a few noticeable dips in the graph. Most notably they occur around 2002, 2008 and 2010 in varying degrees. 
 
 \pagebreak
 
@@ -529,13 +556,13 @@ Notable observations:
 
 \pagebreak
 
-# Strongest countries by age group
+# Strongest countries by age group (Work in progress)
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE, cache=FALSE, fig.height= 8}
 p17 
 ```
 
-
+This plot would be substantially better at showing relative strengths amnong countries if I could scale it differently. This will adjusted in future iterations, probably through scaling.
 
 \pagebreak
 
@@ -553,6 +580,17 @@ The most aesthetically pleasing graph to look at is the one above. It reveals a 
 - CMs and FMs vary greatly across rating categories because it has become much easier for lower rated players to acquire titles in youth tournaments and via interzonal tournaments.
 
 - There is a slight negative correlation, among all titled player groups, between Age and Rating. 
+
+
+# Males/Females rating distributions
+
+```{r, echo=FALSE, cache=FALSE}
+p19
+```
+
+
+Above is a plot showing the stark difference between male and female rating distributions. I'll look to explore why the female rating distribution is sharply skewed right compared to their male counterparts. 
+
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE, eval=FALSE}
 
