@@ -71,8 +71,6 @@ The lifecycle of the data is divided into 6 steps (below). All 6 steps are done 
 
 You can click each step below for more information.
 
-<img align="right" src="https://tygabox.com/wp-content/uploads/2019/04/lifecycle-tbs-colors.jpg" width="300">
-
 | <img src="http://shs-seniorproject.weebly.com/uploads/1/9/5/4/19541383/3steps-20140326042407248_orig.jpg" width="60"> | <img src="https://seohackercdn-seohacker.netdna-ssl.com/wp-content/uploads/2011/07/Link-Searching.jpg" width = "50"> |
 | --- | --- |
 |Step #1| [Download the data](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%201%20-%20Download)|
