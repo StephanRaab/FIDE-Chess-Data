@@ -10,13 +10,17 @@ The project is divided into 6 steps, which are outlined [here](https://github.co
 
 ---
 
-<img align="right" src = "https://cdn0.iconfinder.com/data/icons/Free-Icons-Shimmer-01-Creative-Freedom/256/folder.png" width="200">
+<img align="right" src = "https://cdn0.iconfinder.com/data/icons/Free-Icons-Shimmer-01-Creative-Freedom/256/folder.png" width="250">
 
 # 🗺️ Where is the data?
 
 The data is located in this [folder](https://github.com/AnujDahiya24/FIDE-Chess-Data/tree/master/Chess%20Scripts/Step%204%20-%20Cleaning/Cleaned%20csvs). 
 
 The folder contains over a hundred `.csv` files that can be analyzed.
+
+If you have suggestions on different data formats you'd like, please state them in [Issues](https://github.com/AnujDahiya24/FIDE/issues).
+
+Other than that, feel free to use it as you see fit.
 
 
 ---
@@ -60,16 +64,19 @@ From the [FIDE Download Rating List page (old)](http://ratings.fide.com/download
 
 ---
 
+
 # 🧬 Lifecycle of data
 
+The lifecycle of the data is divided into 6 steps (below). All 6 steps are done through R and Python. 
 
+You can click each step below for more information.
 
-The process of acquiring the data through visualizing it is divided and all of it is done through R and Python. Please click each step below for how I made the data usable.
+<img align="right" src="https://tygabox.com/wp-content/uploads/2019/04/lifecycle-tbs-colors.jpg" width="300">
 
-| <img src="https://tygabox.com/wp-content/uploads/2019/04/lifecycle-tbs-colors.jpg" width="60"> | <img src="https://seohackercdn-seohacker.netdna-ssl.com/wp-content/uploads/2011/07/Link-Searching.jpg" width = "50"> |
+| <img src="http://shs-seniorproject.weebly.com/uploads/1/9/5/4/19541383/3steps-20140326042407248_orig.jpg" width="60"> | <img src="https://seohackercdn-seohacker.netdna-ssl.com/wp-content/uploads/2011/07/Link-Searching.jpg" width = "50"> |
 | --- | --- |
 |Step #1| [Download the data](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%201%20-%20Download)|
-|Step #2| [Reformating the data](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%202%20-%20Reformat)|
+|Step #2| [Reformating the data](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%202%20-%20Reformat)| 
 |Step #3| [Scraping country data](https://github.com/AnujDahiya24/FIDE/tree/master/Chess%20Scripts/Step%203%20-%20FIDE%20Country%20Codes)|
 |Step #4| [Cleaning the data](https://github.com/AnujDahiya24/FIDE-Chess-Data/tree/master/Chess%20Scripts/Step%204%20-%20Cleaning)|
 |Step #5| [Visualizing the data](https://github.com/AnujDahiya24/FIDE-Chess-Data/tree/master/Chess%20Scripts/Step%205%20-%20Analysis)|
