@@ -67,7 +67,9 @@ From the [FIDE Download Rating List page (old)](http://ratings.fide.com/download
 
 # 🧬 Lifecycle of data
 
-The lifecycle of the data is divided into 6 steps (below). All 6 steps are done through R and Python. 
+The lifecycle of the data is divided into 6 steps (below).
+
+All 6 steps are done through R and Python. 
 
 You can click each step below for more information.
 
@@ -83,8 +85,6 @@ You can click each step below for more information.
 ---
 
 # ♟️ Why did I do this? 
-
-<!--- <img src = "https://imgflip.com/s/meme/Futurama-Fry.jpg" height = "50"> --->
 
 I chose to work on this project because of several reasons:
 
