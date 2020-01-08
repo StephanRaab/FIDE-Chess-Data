@@ -45,7 +45,7 @@ An example of what the FIDE **Standard** Rating data looks like in December 2019
 From the [FIDE Download Rating List page (old)](http://ratings.fide.com/download.phtml), we can understand each column a bit more:
 
 <center>
-
+  
 | Column name | Meaning | Example |
 | --- | :--- | --- |
 | ID_NUMBER | a FIDE player's ID | 123456 |
