@@ -506,7 +506,7 @@ p11
  
 A consistent theme we will see in every graph is a potential corruption of data. The graph above displays the of players gained and lost over time by country. 
 
-- Bulgaria, Finland, Germany, Serbia and Montenagro, and the United State of America saw unusual spikes & dips at various junctures (2002, 2007, 2017)
+- Bulgaria, Finland, Germany, Serbia and Montenegro, and the United State of America saw unusual spikes & dips at various junctures (2002, 2007, 2017)
 
 
 \pagebreak
@@ -562,7 +562,7 @@ Notable observations:
 p17 
 ```
 
-This plot would be substantially better at showing relative strengths amnong countries if I could scale it differently. This will adjusted in future iterations, probably through scaling.
+This plot would be substantially better at showing relative strengths among countries if I could scale it differently. This will adjusted in future iterations, probably through scaling.
 
 \pagebreak
 
@@ -577,7 +577,7 @@ The most aesthetically pleasing graph to look at is the one above. It reveals a 
 
 - Bands of players can be separated by titles categories: an obvious points is that the top blue band is all GMs, the highest rated group. Below the  blue band are IMs (purple band), FMs (green band) and CMs (red band). 
 
-- CMs and FMs vary greatly across rating categories because it has become much easier for lower rated players to acquire titles in youth tournaments and via interzonal tournaments.
+- CMs and FMs vary greatly across rating categories because it has become much easier for lower rated players to acquire titles in youth tournaments and via inter zonal tournaments.
 
 - There is a slight negative correlation, among all titled player groups, between Age and Rating. 
 
